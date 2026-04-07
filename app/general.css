@@ -1,0 +1,34 @@
+:root {
+  --font-sans: "Montserrat", sans-serif;
+  --font-heading: "Bitter", serif;
+  --color-page: #fffdf9;
+  --color-white: #ffffff;
+  --color-heading: #392a20;
+  --color-body: #413329;
+  --color-muted: #6f6258;
+  --color-accent-soft: #eac67d;
+  --color-accent-circle: #f4cc73;
+  --color-accent-strong: #9f6a32;
+  --shadow-card: 0 20px 48px rgba(76, 57, 38, 0.11);
+}
+
+.container {
+  width: min(calc(100% - 48px), 1284px);
+  margin: 0 auto;
+}
+
+.section-title {
+  margin: 0;
+  font-family: var(--font-heading), serif;
+  font-size: 56px;
+  line-height: 1.04;
+  font-weight: 400;
+  color: var(--color-heading);
+}
+
+.section-copy {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--color-body);
+}

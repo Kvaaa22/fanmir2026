@@ -1,0 +1,81 @@
+.header {
+  width: 100%;
+}
+
+.headerBar {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 22px;
+  min-height: 82px;
+  padding: 10px 24px 10px 18px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 16px 40px rgba(69, 53, 35, 0.1);
+}
+
+.logoLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+}
+
+.navLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  line-height: 1;
+  font-weight: 500;
+  color: #31261f;
+}
+
+.navLink img {
+  width: 11px;
+  height: 6px;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 20px;
+}
+
+.metaItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  line-height: 1.15;
+  color: #31261f;
+}
+
+.metaItem img {
+  flex: none;
+}
+
+.metaPhone {
+  font-size: 14px;
+  line-height: 1;
+  font-weight: 500;
+  color: #31261f;
+  white-space: nowrap;
+}
+
+.metaItemAddress {
+  max-width: 204px;
+}
