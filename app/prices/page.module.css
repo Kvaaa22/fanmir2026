@@ -1,10 +1,9 @@
-.page {
-  overflow-x: auto;
+.pricesPage {
   background: #ffffff;
 }
 
 .canvas {
-  width: 1366px;
+  width: min(100%, 1366px);
   margin: 0 auto;
   padding: 14px 89px 118px 93px;
   background: #ffffff;
@@ -13,152 +12,70 @@
 .pageTitle {
   margin: 0 0 48px;
   font-family: var(--font-heading), serif;
-  font-style: normal;
-  font-weight: 500;
   font-size: 46px;
   line-height: 56px;
+  font-weight: 500;
   color: #2f2f2f;
 }
 
-.rowPrimary,
-.rowSecondary {
+.rows {
   display: grid;
+  gap: 58px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: var(--row-columns);
   align-items: start;
-  width: fit-content;
+  justify-content: start;
 }
 
-.rowPrimary {
-  grid-template-columns: 304px 54px 304px 50px 355px;
-}
-
-.rowPrimary > article:nth-child(2) {
-  grid-column: 3;
-}
-
-.rowPrimary > article:nth-child(3) {
-  grid-column: 5;
-}
-
-.rowSecondary {
-  margin-top: 43px;
-  grid-template-columns: 304px 54px 196px 162px 218px;
-}
-
-.rowSecondary > article:nth-child(2) {
-  grid-column: 3;
-}
-
-.rowSecondary > article:nth-child(3) {
-  grid-column: 5;
-}
-
-.block {
+.card {
   display: grid;
   align-content: start;
+  width: min(100%, var(--card-width));
+  min-width: 0;
+  grid-column: var(--card-column, auto);
 }
 
-.blockTitle {
+.cardTitle {
   margin: 0 0 10px;
   font-family: var(--font-sans), sans-serif;
-  font-style: normal;
-  font-weight: 400;
   font-size: 16px;
-  line-height: 140%;
+  line-height: 1.4;
+  font-weight: 400;
   color: #000000;
 }
 
-.blockImage {
+.cardImage {
   margin-bottom: 11px;
 }
 
 .groupGrid {
   display: grid;
+  grid-template-columns: var(--group-columns);
   align-items: start;
-}
-
-.birchTopGrid {
-  grid-template-columns: 49px 59px 122px;
-  column-gap: 13px;
-}
-
-.birchBottomGrid {
-  margin-top: 8px;
-  grid-template-columns: 97px 120px;
-  column-gap: 19px;
-}
-
-.softwoodTopGrid {
-  grid-template-columns: 51px 57px 126px;
-  column-gap: 14px;
-}
-
-.softwoodBottomGrid {
-  margin-top: 8px;
-  grid-template-columns: 73px 118px;
-  column-gap: 20px;
-}
-
-.laminatedTopGrid {
-  grid-template-columns: 49px 111px 112px;
-  column-gap: 15px;
-}
-
-.laminatedBottomGrid {
-  margin-top: 8px;
-  grid-template-columns: 112px;
-}
-
-.osbGrid {
-  grid-template-columns: 49px 77px 118px;
-  column-gap: 15px;
-}
-
-.dspTopGrid {
-  grid-template-columns: 50px 101px;
-  column-gap: 29px;
-}
-
-.dspBottomGrid {
-  margin-top: 9px;
-  grid-template-columns: 78px 76px;
-  column-gap: 20px;
-}
-
-.dvpTopGrid {
-  grid-template-columns: 49px 110px;
-  column-gap: 20px;
-}
-
-.dvpBottomGrid {
-  margin-top: 9px;
-  grid-template-columns: 85px 97px;
-  column-gap: 18px;
-}
-
-.plydexBlock {
-  width: 953px;
-  margin-top: 58px;
-}
-
-.plydexGrid {
-  grid-template-columns: 111px 254px 112px 113px 127px;
-  column-gap: 34px;
+  column-gap: var(--group-gap);
+  margin-top: var(--group-margin-top);
 }
 
 .group {
   min-width: 0;
 }
 
-.groupTitle {
-  margin: 0;
+.groupTitle,
+.groupItem {
   font-family: var(--font-heading), serif;
-  font-style: normal;
-  font-weight: 500;
   font-size: 12px;
-  line-height: 160%;
+  line-height: 1.6;
   letter-spacing: -0.02em;
   color: #000000;
   text-shadow: 0 4px 16px rgba(255, 255, 255, 0.58);
+}
+
+.groupTitle {
+  margin: 0;
+  font-weight: 500;
 }
 
 .groupList {
@@ -170,12 +87,66 @@
 }
 
 .groupItem {
-  font-family: var(--font-heading), serif;
-  font-style: normal;
   font-weight: 300;
-  font-size: 12px;
-  line-height: 160%;
-  letter-spacing: -0.02em;
-  color: #000000;
-  text-shadow: 0 4px 16px rgba(255, 255, 255, 0.58);
+}
+
+@media (max-width: 1200px) {
+  .canvas {
+    padding: 10px 48px 96px;
+  }
+
+  .pageTitle {
+    margin-bottom: 40px;
+    font-size: 40px;
+    line-height: 1.15;
+  }
+
+  .rows {
+    gap: 52px;
+  }
+
+  .row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 40px 32px;
+  }
+
+  .rowSingle {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .card {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 767px) {
+  .canvas {
+    padding: 6px 24px 72px;
+  }
+
+  .pageTitle {
+    margin-bottom: 32px;
+    font-size: 34px;
+    line-height: 1.15;
+  }
+
+  .rows {
+    gap: 44px;
+  }
+
+  .row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 44px;
+  }
+
+  .groupGrid {
+    grid-template-columns: repeat(auto-fit, minmax(138px, 1fr));
+    gap: 16px 18px;
+  }
+
+  .groupTitle,
+  .groupItem {
+    font-size: 13px;
+    line-height: 1.55;
+  }
 }

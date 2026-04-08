@@ -5,23 +5,36 @@ import Image from "next/image";
 import styles from "@/app/page.module.css";
 
 type HeroSlide = {
-  title: string;
   badges: [string, string];
-  lead: string;
+  id: string;
   imageAlt: string;
+  lead: string;
+  title: string;
 };
 
-const baseSlide: HeroSlide = {
-  title: "Резка по вашим размерам",
-  badges: ["оперативно", "недорого"],
-  lead: "Раскрой в день заказа на форматно-раскроечном станке",
-  imageAlt: "Форматный раскрой фанеры",
-};
-
-const heroSlides = Array.from({ length: 2 }, (_, index) => ({
-  ...baseSlide,
-  id: index,
-}));
+const heroSlides: HeroSlide[] = [
+  {
+    id: "cutting",
+    title: "Резка по вашим размерам",
+    badges: ["оперативно", "недорого"],
+    lead: "Раскрой в день заказа на форматно-раскроечном станке",
+    imageAlt: "Форматный раскрой фанеры",
+  },
+  {
+    id: "delivery",
+    title: "Фанера и листовые материалы в наличии",
+    badges: ["со склада", "с доставкой"],
+    lead: "Подберем нужный формат и быстро отгрузим заказ по Красноярску",
+    imageAlt: "Листовые материалы на складе",
+  },
+  {
+    id: "catalogue",
+    title: "Помогаем подобрать материал под задачу",
+    badges: ["подскажем", "подберем"],
+    lead: "Березовая, хвойная, ламинированная фанера, OSB, ДСП и ДВП в одном месте",
+    imageAlt: "Ассортимент фанеры и листовых материалов",
+  },
+];
 
 export function HeroSlider() {
   const [activeSlide, setActiveSlide] = useState(0);
@@ -59,9 +72,9 @@ export function HeroSlider() {
           className={styles.heroTrack}
           style={{ transform: `translateX(-${activeSlide * 100}%)` }}
         >
-          {heroSlides.map((slide) => (
+          {heroSlides.map((slide, index) => (
             <div
-              aria-hidden={slide.id !== activeSlide}
+              aria-hidden={index !== activeSlide}
               className={styles.heroSlide}
               key={slide.id}
             >
@@ -85,7 +98,7 @@ export function HeroSlider() {
                   <Image
                     alt={slide.imageAlt}
                     fill
-                    priority={slide.id === 0}
+                    priority={index === 0}
                     sizes="(max-width: 1366px) 48vw, 640px"
                     src="/img/hero/cutting.webp"
                   />

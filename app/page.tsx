@@ -1,5 +1,6 @@
 import type { ComponentType, SVGProps } from "react";
 import Image from "next/image";
+import { HeroSlider } from "@/components/HeroSlider/HeroSlider";
 import styles from "./page.module.css";
 
 type IconProps = SVGProps<SVGSVGElement>;
@@ -60,61 +61,7 @@ export default function Home() {
 
 
         <div className={`container ${styles.heroContainer}`}>
-          <div className={styles.heroContent}>
-            <button
-              aria-label="Предыдущий слайд"
-              className={`${styles.heroArrow} ${styles.heroArrowLeft}`}
-              type="button"
-            >
-              <ArrowIcon direction="left" />
-            </button>
-
-            <div className={styles.heroCopy}>
-              <h1 className={styles.heroTitle}>Резка по вашим размерам</h1>
-
-              <div className={styles.heroBadges}>
-                <span className={styles.heroBadge}>оперативно</span>
-                <span
-                  className={`${styles.heroBadge} ${styles.heroBadgeDark}`}
-                >
-                  недорого
-                </span>
-              </div>
-
-              <p className={styles.heroLead}>
-                Раскрой в день заказа на форматно-раскроечном станке
-              </p>
-            </div>
-
-            <div className={styles.heroVisual}>
-              <div className={styles.heroVisualMain}>
-                <Image
-                  src="/img/hero/cutting.webp"
-                  alt="Форматный раскрой фанеры"
-                  fill
-                  priority
-                  sizes="(max-width: 1366px) 48vw, 640px"
-                />
-              </div>
-
-              <div className={styles.heroVisualAccent}>
-                <Image
-                  src="/img/hero/wood-circle.webp"
-                  alt=""
-                  fill
-                  sizes="180px"
-                />
-              </div>
-            </div>
-
-            <button
-              aria-label="Следующий слайд"
-              className={`${styles.heroArrow} ${styles.heroArrowRight}`}
-              type="button"
-            >
-              <ArrowIcon direction="right" />
-            </button>
-          </div>
+          <HeroSlider />
 
           <div className={styles.partnersBlock}>
             <span className={styles.partnersLabel}>Наши партнеры</span>
@@ -370,31 +317,6 @@ export default function Home() {
 
 
     </>
-  );
-}
-
-function ArrowIcon({
-  direction,
-}: {
-  direction: "left" | "right";
-}) {
-  return (
-    <svg
-      aria-hidden="true"
-      className={direction === "left" ? styles.arrowLeft : undefined}
-      fill="none"
-      height="26"
-      viewBox="0 0 26 26"
-      width="26"
-    >
-      <path
-        d="M16.5 4.5L8.5 13L16.5 21.5"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.8"
-      />
-    </svg>
   );
 }
 

@@ -1,5 +1,3 @@
-
-
 .hero {
   position: relative;
   overflow: hidden;
@@ -22,6 +20,27 @@
   display: grid;
   grid-template-columns: 1fr 690px;
   align-items: center;
+  min-height: 520px;
+  column-gap: 28px;
+}
+
+.heroViewport {
+  grid-column: 1 / -1;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.heroTrack {
+  display: flex;
+  transition: transform 360ms ease;
+  will-change: transform;
+}
+
+.heroSlide {
+  display: grid;
+  grid-template-columns: 1fr 690px;
+  align-items: center;
+  min-width: 100%;
   min-height: 520px;
   column-gap: 28px;
 }
@@ -126,7 +145,7 @@
   background: transparent;
   color: #5d5046;
   transform: translateY(-50%);
-  cursor: default;
+  cursor: pointer;
 }
 
 .heroArrowLeft {
