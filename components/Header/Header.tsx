@@ -72,7 +72,10 @@ export function Header({ className }: HeaderProps) {
                 height={20}
                 width={20}
               />
-              <span>Красноярск Калинина 169, офис1-05</span>
+              <span className={`${styles.metaColumn}`}>
+                <div className={styles.metaCity}>Красноярск</div>
+                <div>Калинина 169, офис 1-05</div>
+              </span>
             </div>
           </div>
         </div>

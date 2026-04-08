@@ -1,6 +1,12 @@
 .header {
   width: 100%;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 125%;
+  color: #000000;
 }
+
 
 .headerBar {
   display: grid;
@@ -37,10 +43,6 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 14px;
-  line-height: 1;
-  font-weight: 500;
-  color: #31261f;
 }
 
 .navLink img {
@@ -59,9 +61,6 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-size: 14px;
-  line-height: 1.15;
-  color: #31261f;
 }
 
 .metaItem img {
@@ -69,13 +68,20 @@
 }
 
 .metaPhone {
-  font-size: 14px;
-  line-height: 1;
-  font-weight: 500;
-  color: #31261f;
   white-space: nowrap;
 }
 
 .metaItemAddress {
-  max-width: 204px;
+  font-size: 12px;
+  height: 28px;
+  line-height: 110%;
+}
+.metaColumn{
+  height:inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.metaCity {
+  font-weight: 500;
 }
