@@ -77,7 +77,7 @@ export function Header({ className }: HeaderProps) {
 
           <div className={styles.mobileActions}>
             <a className={styles.mobilePhone} href={phoneHref}>
-              Позвонить
+              {phoneLabel}
             </a>
 
             <details className={styles.mobileMenu}>

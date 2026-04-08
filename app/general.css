@@ -1,15 +1,35 @@
 :root {
   --font-sans: "Montserrat", sans-serif;
   --font-heading: "Bitter", serif;
-  --color-page: #fffdf9;
-  --color-white: #ffffff;
-  --color-heading: #392a20;
-  --color-body: #413329;
-  --color-muted: #6f6258;
-  --color-accent-soft: #eac67d;
-  --color-accent-circle: #f4cc73;
-  --color-accent-strong: #9f6a32;
-  --shadow-card: 0 20px 48px rgba(76, 57, 38, 0.11);
+  --bg: #ffffff;
+  --bg-secondary: #f9f9f9;
+  --bg-grey: #f2f2f2;
+  --bg-items: #fafafa;
+  --text-black: #000000;
+  --text-dark: #1a1a1a;
+  --text-muted: #2f2f2f;
+  --text-ochre: #ba872e;
+  --ochre: #f5d088;
+  --brown: #563b25;
+  --bg-rgb: 255, 255, 255;
+  --bg-secondary-rgb: 249, 249, 249;
+  --bg-grey-rgb: 242, 242, 242;
+  --bg-items-rgb: 250, 250, 250;
+  --text-black-rgb: 0, 0, 0;
+  --text-dark-rgb: 26, 26, 26;
+  --text-muted-rgb: 47, 47, 47;
+  --text-ochre-rgb: 186, 135, 46;
+  --ochre-rgb: 245, 208, 136;
+  --brown-rgb: 86, 59, 37;
+  --color-page: var(--bg);
+  --color-white: var(--bg);
+  --color-heading: var(--text-dark);
+  --color-body: var(--text-muted);
+  --color-muted: var(--text-muted);
+  --color-accent-soft: var(--ochre);
+  --color-accent-circle: var(--ochre);
+  --color-accent-strong: var(--text-ochre);
+  --shadow-card: 0 20px 48px rgba(var(--brown-rgb), 0.11);
 }
 
 .container {

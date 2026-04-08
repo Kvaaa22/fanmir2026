@@ -7,7 +7,7 @@
   font-weight: 400;
   font-size: clamp(14px, 0.9vw, 16px);
   line-height: 1.25;
-  color: #000000;
+  color: var(--text-black);
 }
 
 .headerBar {
@@ -19,8 +19,8 @@
   min-height: clamp(72px, 9vh, 82px);
   padding: clamp(8px, 1.4vh, 10px) clamp(16px, 2vw, 24px) clamp(8px, 1.4vh, 10px)
     clamp(14px, 1.4vw, 18px);
-  background: rgba(255, 255, 255, 0.96);
-  box-shadow: 0 16px 40px rgba(69, 53, 35, 0.1);
+  background: rgba(var(--bg-rgb), 0.96);
+  box-shadow: 0 16px 40px rgba(var(--brown-rgb), 0.1);
 }
 
 .logoLink {
@@ -159,10 +159,6 @@
   .meta {
     gap: 12px;
   }
-
-  .metaItemAddress {
-    display: none;
-  }
 }
 
 @media (max-width: 980px) {
@@ -194,10 +190,10 @@
     align-items: center;
     justify-content: center;
     min-height: 40px;
-    padding: 0 14px;
+    padding: 0 16px;
     border-radius: 999px;
-    background: #5a3822;
-    color: #ffffff;
+    background: var(--brown);
+    color: var(--bg);
     white-space: nowrap;
   }
 
@@ -218,7 +214,7 @@
     padding: 0;
     border-radius: 50%;
     list-style: none;
-    background: rgba(58, 42, 31, 0.08);
+    background: rgba(var(--brown-rgb), 0.08);
     cursor: pointer;
   }
 
@@ -234,7 +230,7 @@
     width: 18px;
     height: 2px;
     border-radius: 999px;
-    background: #3c2b1f;
+    background: var(--text-dark);
     transition: transform 0.24s ease, opacity 0.24s ease;
   }
 
@@ -254,17 +250,21 @@
     position: absolute;
     top: calc(100% + 10px);
     right: 0;
-    width: min(360px, calc(100vw - 48px));
-    max-height: min(70vh, 420px);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: min(392px, calc(100vw - 40px));
+    min-height: min(430px, calc(100vh - 120px));
+    max-height: min(80vh, 560px);
     overflow: auto;
-    padding: 18px;
-    background: rgba(255, 255, 255, 0.98);
-    box-shadow: 0 18px 40px rgba(69, 53, 35, 0.16);
+    padding: 24px;
+    background: rgba(var(--bg-rgb), 0.98);
+    box-shadow: 0 18px 40px rgba(var(--brown-rgb), 0.16);
   }
 
   .mobileNavList {
     display: grid;
-    gap: 10px;
+    gap: 12px;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -277,17 +277,17 @@
   .mobileNavLink {
     justify-content: space-between;
     width: 100%;
-    padding: 12px 14px;
-    background: #faf6ef;
+    padding: 16px 18px;
+    background: var(--bg-items);
     font-weight: 500;
   }
 
   .mobileMeta {
     display: grid;
-    gap: 10px;
-    margin-top: 14px;
-    padding-top: 14px;
-    border-top: 1px solid rgba(69, 53, 35, 0.1);
+    gap: 14px;
+    margin-top: auto;
+    padding-top: 18px;
+    border-top: 1px solid rgba(var(--brown-rgb), 0.1);
   }
 
   .mobileMetaItem {
@@ -300,9 +300,10 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 42px;
-    padding: 10px 14px;
-    background: #f4ebdd;
+    min-height: 48px;
+    padding: 14px 18px;
+    background: var(--ochre);
+    color: var(--text-dark);
     text-align: center;
   }
 
@@ -336,8 +337,9 @@
   }
 
   .mobileMenuPanel {
-    width: min(340px, calc(100vw - 32px));
-    padding: 16px;
+    width: min(356px, calc(100vw - 24px));
+    min-height: min(400px, calc(100vh - 104px));
+    padding: 20px;
   }
 }
 
