@@ -60,7 +60,7 @@ export function HeroSlider() {
         onClick={showPreviousSlide}
         type="button"
       >
-        <ArrowIcon direction="left" />
+        <ArrowIcon />
       </button>
 
       <div
@@ -124,32 +124,28 @@ export function HeroSlider() {
         onClick={showNextSlide}
         type="button"
       >
-        <ArrowIcon direction="right" />
+        <ArrowIcon />
       </button>
     </div>
   );
 }
 
-function ArrowIcon({
-  direction,
-}: {
-  direction: "left" | "right";
-}) {
+function ArrowIcon() {
   return (
     <svg
       aria-hidden="true"
-      className={direction === "left" ? styles.arrowLeft : undefined}
       fill="none"
-      height="26"
-      viewBox="0 0 26 26"
-      width="26"
+      height="34"
+      viewBox="0 0 18 34"
+      width="18"
+      xmlns="http://www.w3.org/2000/svg"
     >
       <path
-        d="M16.5 4.5L8.5 13L16.5 21.5"
-        stroke="currentColor"
+        d="M16.1609 0.857178L1.22515 15.7929C1.10899 15.9019 1.01641 16.0336 0.953119 16.1798C0.88983 16.326 0.857178 16.4836 0.857178 16.6429C0.857178 16.8022 0.88983 16.9598 0.953119 17.106C1.01641 17.2522 1.10899 17.3839 1.22515 17.4929L16.1609 32.4286"
+        stroke="black"
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth="1.8"
+        strokeWidth="1.71429"
       />
     </svg>
   );
