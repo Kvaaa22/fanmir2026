@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { bitter, montserrat } from "./fonts";
+import { Header } from "@/components/Header/Header";
+import { Footer } from "@/components/Footer/Footer";
 import "./globals.css";
 import "./general.css";
 
@@ -18,7 +20,13 @@ export default function RootLayout({
       lang="ru"
       className={`${montserrat.variable} ${bitter.variable}`}
     >
-      <body>{children}</body>
+
+      <body>
+        <Header />
+        <main className="page">{children}</main>
+        <Footer />
+      </body>
+
     </html>
   );
 }

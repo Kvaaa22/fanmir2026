@@ -7,10 +7,10 @@ type HeaderProps = {
 };
 
 const navigation = [
-  { href: "#about", label: "О нас" },
-  { href: "#offers", label: "Каталог", withArrow: true },
+  { href: "about", label: "О нас" },
+  { href: "catalogue", label: "Каталог", withArrow: true },
   { href: "#hero", label: "Услуги", withArrow: true },
-  { href: "#offers", label: "Наши цены" },
+  { href: "prices", label: "Наши цены" },
   { href: "#about", label: "Статьи" },
   { href: "#contacts", label: "Контакты" },
 ];
@@ -20,7 +20,7 @@ export function Header({ className }: HeaderProps) {
     <header className={[styles.header, className].filter(Boolean).join(" ")}>
       <div className="container">
         <div className={styles.headerBar}>
-          <Link className={styles.logoLink} href="#hero">
+          <Link className={styles.logoLink} href="">
             <Image
               src="/img/logoFull.png"
               alt="Фанерный мир"
@@ -73,8 +73,8 @@ export function Header({ className }: HeaderProps) {
                 width={20}
               />
               <span className={`${styles.metaColumn}`}>
-                <div className={styles.metaCity}>Красноярск</div>
-                <div>Калинина 169, офис 1-05</div>
+                <span className={styles.metaCity}>Красноярск</span>
+                <span>Калинина 169, офис 1-05</span>
               </span>
             </div>
           </div>

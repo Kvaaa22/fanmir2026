@@ -1,230 +1,181 @@
 .page {
-  min-height: 100vh;
-  padding-top: 20px;
-  background:
-    linear-gradient(180deg, rgba(245, 239, 232, 0.96) 0%, rgba(239, 232, 222, 0.9) 100%),
-    radial-gradient(circle at top left, rgba(202, 171, 123, 0.22), transparent 34%);
+  overflow-x: auto;
+  background: #ffffff;
 }
 
-.header {
-  position: relative;
-  z-index: 2;
+.canvas {
+  width: 1366px;
+  margin: 0 auto;
+  padding: 14px 89px 118px 93px;
+  background: #ffffff;
 }
 
-.catalogueSection {
-  padding: 28px 0 88px;
+.pageTitle {
+  margin: 0 0 48px;
+  font-family: var(--font-heading), serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 46px;
+  line-height: 56px;
+  color: #2f2f2f;
 }
 
-.sheet {
+.rowPrimary,
+.rowSecondary {
   display: grid;
-  grid-template-columns: 268px minmax(0, 1fr);
-  gap: 34px;
-  padding: 34px 36px 38px;
-  background: rgba(255, 255, 255, 0.98);
-  box-shadow: 0 28px 68px rgba(72, 56, 39, 0.14);
+  align-items: start;
+  width: fit-content;
 }
 
-.sidebar {
+.rowPrimary {
+  grid-template-columns: 304px 54px 304px 50px 355px;
+}
+
+.rowPrimary > article:nth-child(2) {
+  grid-column: 3;
+}
+
+.rowPrimary > article:nth-child(3) {
+  grid-column: 5;
+}
+
+.rowSecondary {
+  margin-top: 43px;
+  grid-template-columns: 304px 54px 196px 162px 218px;
+}
+
+.rowSecondary > article:nth-child(2) {
+  grid-column: 3;
+}
+
+.rowSecondary > article:nth-child(3) {
+  grid-column: 5;
+}
+
+.block {
   display: grid;
   align-content: start;
-  gap: 24px;
-  padding-right: 30px;
-  border-right: 1px solid rgba(87, 67, 45, 0.12);
-  font-family: var(--font-sans), sans-serif;
 }
 
-.sidebarIntro {
+.blockTitle {
+  margin: 0 0 10px;
+  font-family: var(--font-sans), sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 140%;
+  color: #000000;
+}
+
+.blockImage {
+  margin-bottom: 11px;
+}
+
+.groupGrid {
   display: grid;
-  gap: 10px;
+  align-items: start;
 }
 
-.kicker {
-  font-family: var(--font-sans), sans-serif;
-  font-size: 12px;
-  line-height: 1;
-  font-weight: 600;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: #a38360;
+.birchTopGrid {
+  grid-template-columns: 49px 59px 122px;
+  column-gap: 13px;
 }
 
-.title,
-.contentTitle,
-.cardTitle {
+.birchBottomGrid {
+  margin-top: 8px;
+  grid-template-columns: 97px 120px;
+  column-gap: 19px;
+}
+
+.softwoodTopGrid {
+  grid-template-columns: 51px 57px 126px;
+  column-gap: 14px;
+}
+
+.softwoodBottomGrid {
+  margin-top: 8px;
+  grid-template-columns: 73px 118px;
+  column-gap: 20px;
+}
+
+.laminatedTopGrid {
+  grid-template-columns: 49px 111px 112px;
+  column-gap: 15px;
+}
+
+.laminatedBottomGrid {
+  margin-top: 8px;
+  grid-template-columns: 112px;
+}
+
+.osbGrid {
+  grid-template-columns: 49px 77px 118px;
+  column-gap: 15px;
+}
+
+.dspTopGrid {
+  grid-template-columns: 50px 101px;
+  column-gap: 29px;
+}
+
+.dspBottomGrid {
+  margin-top: 9px;
+  grid-template-columns: 78px 76px;
+  column-gap: 20px;
+}
+
+.dvpTopGrid {
+  grid-template-columns: 49px 110px;
+  column-gap: 20px;
+}
+
+.dvpBottomGrid {
+  margin-top: 9px;
+  grid-template-columns: 85px 97px;
+  column-gap: 18px;
+}
+
+.plydexBlock {
+  width: 953px;
+  margin-top: 58px;
+}
+
+.plydexGrid {
+  grid-template-columns: 111px 254px 112px 113px 127px;
+  column-gap: 34px;
+}
+
+.group {
+  min-width: 0;
+}
+
+.groupTitle {
   margin: 0;
   font-family: var(--font-heading), serif;
-  font-weight: 400;
-  color: var(--color-heading);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 160%;
+  letter-spacing: -0.02em;
+  color: #000000;
+  text-shadow: 0 4px 16px rgba(255, 255, 255, 0.58);
 }
 
-.title {
-  font-size: 54px;
-  line-height: 0.94;
-}
-
-.filterBlock {
+.groupList {
   display: grid;
-  gap: 12px;
-}
-
-.filterTitle {
-  margin: 0;
-  font-family: var(--font-sans), sans-serif;
-  font-size: 14px;
-  line-height: 1;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #4a3726;
-}
-
-.filterList {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 9px;
+  gap: 0;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.filterChip {
-  padding: 9px 13px;
-  border: 1px solid rgba(88, 69, 47, 0.12);
-  background: #faf7f2;
-  font-size: 13px;
-  line-height: 1.2;
-  color: #5a4939;
-}
-
-.content {
-  display: grid;
-  align-content: start;
-  gap: 26px;
-  font-family: var(--font-sans), sans-serif;
-}
-
-.contentHeader {
-  display: grid;
-  gap: 10px;
-  padding-bottom: 18px;
-  border-bottom: 1px solid rgba(87, 67, 45, 0.12);
-}
-
-.contentTitle {
-  font-size: 36px;
-  line-height: 0.98;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 24px;
-}
-
-.card {
-  overflow: hidden;
-  border: 1px solid rgba(89, 69, 48, 0.12);
-  background: #ffffff;
-  box-shadow: 0 14px 28px rgba(82, 61, 41, 0.08);
-}
-
-.cardImageWrap {
-  position: relative;
-  aspect-ratio: 1.52;
-  overflow: hidden;
-  background:
-    linear-gradient(180deg, rgba(250, 243, 232, 0.96), rgba(242, 230, 212, 0.96)),
-    #f1e1c8;
-}
-
-.cardImage {
-  object-fit: cover;
-}
-
-.cardBody {
-  display: grid;
-  gap: 16px;
-  padding: 18px 18px 20px;
-}
-
-.cardTitle {
-  min-height: 54px;
-  font-size: 28px;
-  line-height: 0.98;
-}
-
-.sizeList,
-.gradeList {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.sizeChip {
-  padding: 7px 10px;
-  background: #f7f0e8;
+.groupItem {
+  font-family: var(--font-heading), serif;
+  font-style: normal;
+  font-weight: 300;
   font-size: 12px;
-  line-height: 1;
-  font-weight: 600;
-  color: #6a5846;
-}
-
-.gradeChip {
-  min-width: 44px;
-  padding: 7px 10px;
-  background: #3a2a1f;
-  font-size: 12px;
-  line-height: 1;
-  font-weight: 700;
-  text-align: center;
-  color: #ffffff;
-}
-
-@media (max-width: 1120px) {
-  .sheet {
-    grid-template-columns: 1fr;
-    gap: 26px;
-    padding: 28px;
-  }
-
-  .sidebar {
-    padding-right: 0;
-    padding-bottom: 26px;
-    border-right: 0;
-    border-bottom: 1px solid rgba(87, 67, 45, 0.12);
-  }
-}
-
-@media (max-width: 760px) {
-  .page {
-    padding-top: 12px;
-  }
-
-  .catalogueSection {
-    padding: 18px 0 64px;
-  }
-
-  .sheet {
-    padding: 20px;
-  }
-
-  .title {
-    font-size: 42px;
-  }
-
-  .contentTitle {
-    font-size: 30px;
-  }
-
-  .grid {
-    grid-template-columns: 1fr;
-  }
-
-  .cardTitle {
-    min-height: 0;
-    font-size: 24px;
-  }
+  line-height: 160%;
+  letter-spacing: -0.02em;
+  color: #000000;
+  text-shadow: 0 4px 16px rgba(255, 255, 255, 0.58);
 }

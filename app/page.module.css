@@ -1,22 +1,14 @@
-.page {
-  background: var(--color-page);
-}
+
 
 .hero {
   position: relative;
   overflow: hidden;
   min-height: 742px;
-  background:
-    linear-gradient(180deg, rgba(255, 252, 246, 0.92) 0%, rgba(255, 252, 246, 0.78) 100%),
-    url("/img/hero/wood-bg.webp") center top / cover no-repeat;
+  background:url("/img/hero/wood-bg.webp") center top / cover no-repeat;
   isolation: isolate;
 }
 
-.heroHeader {
-  position: absolute;
-  inset: 20px 0 auto;
-  z-index: 5;
-}
+
 
 .heroContainer {
   position: relative;

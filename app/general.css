@@ -32,3 +32,7 @@
   line-height: 1.5;
   color: var(--color-body);
 }
+.page {
+  background: var(--color-page);
+  padding-top: 130px;
+}
