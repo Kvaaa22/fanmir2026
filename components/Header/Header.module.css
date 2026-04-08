@@ -268,14 +268,14 @@
 
   .mobileMenu[open] .mobileMenuButton {
     position: absolute;
-    top: 18px;
+    top: calc(100% + 31px);
     right: 18px;
     z-index: 4;
     width: 44px;
     height: 44px;
     border: 1px solid rgba(var(--brown-rgb), 0.08);
     background: rgba(var(--bg-grey-rgb), 0.98);
-    box-shadow: 0 10px 20px rgba(var(--brown-rgb), 0.1);
+    box-shadow: 0 6px 14px rgba(var(--brown-rgb), 0.08);
   }
 
   .mobileMenuButton::-webkit-details-marker {
@@ -323,8 +323,8 @@
     border-radius: 28px;
     background: rgba(var(--bg-rgb), 0.98);
     box-shadow:
-      14px 0 0 rgba(var(--brown-rgb), 0.16),
-      0 26px 60px rgba(var(--brown-rgb), 0.18);
+      8px 0 0 rgba(var(--brown-rgb), 0.08),
+      0 18px 36px rgba(var(--brown-rgb), 0.12);
     backdrop-filter: blur(18px);
   }
 
@@ -399,28 +399,12 @@
     line-height: 1.2;
     font-weight: 400;
     background: transparent;
-    transition: background-color 0.2s ease, color 0.2s ease;
+    transition: color 0.2s ease;
   }
 
   .mobileNavEntry {
     background: transparent;
-    transition: background-color 0.2s ease, color 0.2s ease;
-  }
-
-  .mobileNavEntryOpen {
-    background: linear-gradient(
-      180deg,
-      rgba(var(--ochre-rgb), 0.18) 0%,
-      rgba(var(--ochre-rgb), 0.1) 100%
-    );
-  }
-
-  .mobileNavEntryActive,
-  .mobileNavStandaloneActive,
-  .mobileSubmenuLinkActive {
-    background: var(--brown);
-    color: var(--bg);
-    box-shadow: 0 12px 24px rgba(var(--brown-rgb), 0.16);
+    transition: color 0.2s ease;
   }
 
   .mobileNavToggle {
@@ -449,12 +433,13 @@
   .mobileSubmenu {
     display: grid;
     gap: 0;
-    margin: -2px 10px 4px 22px;
-    padding: 10px 14px;
+    margin: -8px 0 4px 22px;
+    padding: 14px 14px 10px;
     border: 1px solid rgba(var(--brown-rgb), 0.08);
-    border-radius: 18px;
+    border-top: 0;
+    border-radius: 0 0 18px 18px;
     background: rgba(var(--bg-rgb), 0.92);
-    box-shadow: 0 10px 24px rgba(var(--brown-rgb), 0.08);
+    box-shadow: 0 6px 16px rgba(var(--brown-rgb), 0.05);
   }
 
   .mobileSubmenuLink {
@@ -466,14 +451,11 @@
     font-size: 16px;
     line-height: 1.25;
     color: var(--text-muted);
+    transition: color 0.2s ease;
   }
 
   .mobileSubmenuLink + .mobileSubmenuLink {
     border-top: 1px solid rgba(var(--brown-rgb), 0.08);
-  }
-
-  .mobileSubmenuLinkActive {
-    font-weight: 500;
   }
 
   .mobileMeta {
@@ -485,9 +467,8 @@
     padding: 20px 18px 18px;
     border: 1px solid rgba(var(--brown-rgb), 0.08);
     border-radius: 22px;
-    background:
-      linear-gradient(180deg, rgba(var(--bg-rgb), 0.98) 0%, rgba(var(--ochre-rgb), 0.14) 100%);
-    box-shadow: 0 14px 30px rgba(var(--brown-rgb), 0.08);
+    background: rgba(var(--bg-rgb), 0.98);
+    box-shadow: 0 8px 18px rgba(var(--brown-rgb), 0.06);
     text-align: center;
   }
 
@@ -539,13 +520,9 @@
     margin-top: 18px;
     padding: 0 24px;
     border-radius: 999px;
-    background: linear-gradient(
-      180deg,
-      rgba(var(--text-ochre-rgb), 0.98) 0%,
-      rgba(var(--brown-rgb), 0.92) 100%
-    );
+    background: var(--brown);
     color: var(--bg);
-    box-shadow: 0 14px 28px rgba(var(--brown-rgb), 0.16);
+    box-shadow: 0 10px 20px rgba(var(--brown-rgb), 0.12);
     font-size: 16px;
     line-height: 1;
     font-weight: 500;
@@ -587,6 +564,10 @@
     padding: 16px 68px 12px 16px;
   }
 
+  .mobileMenu[open] .mobileMenuButton {
+    top: calc(100% + 28px);
+  }
+
   .mobileMenuTitle {
     font-size: 19px;
   }
@@ -607,7 +588,7 @@
   }
 
   .mobileSubmenu {
-    margin: -2px 8px 2px 16px;
+    margin: -8px 0 2px 16px;
     padding: 8px 12px;
   }
 

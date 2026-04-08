@@ -1,10 +1,9 @@
 "use client";
 
 import type { Dispatch, SetStateAction } from "react";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import styles from "./Header.module.css";
 
 type HeaderProps = {
@@ -62,25 +61,8 @@ const phoneLabel = "+7 (391) 268-32-33";
 const callOrderLabel = "Заказать звонок";
 
 export function Header({ className }: HeaderProps) {
-  const pathname = usePathname();
   const menuRef = useRef<HTMLDetailsElement>(null);
-  const [currentLocation, setCurrentLocation] = useState("");
   const [openGroupId, setOpenGroupId] = useState<string | null>(null);
-
-  useEffect(() => {
-    const updateCurrentLocation = () => {
-      setCurrentLocation(
-        `${window.location.pathname}${window.location.hash}` || window.location.pathname,
-      );
-    };
-
-    updateCurrentLocation();
-    window.addEventListener("hashchange", updateCurrentLocation);
-
-    return () => {
-      window.removeEventListener("hashchange", updateCurrentLocation);
-    };
-  }, [pathname]);
 
   const closeMobileMenu = () => {
     if (menuRef.current) {
@@ -178,7 +160,6 @@ export function Header({ className }: HeaderProps) {
                 <nav aria-label="Мобильная навигация" className={styles.mobileNav}>
                   <MobileNavigationLinks
                     closeMobileMenu={closeMobileMenu}
-                    currentLocation={currentLocation}
                     openGroupId={openGroupId}
                     setOpenGroupId={setOpenGroupId}
                   />
@@ -204,7 +185,7 @@ export function Header({ className }: HeaderProps) {
                   </div>
 
                   <div className={styles.mobileMetaAddress}>
-                    Красноярск, Калинина 169, офис 1.05
+                    Красноярск, Калинина 169, офис 1-05
                   </div>
 
                   <a
@@ -256,21 +237,16 @@ function DesktopNavigationLinks({
 
 function MobileNavigationLinks({
   closeMobileMenu,
-  currentLocation,
   openGroupId,
   setOpenGroupId,
 }: {
   closeMobileMenu: () => void;
-  currentLocation: string;
   openGroupId: string | null;
   setOpenGroupId: Dispatch<SetStateAction<string | null>>;
 }) {
   return (
     <ul className={styles.mobileNavList}>
       {navigation.map((item) => {
-        const isItemActive =
-          currentLocation === item.href ||
-          Boolean(item.children?.some((child) => child.href === currentLocation));
         const isGroupOpen = openGroupId === item.id;
 
         return (
@@ -278,13 +254,7 @@ function MobileNavigationLinks({
             {item.withArrow && item.children ? (
               <>
                 <div
-                  className={[
-                    styles.mobileNavEntry,
-                    isGroupOpen ? styles.mobileNavEntryOpen : "",
-                    isItemActive ? styles.mobileNavEntryActive : "",
-                  ]
-                    .filter(Boolean)
-                    .join(" ")}
+                  className={styles.mobileNavEntry}
                 >
                   <Link
                     className={styles.mobileNavLink}
@@ -310,16 +280,9 @@ function MobileNavigationLinks({
                 {isGroupOpen ? (
                   <div className={styles.mobileSubmenu}>
                     {item.children.map((child) => {
-                      const isChildActive = currentLocation === child.href;
-
                       return (
                         <Link
-                          className={[
-                            styles.mobileSubmenuLink,
-                            isChildActive ? styles.mobileSubmenuLinkActive : "",
-                          ]
-                            .filter(Boolean)
-                            .join(" ")}
+                          className={styles.mobileSubmenuLink}
                           href={child.href}
                           key={child.href}
                           onClick={closeMobileMenu}
@@ -333,12 +296,7 @@ function MobileNavigationLinks({
               </>
             ) : (
               <Link
-                className={[
-                  styles.mobileNavStandalone,
-                  isItemActive ? styles.mobileNavStandaloneActive : "",
-                ]
-                  .filter(Boolean)
-                  .join(" ")}
+                className={styles.mobileNavStandalone}
                 href={item.href}
                 onClick={closeMobileMenu}
               >
