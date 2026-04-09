@@ -21,7 +21,7 @@
   --text-ochre-rgb: 186, 135, 46;
   --ochre-rgb: 245, 208, 136;
   --brown-rgb: 86, 59, 37;
-  --color-page: var(--bg);
+  --color-page: var(--bg) opacity(0.1);
   --color-white: var(--bg);
   --color-heading: var(--text-dark);
   --color-body: var(--text-muted);
