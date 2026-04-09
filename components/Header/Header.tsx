@@ -281,14 +281,15 @@ function MobileNavigationLinks({
                   <div className={styles.mobileSubmenu}>
                     {item.children.map((child) => {
                       return (
-                        <Link
-                          className={styles.mobileSubmenuLink}
-                          href={child.href}
-                          key={child.href}
-                          onClick={closeMobileMenu}
-                        >
-                          {child.label}
-                        </Link>
+                        <div className={styles.mobileSubmenuItem} key={child.href}>
+                          <Link
+                            className={styles.mobileSubmenuLink}
+                            href={child.href}
+                            onClick={closeMobileMenu}
+                          >
+                            {child.label}
+                          </Link>
+                        </div>
                       );
                     })}
                   </div>
