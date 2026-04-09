@@ -2,6 +2,14 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "./Footer.module.css";
 
+type ContactKind = "phone" | "email";
+
+type ContactItem = {
+  href: string;
+  kind: ContactKind;
+  label: string;
+};
+
 const categoryColumns = [
   [
     { href: "#about", label: "О нас" },
@@ -10,19 +18,32 @@ const categoryColumns = [
   ],
   [
     { href: "#hero", label: "Услуги" },
-    { href: "#about", label: "Полезные материалы" },
+    { href: "#about", label: "Полезные материалы", splitToWords: true },
   ],
 ];
 
-const contactsColumns = [
+const contactIcons: Record<ContactKind, { height: number; src: string; width: number }> = {
+  phone: {
+    src: "/img/footer/phoneFooter.svg",
+    width: 32,
+    height: 32,
+  },
+  email: {
+    src: "/img/footer/mailFooter.svg",
+    width: 30,
+    height: 30,
+  },
+};
+
+const contactsColumns: ContactItem[][] = [
   [
-    { href: "tel:+73912683233", label: "+7 (391) 268-32-33" },
-    { href: "tel:+73912683223", label: "+7 (391) 268-32-23" },
-    { href: "mailto:fanmir24@yandex.ru", label: "fanmir24@yandex.ru" },
+    { href: "tel:+73912683233", kind: "phone", label: "+7 (391) 268-32-33" },
+    { href: "tel:+73912683223", kind: "phone", label: "+7 (391) 268-32-23" },
+    { href: "mailto:fanmir24@yandex.ru", kind: "email", label: "fanmir24@yandex.ru" },
   ],
   [
-    { href: "tel:+79138325555", label: "+7 (913) 832-55-55" },
-    { href: "tel:+79631915653", label: "+7 (963) 191-56-53" },
+    { href: "tel:+79138325555", kind: "phone", label: "+7 (913) 832-55-55" },
+    { href: "tel:+79631915653", kind: "phone", label: "+7 (963) 191-56-53" },
   ],
 ];
 
@@ -49,7 +70,14 @@ export function Footer() {
                 <div className={styles.textColumn} key={`category-column-${index}`}>
                   {column.map((item) => (
                     <Link className={styles.textItem} href={item.href} key={item.label}>
-                      {item.label}
+                      {item.splitToWords ? (
+                        <span className={styles.materialsWords}>
+                          <span>Полезные </span>
+                          <span>материалы</span>
+                        </span>
+                      ) : (
+                        item.label
+                      )}
                     </Link>
                   ))}
                 </div>
@@ -63,13 +91,36 @@ export function Footer() {
               {contactsColumns.map((column, index) => (
                 <div className={styles.textColumn} key={`contact-column-${index}`}>
                   {column.map((item) => (
-                    <a className={styles.textItem} href={item.href} key={item.label}>
-                      {item.label}
+                    <a
+                      className={`${styles.textItem} ${styles.contactItem} ${item.kind === "email" ? styles.inlineEmailItem : ""}`}
+                      href={item.href}
+                      key={item.label}
+                    >
+                      <span className={styles.contactIcon} aria-hidden>
+                        <Image
+                          src={contactIcons[item.kind].src}
+                          alt=""
+                          width={contactIcons[item.kind].width}
+                          height={contactIcons[item.kind].height}
+                        />
+                      </span>
+                      <span className={styles.contactText}>{item.label}</span>
                     </a>
                   ))}
                 </div>
               ))}
             </div>
+            <a className={`${styles.textItem} ${styles.contactItem} ${styles.mobileEmailItem}`} href="mailto:fanmir24@yandex.ru">
+              <span className={styles.contactIcon} aria-hidden>
+                <Image
+                  src={contactIcons.email.src}
+                  alt=""
+                  width={contactIcons.email.width}
+                  height={contactIcons.email.height}
+                />
+              </span>
+              <span className={styles.contactText}>fanmir24@yandex.ru</span>
+            </a>
           </div>
         </div>
 

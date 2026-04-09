@@ -83,6 +83,32 @@
   white-space: nowrap;
 }
 
+.contactIcon {
+  display: none;
+  flex: none;
+}
+
+.contactText {
+  display: inline;
+  white-space: nowrap;
+}
+
+.materialsWords {
+  display: inline;
+}
+
+.materialsWords > span {
+  display: inline;
+}
+
+.inlineEmailItem {
+  display: inline-flex;
+}
+
+.mobileEmailItem {
+  display: none;
+}
+
 .separator {
   position: absolute;
   width: calc(100% - 40px);
@@ -215,35 +241,36 @@
 
 @media (max-width: 996px) {
   .frame {
-    padding: 36px 24px 22px;
+    padding: 40px 24px 24px;
   }
 
   .footerInner {
-    width: min(calc(100% - 16px), 760px);
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    justify-content: center;
-    justify-items: stretch;
-    column-gap: 34px;
-    row-gap: 24px;
+    width: min(100%, 780px);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-evenly;
+    padding-inline: 0;
+    column-gap: 30px;
+    row-gap: 34px;
   }
 
   .brandBlock {
-    grid-column: 1 / -1;
-    justify-self: center;
+    flex: 0 0 100%;
+    display: flex;
+    justify-content: center;
     text-align: center;
     align-self: start;
     padding-left: 0;
+    margin-bottom: 20px;
   }
 
-  .categoriesBlock {
-    grid-column: 1;
-    justify-self: center;
-    text-align: left;
-  }
-
+  .categoriesBlock,
   .contactsBlock {
-    grid-column: 2;
-    justify-self: center;
+    min-width: 0;
+    flex: 0 0 auto;
+    width: fit-content;
+    max-width: 100%;
     text-align: left;
   }
 
@@ -253,53 +280,214 @@
 
   .separator {
     width: 100%;
-    margin-top: 24px;
+    margin-top: 28px;
     margin-left: 0;
+  }
+
+  .blockTitle,
+  .textItem,
+  .bottomBar {
+    font-family: var(--font-sans), sans-serif;
+  }
+
+  .blockTitle {
+    margin-bottom: 18px;
   }
 
   .columnsGrid {
     grid-template-columns: repeat(2, minmax(0, max-content));
     justify-content: start;
-    row-gap: 8px;
+    row-gap: 10px;
     column-gap: 18px;
   }
 
   .contactsBlock .columnsGrid {
-    column-gap: 14px;
+    column-gap: 20px;
   }
 
   .textColumn {
-    row-gap: 8px;
+    row-gap: 10px;
     justify-items: start;
+    min-width: 0;
+  }
+
+  .contactItem {
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .contactIcon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+  }
+
+  .contactIcon img {
+    width: 18px;
+    height: 18px;
+  }
+
+  .contactText {
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: none;
   }
 
   .textItem {
     white-space: nowrap;
   }
+
+  .bottomBar {
+    margin-top: 16px;
+  }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 900px) {
   .footerInner {
-    width: calc(100% - 16px);
-    grid-template-columns: minmax(0, 1fr);
-    row-gap: 22px;
+    width: min(100%, 700px);
+    justify-content: space-evenly;
+    column-gap: 12px;
+    row-gap: 34px;
   }
 
   .categoriesBlock,
   .contactsBlock {
-    grid-column: auto;
-    width: min(100%, 340px);
-    justify-self: center;
+    flex-basis: auto;
+    width: fit-content;
+    max-width: 100%;
   }
 
   .columnsGrid {
+    justify-content: start;
+    row-gap: 12px;
+    column-gap: 18px;
+  }
+
+  .categoriesBlock .columnsGrid {
     grid-template-columns: repeat(2, minmax(0, max-content));
-    justify-content: space-between;
-    column-gap: 16px;
+    justify-content: start;
+    column-gap: 24px;
   }
 
   .contactsBlock .columnsGrid {
-    column-gap: 12px;
+    grid-template-columns: repeat(2, minmax(0, max-content));
+    column-gap: 24px;
+    row-gap: 12px;
+  }
+
+  .contactsBlock .textColumn {
+    row-gap: 10px;
+  }
+
+  .contactItem {
+    gap: 8px;
+    align-items: center;
+  }
+
+  .contactIcon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .contactIcon img {
+    width: 16px;
+    height: 16px;
+  }
+
+  .inlineEmailItem {
+    display: none;
+  }
+
+  .mobileEmailItem {
+    display: inline-flex;
+    justify-self: start;
+    margin-top: 14px;
+  }
+
+  .materialsWords {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .materialsWords > span {
+    display: block;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 760px) and (min-width: 701px) {
+  .footerInner {
+    justify-content: space-evenly;
+    column-gap: 8px;
+  }
+
+  .categoriesBlock,
+  .contactsBlock {
+    flex-basis: auto;
+    width: fit-content;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 700px) {
+  .footerInner {
+    width: 100%;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-start;
+    column-gap: 0;
+    row-gap: 22px;
+  }
+
+  .brandBlock {
+    width: 100%;
+    justify-content: center;
+    margin-inline: auto;
+  }
+
+  .logoLink {
+    justify-content: center;
+  }
+
+  .categoriesBlock,
+  .contactsBlock {
+    flex: 0 1 auto;
+    width: fit-content;
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .blockTitle {
+    text-align: center;
+  }
+
+  .columnsGrid {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 8px;
+    column-gap: 0;
+    justify-content: center;
+  }
+
+  .textColumn {
+    justify-items: center;
+  }
+
+  .contactItem {
+    justify-content: center;
+  }
+
+  .mobileEmailItem {
+    margin-inline: auto;
+    justify-content: center;
+  }
+
+  .materialsWords {
+    align-items: center;
   }
 
   .logoLink img {
@@ -313,7 +501,7 @@
   }
 
   .footerInner {
-    width: calc(100% - 12px);
+    width: 100%;
     row-gap: 20px;
   }
 
@@ -321,18 +509,38 @@
     width: 136px;
   }
 
-  .columnsGrid {
-    grid-template-columns: minmax(0, 1fr);
-    row-gap: 8px;
+  .contactItem {
+    gap: 8px;
+  }
+
+  .contactIcon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .contactIcon img {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+@media (max-width: 442px) {
+  .categoriesBlock .columnsGrid,
+  .contactsBlock .columnsGrid {
+    grid-template-columns: minmax(0, max-content);
+    justify-content: center;
     column-gap: 0;
-    justify-content: start;
+    row-gap: 10px;
   }
 
-  .textColumn {
-    justify-items: start;
+  .categoriesBlock .textColumn,
+  .contactsBlock .textColumn {
+    justify-items: center;
+    row-gap: 10px;
   }
 
-  .textItem {
-    white-space: normal;
+  .mobileEmailItem {
+    justify-content: center;
+    margin-top: 12px;
   }
 }
