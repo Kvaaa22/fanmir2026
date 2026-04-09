@@ -1,8 +1,11 @@
 .header {
+  --header-min-width: 320px;
+  --header-mobile-content-min-width: calc(var(--header-min-width) - 48px);
   position: absolute;
   inset: clamp(8px, 2vh, 20px) 0 auto;
   z-index: 5;
   width: 100%;
+  min-width: var(--header-min-width);
   font-family: var(--font-heading), serif;
   font-style: normal;
   font-weight: 400;
@@ -316,6 +319,7 @@
     flex-direction: column;
     gap: 0;
     width: min(420px, calc(100vw - 32px));
+    min-width: var(--header-mobile-content-min-width);
     min-height: min(640px, calc(100vh - 44px));
     max-height: min(84vh, 760px);
     overflow: auto;
@@ -331,13 +335,18 @@
   }
 
   .mobileMenuHead {
-    position: relative;
+    position: sticky;
+    top: 0;
+    z-index: 2;
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 82px;
     padding: 18px 74px 14px 18px;
     border-bottom: 1px solid rgba(var(--brown-rgb), 0.08);
+    box-shadow: 0 10px 20px rgba(var(--brown-rgb), 0.09);
+    background: rgba(var(--bg-rgb), 0.98);
+    backdrop-filter: blur(14px);
   }
 
   .mobileMenuBrand {
@@ -644,5 +653,19 @@
 
   .mobileMenuPanel {
     right: -4px;
+  }
+}
+
+@media (max-width: 413px) {
+  .mobileMenuPanel {
+    width: min(340px, calc(100vw - 24px));
+    right: 0;
+  }
+}
+
+@media (max-width: 389px) {
+  .mobileMenuPanel {
+    width: calc(100vw - 48px);
+    right: 0;
   }
 }

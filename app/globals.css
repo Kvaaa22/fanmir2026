@@ -35,12 +35,14 @@ html {
   -webkit-font-smoothing: antialiased;
   block-size: 100%;
   min-height: 100%;
+  min-width: 320px;
   scroll-behavior: smooth;
 }
 
 body {
   min-block-size: 100%;
   min-height: 100%;
+  min-width: 320px;
   margin: 0;
   background: var(--color-page);
   font-family: var(--font-heading), sans-serif;
