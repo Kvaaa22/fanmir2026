@@ -79,7 +79,17 @@ export function HeroSlider() {
               key={slide.id}
             >
               <div className={styles.heroCopy}>
-                <h1 className={styles.heroTitle}>{slide.title}</h1>
+                <h1 className={styles.heroTitle}>
+                  {slide.id === "cutting" ? (
+                    <>
+                      {"Резка\u00A0по\u00A0вашим"}
+                      <br />
+                      размерам
+                    </>
+                  ) : (
+                    slide.title
+                  )}
+                </h1>
 
                 <div className={styles.heroBadges}>
                   <span className={styles.heroBadge}>{slide.badges[0]}</span>
@@ -90,7 +100,17 @@ export function HeroSlider() {
                   </span>
                 </div>
 
-                <p className={styles.heroLead}>{slide.lead}</p>
+                <p className={styles.heroLead}>
+                  {slide.id === "cutting" ? (
+                    <>
+                      Раскрой в день заказа на форматно-
+                      <br />
+                      раскроечном станке
+                    </>
+                  ) : (
+                    slide.lead
+                  )}
+                </p>
               </div>
 
               <div className={styles.heroVisual}>
@@ -98,7 +118,7 @@ export function HeroSlider() {
                   <Image
                     alt={slide.imageAlt}
                     fill
-                    priority={index === 0}
+                    preload={index === 0}
                     sizes="(max-width: 1366px) 48vw, 640px"
                     src="/img/hero/cutting.webp"
                   />
