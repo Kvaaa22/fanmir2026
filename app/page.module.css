@@ -909,7 +909,7 @@
   .heroTitle {
     margin-top: 45px;
     font-size: 30px;
-    line-height: 34px;
+    line-height: 110%;
   }
 
   .heroBadges {
@@ -980,8 +980,8 @@
   .heroContainer {
     height: auto;
     min-height: auto;
-    padding-top: 96px;
-    padding-bottom: 44px;
+    padding-top: 100px;
+    padding-bottom: 18px;
   }
 
   .heroViewport {
@@ -993,24 +993,28 @@
   }
 
   .heroContent {
+    grid-template-columns: minmax(0, 1fr);
+    column-gap: 0;
     min-height: 0;
   }
 
   .heroSlide {
     grid-template-columns: minmax(0, 1fr);
-    row-gap: 20px;
+    row-gap: 16px;
     min-height: 0;
   }
 
   .heroCopy {
     gap: 20px;
     max-width: none;
-    padding-left: 0;
+    padding: 0;
+    margin-left: 50px;
   }
 
   .heroTitle {
-    margin-top: 12px;
-    font-size: clamp(34px, 9vw, 46px);
+    margin-top: 30px;
+    font-size: 46px;
+    line-height: 1.12;
   }
 
   .heroBadges {
@@ -1019,48 +1023,80 @@
     margin-top: 0;
   }
 
+  .heroBadge {
+    font-size: 16px;
+  }
+
   .heroLead {
-    max-width: none;
+    max-width: 278px;
     margin: 0;
+    font-size: 16px;
   }
 
   .heroVisual {
+    width: min(100%, 318px);
+    margin: 4px auto 0;
     justify-content: center;
     min-height: 0;
   }
 
   .heroVisualMain {
-    width: min(100%, 520px);
+    width: min(100%, 282px);
     height: auto;
     aspect-ratio: 583 / 563;
     margin-top: 0;
   }
 
   .heroVisualAccent {
-    right: max(8px, 4vw);
-    bottom: -10px;
+    right: 2px;
+    bottom: -6px;
     width: 132px;
-    height: 132px;
+    height: 126px;
+  }
+
+  .heroArrow {
+    top: 360px;
+    transform: translateY(-50%);
+  }
+
+  .heroArrowLeft {
+    left: -6px;
+  }
+
+  .heroArrowRight {
+    right: -6px;
   }
 
   .partnersBlock {
     position: static;
-    margin-top: 22px;
+    margin-top: 18px;
   }
 
   .partnersLabel {
     width: 100%;
     max-width: 100%;
     margin: 0 0 8px;
-    padding-left: 30px;
-    font-size: 16px;
+    padding-left: 0;
+    text-align: center;
+    font-size: 14px;
   }
 
   .partnersPanel {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
+    gap: 12px 14px;
     min-height: 0;
-    padding: 14px 16px;
+    padding: 12px 14px;
+    border-radius: 8px;
+  }
+
+  .partnersPanel > :nth-child(4) {
+    grid-column: auto;
+    justify-self: center;
+  }
+
+  .partnersPanel img {
+    max-height: 32px;
+    width: auto;
   }
 
   .benefitsSection {
