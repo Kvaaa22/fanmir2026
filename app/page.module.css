@@ -7,8 +7,6 @@
   isolation: isolate;
 }
 
-
-
 .heroContainer {
   position: relative;
   height: 696px;
@@ -1179,8 +1177,8 @@
 
     .heroVisualMain {
       z-index: 1;
-      width: 70wv;
-      height: 65wv;
+      width: 60vw;
+      height: 55vw;
       aspect-ratio: 1;
     }
 
@@ -1189,8 +1187,8 @@
       z-index: 2;
       right: -30px;
       bottom: 0px;
-      width: 30wv;
-      height: 25wv;
+      width: 27vw;
+      height: 25vw;
     }
   }
 
@@ -1226,7 +1224,7 @@
     .heroCopy {
       gap: 18px;
       max-width: 100%;
-      margin: 10px 0 0 45px;
+      margin: 20px 0 0 6vw;
       padding: 0 2px;
       min-height: 0;
       height: auto;
@@ -1257,7 +1255,6 @@
     }
 
     .heroLead {
-    
       margin: 0;
       font-size: 17px;
       line-height: 1.27;
@@ -1277,20 +1274,23 @@
       align-self: center;
       flex: 0 0 auto;
     }
-
+    
+    .heroVisualMain {
+      width: 70vw;
+      height: 65vw;
+    }
 
     .heroVisualAccent {
       right: -30px;
       bottom: -5px;
-      width: 30wv;
-      height: 25wv;
+      width: 30vw;
+      height: 28vw;
     }
 
     .heroArrow {
       top: calc(100% - 294px);
       width: 34px;
       height: 34px;
-      
     }
 
     .heroArrowLeft {
@@ -1397,12 +1397,11 @@
   .heroSlide {
     align-items: flex-start;
   }
-  
+
   .heroTitle {
     margin-top: 0;
     font-size: 38px;
     line-height: 1.04;
-   
   }
 
   .heroCopy {
@@ -1426,18 +1425,9 @@
     align-self: flex-start;
   }
 
-  .heroVisualMain {
-    display: block;
-    width: 70vw;
-    height: 65vw;
-  }
-
   .heroVisualAccent {
-    display: block;
     right: -30px;
-    bottom: -10px;
-    width: 30wv;
-    height: 25wv;
+    bottom: 0px;
   }
 
   .heroArrow {
@@ -1460,6 +1450,17 @@
     min-width: 0;
   }
 }
-
-
-
+@media (max-width: 400px){
+  .heroTitle {
+    font-size: 30px;
+    line-height: 1.1;
+  }
+  .heroCopy{
+    margin-left: 20px;
+  }
+  .heroVisualAccent {
+    right: -20px;  
+    bottom: 0px;
+    }
+  
+}
