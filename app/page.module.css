@@ -1005,7 +1005,6 @@
 
   .heroViewport {
     overflow: hidden;
-    overflow-x: hidden;
     padding-top: 48px;
     margin-top: -48px;
     margin-bottom: -64px;
@@ -1027,7 +1026,7 @@
     align-items: center;
     column-gap: 8px;
     row-gap: 0;
-    height: fit-content;
+    height: min-content;
     min-height: 0;
   }
 
@@ -1088,7 +1087,7 @@
     right: auto;
     bottom: auto;
     left: clamp(72px, calc(60vw - 148px), 296px);
-    width:auto;
+    width: auto;
     margin: 0;
     justify-content: flex-start;
     min-height: 318px;
@@ -1176,15 +1175,12 @@
     }
 
     .heroVisualMain {
-      z-index: 1;
       width: 60vw;
       height: 55vw;
       aspect-ratio: 1;
     }
 
     .heroVisualAccent {
-      display: block;
-      z-index: 2;
       right: -30px;
       bottom: 0px;
       width: 27vw;
@@ -1216,7 +1212,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      height: fit-content;
+      height: min-content;
       min-height: 0;
       padding: 0;
     }
@@ -1410,7 +1406,6 @@
   }
   .heroBadge {
     font-size: 14px;
-    gap: 16px;
   }
   .heroLead {
     max-width: 236px;
@@ -1442,25 +1437,16 @@
     right: 14px;
   }
 
-  .heroTitleText,
-  .heroLeadText {
-    overflow-wrap: normal;
-    word-break: normal;
-    hyphens: manual;
-    min-width: 0;
-  }
 }
-@media (max-width: 400px){
+@media (max-width: 400px) {
   .heroTitle {
     font-size: 30px;
     line-height: 1.1;
   }
-  .heroCopy{
+  .heroCopy {
     margin-left: 20px;
   }
   .heroVisualAccent {
-    right: -20px;  
-    bottom: 0px;
-    }
-  
+    right: -20px;
+  }
 }

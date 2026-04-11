@@ -3,18 +3,6 @@ a {
   text-decoration: none;
 }
 
-img {
-  display: block;
-  max-width: 100%;
-}
-
-button,
-input,
-textarea,
-select {
-  font: inherit;
-}
-
 *,
 *::before,
 *::after {
@@ -36,9 +24,6 @@ html {
   min-height: 100%;
   min-width: 320px;
   scroll-behavior: smooth;
-  overflow-wrap: normal;
-  word-break: normal;
-  hyphens: manual;
 }
 
 body {
@@ -50,9 +35,6 @@ body {
   font-family: var(--font-heading), sans-serif;
   color: var(--color-body);
   text-rendering: optimizeLegibility;
-  overflow-wrap: normal;
-  word-break: normal;
-  hyphens: manual;
 }
 
 img,
@@ -89,6 +71,8 @@ iframe {
   border: none;
 }
 
+html,
+body,
 p,
 h1,
 h2,
