@@ -3,7 +3,7 @@
   overflow: hidden;
   height: 696px;
   min-height: 696px;
-  background:url("/img/hero/wood-bg.webp") center top / cover no-repeat;
+  background: url("/img/hero/wood-bg.webp") center top / cover no-repeat;
   isolation: isolate;
 }
 
@@ -38,6 +38,7 @@
 
 .heroTrack {
   display: flex;
+  height: 563px;
   transition: transform 360ms ease;
   will-change: transform;
 }
@@ -47,6 +48,7 @@
   grid-template-columns: 390px 583px;
   align-items: center;
   justify-content: center;
+  height: 563px;
   min-width: 100%;
   min-height: 563px;
   column-gap: 36px;
@@ -136,7 +138,7 @@
 
 .heroVisualAccent {
   position: absolute;
-  right: -22px;
+  right: -64px;
   bottom: -2px;
   width: 274px;
   height: 260px;
@@ -436,7 +438,7 @@
   color: var(--color-accent-strong);
 }
 
-.aboutCard p + p {
+.aboutCard p+p {
   margin-top: 18px;
 }
 
@@ -700,8 +702,12 @@
 
   .heroContent {
     grid-template-columns: 1fr 520px;
-    min-height: 510px;
+    min-height: 502px;
     column-gap: 24px;
+  }
+
+  .heroTrack {
+    height: 502px;
   }
 
   .heroViewport {
@@ -713,7 +719,8 @@
 
   .heroSlide {
     grid-template-columns: 340px 520px;
-    min-height: 510px;
+    height: 502px;
+    min-height: 502px;
     column-gap: 28px;
   }
 
@@ -733,7 +740,7 @@
   }
 
   .heroVisual {
-    min-height: 510px;
+    min-height: 502px;
   }
 
   .heroVisualMain {
@@ -742,10 +749,10 @@
   }
 
   .heroVisualAccent {
-    right: -18px;
-    bottom: -6px;
-    width: 230px;
-    height: 220px;
+    right: -48px;
+    bottom: -1px;
+    width: 240px;
+    height: 230px;
   }
 
   .partnersBlock {
@@ -784,8 +791,12 @@
 
   .heroContent {
     grid-template-columns: 1fr 460px;
-    min-height: 454px;
+    min-height: 444px;
     column-gap: 20px;
+  }
+
+  .heroTrack {
+    height: 444px;
   }
 
   .heroViewport {
@@ -796,7 +807,8 @@
 
   .heroSlide {
     grid-template-columns: 300px 460px;
-    min-height: 454px;
+    height: 444px;
+    min-height: 444px;
     column-gap: 24px;
   }
 
@@ -827,7 +839,7 @@
   }
 
   .heroVisual {
-    min-height: 454px;
+    min-height: 444px;
   }
 
   .heroVisualMain {
@@ -836,10 +848,10 @@
   }
 
   .heroVisualAccent {
-    right: -12px;
+    right: -42px;
     bottom: -8px;
-    width: 204px;
-    height: 194px;
+    width: 214px;
+    height: 204px;
   }
 
   .partnersBlock {
@@ -891,13 +903,18 @@
 
   .heroContent {
     grid-template-columns: 1fr 360px;
-    min-height: 372px;
+    min-height: 348px;
     column-gap: 14px;
+  }
+
+  .heroTrack {
+    height: 348px;
   }
 
   .heroSlide {
     grid-template-columns: 240px 360px;
-    min-height: 372px;
+    height: 348px;
+    min-height: 348px;
     column-gap: 18px;
   }
 
@@ -927,8 +944,12 @@
     font-size: 13px;
   }
 
+  .heroLeadText br {
+    display: none;
+  }
+
   .heroVisual {
-    min-height: 372px;
+    min-height: 348px;
   }
 
   .heroVisualMain {
@@ -937,10 +958,10 @@
   }
 
   .heroVisualAccent {
-    right: -8px;
+    right: -38px;
     bottom: -6px;
-    width: 150px;
-    height: 142px;
+    width: 170px;
+    height: 162px;
   }
 
   .partnersBlock {
@@ -986,10 +1007,11 @@
 
   .heroViewport {
     overflow: hidden;
-    padding-top: 0;
-    padding-bottom: 0;
-    margin-top: 0;
-    margin-bottom: 0;
+    padding-top: 48px;
+    padding-right: 30px;
+    margin-top: -48px;
+    margin-right: -30px;
+    margin-bottom: -64px;
   }
 
   .heroContent {
@@ -998,23 +1020,50 @@
     min-height: 0;
   }
 
+  .heroTrack {
+    height: auto;
+  }
+
   .heroSlide {
+    position: relative;
     grid-template-columns: minmax(0, 1fr);
-    row-gap: 16px;
+    align-items: center;
+    column-gap: 8px;
+    row-gap: 0;
+    height: fit-content;
     min-height: 0;
   }
 
   .heroCopy {
-    gap: 20px;
-    max-width: none;
+    position: relative;
+    z-index: 3;
+    max-width: min(330px, 72%);
+    margin: 68px 70px 0;
     padding: 0;
-    margin-left: 50px;
   }
 
   .heroTitle {
-    margin-top: 30px;
-    font-size: 46px;
-    line-height: 1.12;
+    margin-top: 0;
+    font-size: 34px;
+    line-height: 1.37;
+  }
+
+  .heroTitleText,
+  .heroLeadText {
+    background: rgba(var(--ochre-rgb), 0.72);
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    box-shadow: 0 12px 30px rgba(var(--brown-rgb), 0.14);
+  }
+
+  .heroTitleText {
+    padding: 2px 10px 4px;
+  }
+
+  .heroLeadText {
+    padding: 3px 8px 4px;
+    line-height: 1.55;
+    width: 300px;
   }
 
   .heroBadges {
@@ -1024,38 +1073,52 @@
   }
 
   .heroBadge {
+    min-height: 32px;
+    padding: 6px 12px;
     font-size: 16px;
   }
 
   .heroLead {
-    max-width: 278px;
+    max-width: 280px;
     margin: 0;
     font-size: 16px;
   }
 
   .heroVisual {
-    width: min(100%, 318px);
-    margin: 4px auto 0;
-    justify-content: center;
-    min-height: 0;
+    position: absolute;
+    z-index: 1;
+    top: 15px;
+    right: auto;
+    bottom: auto;
+    left: clamp(72px, calc(60vw - 148px), 296px);
+    width:auto;
+    margin: 0;
+    justify-content: flex-start;
+    min-height: 318px;
+    transform: none;
   }
 
   .heroVisualMain {
-    width: min(100%, 282px);
-    height: auto;
+    position: relative;
+    z-index: 1;
+    width: 348px;
+    height: 320px;
     aspect-ratio: 583 / 563;
     margin-top: 0;
+    opacity: 0.9;
   }
 
   .heroVisualAccent {
-    right: 2px;
-    bottom: -6px;
-    width: 132px;
-    height: 126px;
+    z-index: 2;
+    right: -30px;
+    bottom: -12px;
+    width: 152px;
+    height: 144px;
+    opacity: 0.96;
   }
 
   .heroArrow {
-    top: 360px;
+    top: 50%;
     transform: translateY(-50%);
   }
 
@@ -1089,7 +1152,7 @@
     border-radius: 8px;
   }
 
-  .partnersPanel > :nth-child(4) {
+  .partnersPanel> :nth-child(4) {
     grid-column: auto;
     justify-self: center;
   }
@@ -1097,6 +1160,178 @@
   .partnersPanel img {
     max-height: 32px;
     width: auto;
+  }
+
+  @media (max-width: 668px) {
+    .heroVisual {
+      left: clamp(76px, calc(54vw - 100px), 172px);
+    }
+  }
+
+  @media (max-width: 577px) {
+    .heroVisual {
+      right: 50px;
+      left: auto;
+      width: 288px;
+      opacity: 0.95;
+    }
+
+    .heroVisualMain {
+      z-index: 1;
+      width: 288px;
+      height: 288px;
+      aspect-ratio: 1;
+    }
+
+    .heroVisualAccent {
+      display: block;
+      z-index: 2;
+      right: -30px;
+      top: auto;
+      bottom: 30px;
+      width: 144px;
+      height: 134px;
+    }
+  }
+
+  @media (max-width: 529px) {
+    .hero {
+      background:
+        linear-gradient(180deg, rgba(var(--bg-rgb), 0.34) 0%, rgba(var(--bg-rgb), 0.56) 100%),
+        url("/img/hero/wood-bg.webp") center top / cover no-repeat;
+    }
+
+    .heroContainer {
+      padding-top: 104px;
+      padding-bottom: 24px;
+    }
+
+    .heroViewport {
+      overflow: hidden;
+      padding-top: 0;
+      padding-bottom: 0;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    .heroSlide {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: fit-content;
+      min-height: 0;
+      padding: 0;
+    }
+
+    .heroCopy {
+      gap: 18px;
+      max-width: 100%;
+      margin: 10px 0 0 45px;
+      padding: 0 2px;
+      min-height: 0;
+      height: auto;
+      align-self: stretch;
+    }
+
+    .heroTitle {
+      font-size: 46px;
+      line-height: 1.1;
+      letter-spacing: 0.01em;
+    }
+
+    .heroTitleText,
+    .heroLeadText {
+      background: transparent;
+      box-shadow: none;
+      padding: 0;
+    }
+
+    .heroBadges {
+      gap: 10px;
+    }
+
+    .heroBadge {
+      min-height: 40px;
+      padding: 8px 16px;
+      font-size: 16px;
+    }
+
+    .heroLead {
+    
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.27;
+    }
+
+    .heroVisual {
+      position: relative;
+      z-index: 1;
+      top: auto;
+      right: auto;
+      bottom: auto;
+      left: auto;
+      width: auto;
+      min-height: 0;
+      margin: 8px 10px 0 0;
+      justify-content: center;
+      transform: none;
+      height: auto;
+      align-self: center;
+      flex: 0 0 auto;
+    }
+
+    .heroVisualMain {
+      width: 364px;
+      height: 344px;
+      opacity: 1;
+    }
+
+    .heroVisualAccent {
+      right: -30px;
+      bottom: -5px;
+      width: 150px;
+      height: 135px;
+    }
+
+    .heroArrow {
+      top: calc(100% - 294px);
+      width: 34px;
+      height: 34px;
+    }
+
+    .heroArrowLeft {
+      left: 18px;
+    }
+
+    .heroArrowRight {
+      right: 18px;
+    }
+
+    .partnersBlock {
+      margin-top: 20px;
+    }
+
+    .partnersLabel {
+      margin: 0 0 10px;
+      font-size: 16px;
+    }
+
+    .partnersPanel {
+      grid-template-columns: minmax(0, 1.24fr) minmax(0, 0.6fr) minmax(0, 1fr);
+      gap: 10px 10px;
+      padding: 12px 14px;
+      border-radius: 10px;
+    }
+
+    .partnersPanel> :nth-child(4) {
+      grid-column: 1 / -1;
+      justify-self: center;
+    }
+
+    .partnersPanel img {
+      max-height: 28px;
+      width: auto;
+    }
   }
 
   .benefitsSection {
@@ -1161,5 +1396,58 @@
   .mapCard,
   .mapCanvas {
     min-height: 340px;
+  }
+}
+
+@media (max-width: 462px) {
+  .heroTitle {
+    margin-top: 0;
+    font-size: 50px;
+    line-height: 0.95;
+  }
+
+  .heroCopy {
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  .heroLead {
+    max-width: 236px;
+    font-size: 16px;
+  }
+
+  .heroVisual {
+    width: 284px;
+    min-height: 284px;
+    margin-top: 10px;
+  }
+
+  .heroVisualMain {
+    display: block;
+    width: 284px;
+    height: 284px;
+  }
+
+  .heroVisualAccent {
+    display: block;
+    right: 10px;
+    bottom: -10px;
+    width: 108px;
+    height: 108px;
+  }
+
+  .heroArrowLeft {
+    left: 14px;
+  }
+
+  .heroArrowRight {
+    right: 14px;
+  }
+
+  .heroTitleText,
+  .heroLeadText {
+    overflow-wrap: break-word;
+    word-break: normal;
+    min-width: 0;
   }
 }

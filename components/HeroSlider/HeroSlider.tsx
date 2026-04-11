@@ -80,7 +80,8 @@ export function HeroSlider() {
             >
               <div className={styles.heroCopy}>
                 <h1 className={styles.heroTitle}>
-                  {slide.id === "cutting" ? (
+                  <span className={styles.heroTitleText}>
+                    {slide.id === "cutting" ? (
                     <>
                       {"Резка\u00A0по\u00A0вашим"}
                       <br />
@@ -88,7 +89,8 @@ export function HeroSlider() {
                     </>
                   ) : (
                     slide.title
-                  )}
+                    )}
+                  </span>
                 </h1>
 
                 <div className={styles.heroBadges}>
@@ -101,7 +103,8 @@ export function HeroSlider() {
                 </div>
 
                 <p className={styles.heroLead}>
-                  {slide.id === "cutting" ? (
+                  <span className={styles.heroLeadText}>
+                    {slide.id === "cutting" ? (
                     <>
                       Раскрой в день заказа на форматно-
                       <br />
@@ -109,7 +112,8 @@ export function HeroSlider() {
                     </>
                   ) : (
                     slide.lead
-                  )}
+                    )}
+                  </span>
                 </p>
               </div>
 

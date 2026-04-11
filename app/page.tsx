@@ -78,7 +78,7 @@ export default function Home() {
 
               <div className={styles.partnerLogoRound}>
                 <Image
-                  src="/img/hero/bff.svg"
+                  src="/img/hero/bff.png"
                   alt="Байкальский фанерный комбинат"
                   width={65}
                   height={63}
