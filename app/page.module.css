@@ -1007,10 +1007,9 @@
 
   .heroViewport {
     overflow: hidden;
+    overflow-x: hidden;
     padding-top: 48px;
-    padding-right: 30px;
     margin-top: -48px;
-    margin-right: -30px;
     margin-bottom: -64px;
   }
 
@@ -1021,7 +1020,7 @@
   }
 
   .heroTrack {
-    height: auto;
+    height: min-content;
   }
 
   .heroSlide {
@@ -1110,7 +1109,7 @@
 
   .heroVisualAccent {
     z-index: 2;
-    right: -30px;
+    right: -20px;
     bottom: -12px;
     width: 152px;
     height: 144px;
@@ -1166,20 +1165,22 @@
     .heroVisual {
       left: clamp(76px, calc(54vw - 100px), 172px);
     }
+    .heroVisualAccent {
+      right: -10px;
+    }
   }
 
   @media (max-width: 577px) {
     .heroVisual {
       right: 50px;
       left: auto;
-      width: 288px;
       opacity: 0.95;
     }
 
     .heroVisualMain {
       z-index: 1;
-      width: 288px;
-      height: 288px;
+      width: 70wv;
+      height: 65wv;
       aspect-ratio: 1;
     }
 
@@ -1187,10 +1188,9 @@
       display: block;
       z-index: 2;
       right: -30px;
-      top: auto;
-      bottom: 30px;
-      width: 144px;
-      height: 134px;
+      bottom: 0px;
+      width: 30wv;
+      height: 25wv;
     }
   }
 
@@ -1270,33 +1270,27 @@
       right: auto;
       bottom: auto;
       left: auto;
-      width: auto;
       min-height: 0;
       margin: 8px 10px 0 0;
       justify-content: center;
       transform: none;
-      height: auto;
       align-self: center;
       flex: 0 0 auto;
     }
 
-    .heroVisualMain {
-      width: 364px;
-      height: 344px;
-      opacity: 1;
-    }
 
     .heroVisualAccent {
       right: -30px;
       bottom: -5px;
-      width: 150px;
-      height: 135px;
+      width: 30wv;
+      height: 25wv;
     }
 
     .heroArrow {
       top: calc(100% - 294px);
       width: 34px;
       height: 34px;
+      
     }
 
     .heroArrowLeft {
@@ -1400,40 +1394,54 @@
 }
 
 @media (max-width: 462px) {
+  .heroSlide {
+    align-items: flex-start;
+  }
+  
   .heroTitle {
     margin-top: 0;
-    font-size: 50px;
-    line-height: 0.95;
+    font-size: 38px;
+    line-height: 1.04;
+   
   }
 
   .heroCopy {
-    margin: 0 auto;
+    margin: 20px 0 0 28px;
     padding: 0;
   }
-
+  .heroBadge {
+    font-size: 14px;
+    gap: 16px;
+  }
   .heroLead {
     max-width: 236px;
-    font-size: 16px;
+    font-size: 14px;
   }
 
   .heroVisual {
-    width: 284px;
-    min-height: 284px;
-    margin-top: 10px;
+    width: auto;
+    min-height: 0;
+    margin: 8px 0 0 28px;
+    left: auto;
+    align-self: flex-start;
   }
 
   .heroVisualMain {
     display: block;
-    width: 284px;
-    height: 284px;
+    width: 70vw;
+    height: 65vw;
   }
 
   .heroVisualAccent {
     display: block;
-    right: 10px;
+    right: -30px;
     bottom: -10px;
-    width: 108px;
-    height: 108px;
+    width: 30wv;
+    height: 25wv;
+  }
+
+  .heroArrow {
+    top: calc(100% - 152px);
   }
 
   .heroArrowLeft {
@@ -1446,8 +1454,12 @@
 
   .heroTitleText,
   .heroLeadText {
-    overflow-wrap: break-word;
+    overflow-wrap: normal;
     word-break: normal;
+    hyphens: manual;
     min-width: 0;
   }
 }
+
+
+

@@ -40,12 +40,18 @@
 .section-title {
   margin: 0;
   font-family: var(--font-heading), serif;
-  font-size: 56px;
+  font-size: 46px;
   line-height: 1.04;
   font-weight: 400;
   color: var(--color-heading);
 }
 
+@media (max-width: 462px) {
+  .section-title {
+    font-size: 40px;
+
+  }
+}
 .section-copy {
   margin: 0;
   font-size: 17px;
