@@ -87,7 +87,7 @@ export default function Home() {
 
               <div className={styles.partnerLogoMedium}>
                 <Image
-                  src="/img/hero/bfk.svg"
+                  src="/img/hero/bfk.png"
                   alt="Бийский фанерный комбинат"
                   width={215}
                   height={39}
