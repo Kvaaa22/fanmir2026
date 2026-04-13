@@ -26,7 +26,7 @@
 
 .heroViewport {
   grid-column: 1 / -1;
-  overflow: hidden;
+  overflow: visible;
   padding-top: 72px;
   padding-bottom: 72px;
   margin-top: -72px;
@@ -50,6 +50,15 @@
   min-width: 100%;
   min-height: 563px;
   column-gap: 36px;
+}
+
+.heroSlide[aria-hidden="true"] {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.heroSlide[aria-hidden="false"] {
+  visibility: visible;
 }
 
 .heroCopy {
@@ -127,7 +136,7 @@
   margin-top: 0;
   overflow: hidden;
   border-radius: 50%;
-  box-shadow: 0 32px 70px rgba(var(--brown-rgb), 0.15);
+  box-shadow: 0px 18px 45px rgba(0, 25, 49, 0.25);
 }
 
 .heroVisualMain img {
@@ -142,7 +151,7 @@
   height: 260px;
   overflow: hidden;
   border-radius: 50%;
-  box-shadow: 0 24px 56px rgba(var(--brown-rgb), 0.18);
+  box-shadow: 0px 18px 45px rgba(0, 25, 49, 0.25);
 }
 
 .heroVisualAccent img {
@@ -746,7 +755,7 @@
   }
 
   .heroTitle {
-    margin-top: 44px;
+    margin-top: 76px;
     font-size: 40px;
     line-height: 48px;
   }
@@ -835,8 +844,6 @@
 
   .heroTitle {
     margin-top: 55px;
-    font-size: 36px;
-    line-height: 42px;
   }
 
   .heroBadges {
@@ -924,7 +931,7 @@
     grid-template-columns: 240px 360px;
     height: 348px;
     min-height: 348px;
-    column-gap: 18px;
+    column-gap: 48px;
   }
 
   .heroCopy {
@@ -934,7 +941,7 @@
 
   .heroTitle {
     margin-top: 45px;
-    font-size: 30px;
+    font-size: 36px;
     line-height: 110%;
   }
 
@@ -997,8 +1004,9 @@
   .hero {
     height: auto;
     min-height: auto;
-    background: none;
-    background-color:  var(--bg-secondary);
+    background:
+        linear-gradient(180deg, rgba(var(--bg-rgb), 0.6) 0%, rgba(var(--bg-rgb), 0.8) 100%),
+        url("/img/hero/wood-bg.webp") center top / cover no-repeat;
   }
 
   .heroContainer {
@@ -1009,7 +1017,7 @@
   }
 
   .heroViewport {
-    overflow: hidden;
+    overflow: visible;
     padding-top: 48px;
     margin-top: -48px;
     margin-bottom: -64px;
@@ -1035,6 +1043,14 @@
     min-height: 0;
   }
 
+  .heroSlide[aria-hidden="true"] {
+    visibility: hidden;
+  }
+
+  .heroSlide[aria-hidden="false"] {
+    visibility: visible;
+  }
+
   .heroCopy {
     position: relative;
     z-index: 3;
@@ -1045,7 +1061,7 @@
 
   .heroTitle {
     margin-top: 0;
-    font-size: 34px;
+    font-size: 36px;
     line-height: 1.37;
   }
 
@@ -1133,10 +1149,10 @@
 
   .partnersBlock {
     --partners-mobile-width: min(76vw, 100%);
-    --partners-mobile-pad-x: clamp(16px, 2.8vw, 22px);
-    --partners-mobile-pad-y: clamp(12px, 2vw, 16px);
-    --partners-mobile-col-gap: clamp(14px, 2.4vw, 18px);
-    --partners-mobile-row-gap: clamp(8px, 1.6vw, 12px);
+    --partners-mobile-pad-x: clamp(22px, 4vw, 30px);
+    --partners-mobile-pad-y: clamp(14px, 2.4vw, 20px);
+    --partners-mobile-col-gap: clamp(22px, 3.8vw, 30px);
+    --partners-mobile-row-gap: clamp(16px, 2.8vw, 22px);
     --partners-mobile-overlap: clamp(12px, 2vw, 16px);
     position: static;
     width: var(--partners-mobile-width);
@@ -1159,13 +1175,15 @@
     grid-template-rows: repeat(3, min-content);
     column-gap: var(--partners-mobile-col-gap);
     row-gap: var(--partners-mobile-row-gap);
-    width: 100%;
+    width: fit-content;
+    max-width: 100%;
     height: auto;
     min-height: 0;
-    padding: var(--partners-mobile-pad-y) var(--partners-mobile-pad-x);
+    padding: clamp(22px, 3.4vw, 30px) var(--partners-mobile-pad-x);
     border-radius: 0;
-    align-items: start;
-    justify-content: start;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
   }
 
   .partnersPanel> :nth-child(1),
@@ -1220,41 +1238,14 @@
 
   @media (max-width: 668px) {
     .heroVisual {
-      left: clamp(76px, calc(54vw - 100px), 172px);
-    }
-
-    .heroVisualAccent {
-      right: -10px;
-    }
-  }
-
-  @media (max-width: 577px) {
-    .heroVisual {
-      right: 50px;
       left: auto;
-      opacity: 0.95;
-    }
-
-    .heroVisualMain {
-      width: 60vw;
-      height: 55vw;
-      aspect-ratio: 1;
-    }
-
-    .heroVisualAccent {
-      right: -30px;
-      bottom: 0px;
-      width: 27vw;
-      height: 25vw;
+      right: 10px;
     }
   }
+
 
   @media (max-width: 529px) {
-    .hero {
-      background:
-        linear-gradient(180deg, rgba(var(--bg-rgb), 0.34) 0%, rgba(var(--bg-rgb), 0.56) 100%),
-        url("/img/hero/wood-bg.webp") center top / cover no-repeat;
-    }
+    
 
     .heroContainer {
       padding-top: 104px;
@@ -1262,7 +1253,7 @@
     }
 
     .heroViewport {
-      overflow: hidden;
+      overflow: visible;
       padding-top: 0;
       padding-bottom: 0;
       margin-top: 0;
@@ -1289,7 +1280,7 @@
     }
 
     .heroTitle {
-      font-size: 46px;
+      font-size: 42px;
       line-height: 1.1;
       letter-spacing: 0.01em;
     }
@@ -1360,7 +1351,7 @@
 
     .partnersBlock {
       --partners-mobile-width: min(78vw, 100%);
-      --partners-mobile-pad-x: clamp(12px, 3.2vw, 16px);
+      --partners-mobile-pad-x: clamp(18px, 4.2vw, 26px);
       --partners-mobile-pad-y: clamp(10px, 2.4vw, 14px);
       --partners-mobile-col-gap: clamp(10px, 2.6vw, 14px);
       --partners-mobile-row-gap: clamp(7px, 1.8vw, 10px);
@@ -1383,9 +1374,9 @@
       row-gap: var(--partners-mobile-row-gap);
       width: 100%;
       height: auto;
-      padding: var(--partners-mobile-pad-y) var(--partners-mobile-pad-x);
+      padding: clamp(16px, 3.6vw, 22px) var(--partners-mobile-pad-x);
       border-radius: 0;
-      justify-content: start;
+      justify-content: center;
     }
 
     .partnersPanel> :nth-child(1) img,
