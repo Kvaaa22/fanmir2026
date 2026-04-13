@@ -63,8 +63,54 @@ export default function Home() {
         <div className={`container ${styles.heroContainer}`}>
           <HeroSlider />
 
-          <div className={styles.partnersBlock}>
+          <div className={`${styles.partnersBlock} ${styles.partnersBlockDesktop}`}>
             <span className={styles.partnersLabel}>Наши партнеры</span>
+
+            <div className={styles.partnersPanel}>
+              <div className={styles.partnerLogoWide}>
+                <Image
+                  src="/img/hero/ilim.svg"
+                  alt="ILIM Timber"
+                  width={289}
+                  height={31}
+                />
+              </div>
+
+              <div className={styles.partnerLogoRound}>
+                <Image
+                  src="/img/hero/bff.png"
+                  alt="Байкальский фанерный комбинат"
+                  width={65}
+                  height={63}
+                />
+              </div>
+
+              <div className={styles.partnerLogoMedium}>
+                <Image
+                  src="/img/hero/bfk.png"
+                  alt="Бийский фанерный комбинат"
+                  width={215}
+                  height={39}
+                />
+              </div>
+
+              <div className={styles.partnerLogoWide}>
+                <Image
+                  src="/img/hero/sveza.svg"
+                  alt="Свеза"
+                  width={178}
+                  height={39}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className={styles.partnersMobileSection}>
+        <div className="container">
+          <div className={styles.partnersBlock}>
+            <h2 className={`section-title ${styles.partnersTitle}`}>Наши партнеры</h2>
 
             <div className={styles.partnersPanel}>
               <div className={styles.partnerLogoWide}>

@@ -51,6 +51,13 @@
     font-size: 40px;
   }
 }
+@media (max-width: 739px){
+  .section-title {
+    font-size: 36px;
+    margin-right: 56px;
+    margin-bottom: 48px;
+  }
+}
 .section-copy {
   margin: 0;
   font-size: 17px;
