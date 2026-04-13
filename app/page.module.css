@@ -195,7 +195,7 @@
   width: 1088px;
   max-width: 100%;
   margin: 0 auto 8px;
-  padding-left: 60px;
+  padding-left: 40px;
   font-family: var(--font-sans), sans-serif;
   font-style: normal;
   font-weight: 600;
@@ -233,7 +233,7 @@
   min-height: calc(91px * var(--partners-scale));
   margin: 0 auto;
   padding: 0 var(--partners-pad);
-  background: rgba(var(--bg-rgb), 0.96);
+  background: rgba(var(--bg-items-rgb), 0.96);
   box-shadow: 0 18px 48px rgba(var(--brown-rgb), 0.12);
 }
 
@@ -256,7 +256,6 @@
 
 .benefitsSection {
   padding: 86px 0 62px;
-  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-secondary) 100%);
 }
 
 .benefitsGrid {
@@ -330,7 +329,7 @@
 
 .offersSection {
   padding: 52px 0 72px;
-  background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-grey) 100%);
+  background-color:  var(--bg-secondary);
 }
 
 .offersGrid {
@@ -431,7 +430,7 @@
 
 .aboutSection {
   padding: 54px 0 82px;
-  background: var(--color-page);
+  background-color:  var(--bg-items);
 }
 
 .aboutGrid {
@@ -502,7 +501,7 @@
 
 .contactsSection {
   padding: 38px 0 90px;
-  background: var(--color-page);
+  background-color:  var(--bg-items);
 }
 
 .contactsGrid {
@@ -783,7 +782,7 @@
     width: 980px;
     max-width: 100%;
     margin: 0 auto 8px;
-    padding-left: 50px;
+    padding-left: 40px;
     font-size: 15px;
   }
 
@@ -984,7 +983,7 @@
     width: 700px;
     max-width: 100%;
     margin: 0 auto 8px;
-    padding-left: 30px;
+    padding-left: 40px;
     font-size: 13px;
   }
 
@@ -998,13 +997,15 @@
   .hero {
     height: auto;
     min-height: auto;
+    background: none;
+    background-color:  var(--bg-secondary);
   }
 
   .heroContainer {
     height: auto;
     min-height: auto;
     padding-top: 100px;
-    padding-bottom: 18px;
+    padding-bottom: 12px;
   }
 
   .heroViewport {
@@ -1038,7 +1039,7 @@
     position: relative;
     z-index: 3;
     max-width: min(330px, 72%);
-    margin: 68px 70px 0;
+    margin: 54px 43px 0;
     padding: 0;
   }
 
@@ -1131,35 +1132,90 @@
   }
 
   .partnersBlock {
+    --partners-mobile-width: min(76vw, 100%);
+    --partners-mobile-pad-x: clamp(16px, 2.8vw, 22px);
+    --partners-mobile-pad-y: clamp(12px, 2vw, 16px);
+    --partners-mobile-col-gap: clamp(14px, 2.4vw, 18px);
+    --partners-mobile-row-gap: clamp(8px, 1.6vw, 12px);
+    --partners-mobile-overlap: clamp(12px, 2vw, 16px);
     position: static;
-    margin-top: 18px;
+    width: var(--partners-mobile-width);
+    max-width: 100%;
+    margin: calc(-1 * var(--partners-mobile-overlap)) auto 0;
   }
 
   .partnersLabel {
     width: 100%;
-    max-width: 100%;
-    margin: 0 0 8px;
-    padding-left: 0;
-    text-align: center;
-    font-size: 14px;
+    max-width: none;
+    margin: 0 0 10px;
+    padding-left: 40px;
+    text-align: left;
+    font-size: 15px;
   }
 
   .partnersPanel {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px 14px;
+    --partners-right-logo-width: clamp(148px, 34vw, 250px);
+    grid-template-columns: auto var(--partners-right-logo-width);
+    grid-template-rows: repeat(3, min-content);
+    column-gap: var(--partners-mobile-col-gap);
+    row-gap: var(--partners-mobile-row-gap);
+    width: 100%;
+    height: auto;
     min-height: 0;
-    padding: 12px 14px;
-    border-radius: 8px;
+    padding: var(--partners-mobile-pad-y) var(--partners-mobile-pad-x);
+    border-radius: 0;
+    align-items: start;
+    justify-content: start;
+  }
+
+  .partnersPanel> :nth-child(1),
+  .partnersPanel> :nth-child(3),
+  .partnersPanel> :nth-child(4) {
+    width: var(--partners-right-logo-width);
+    justify-content: flex-start;
+    justify-self: start;
+    align-self: start;
+  }
+
+  .partnersPanel> :nth-child(1) {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .partnersPanel> :nth-child(2) {
+    grid-column: 1;
+    grid-row: 1 / 4;
+    align-self: stretch;
+    justify-self: start;
+    display: flex;
+    align-items: stretch;
+    justify-content: flex-start;
+    width: fit-content;
+  }
+
+  .partnersPanel> :nth-child(3) {
+    grid-column: 2;
+    grid-row: 2;
   }
 
   .partnersPanel> :nth-child(4) {
-    grid-column: auto;
-    justify-self: center;
+    grid-column: 2;
+    grid-row: 3;
   }
 
-  .partnersPanel img {
-    max-height: 32px;
+  .partnersPanel> :nth-child(1) img,
+  .partnersPanel> :nth-child(3) img,
+  .partnersPanel> :nth-child(4) img {
+    width: 100%;
+    height: auto;
+    max-height: none;
+  }
+
+  .partnersPanel> :nth-child(2) img {
+    height: 100%;
     width: auto;
+    max-height: none;
+    max-width: none;
   }
 
   @media (max-width: 668px) {
@@ -1202,7 +1258,7 @@
 
     .heroContainer {
       padding-top: 104px;
-      padding-bottom: 24px;
+      padding-bottom: 14px;
     }
 
     .heroViewport {
@@ -1303,29 +1359,48 @@
     }
 
     .partnersBlock {
-      margin-top: 20px;
+      --partners-mobile-width: min(78vw, 100%);
+      --partners-mobile-pad-x: clamp(12px, 3.2vw, 16px);
+      --partners-mobile-pad-y: clamp(10px, 2.4vw, 14px);
+      --partners-mobile-col-gap: clamp(10px, 2.6vw, 14px);
+      --partners-mobile-row-gap: clamp(7px, 1.8vw, 10px);
+      --partners-mobile-overlap: clamp(10px, 2.4vw, 12px);
     }
 
     .partnersLabel {
-      margin: 0 0 10px;
-      font-size: 16px;
+      width: 100%;
+      max-width: none;
+      margin: 0 0 8px;
+      padding-left: 40px;
+      font-size: 14px;
     }
 
     .partnersPanel {
-      grid-template-columns: minmax(0, 1.24fr) minmax(0, 0.6fr) minmax(0, 1fr);
-      gap: 10px 10px;
-      padding: 12px 14px;
-      border-radius: 10px;
+      --partners-right-logo-width: clamp(132px, 38vw, 200px);
+      grid-template-columns: auto var(--partners-right-logo-width);
+      grid-template-rows: repeat(3, min-content);
+      column-gap: var(--partners-mobile-col-gap);
+      row-gap: var(--partners-mobile-row-gap);
+      width: 100%;
+      height: auto;
+      padding: var(--partners-mobile-pad-y) var(--partners-mobile-pad-x);
+      border-radius: 0;
+      justify-content: start;
     }
 
-    .partnersPanel> :nth-child(4) {
-      grid-column: 1 / -1;
-      justify-self: center;
+    .partnersPanel> :nth-child(1) img,
+    .partnersPanel> :nth-child(3) img,
+    .partnersPanel> :nth-child(4) img {
+      width: 100%;
+      height: auto;
+      max-height: none;
     }
 
-    .partnersPanel img {
-      max-height: 28px;
+    .partnersPanel> :nth-child(2) img {
+      height: 100%;
       width: auto;
+      max-height: none;
+      max-width: none;
     }
   }
 

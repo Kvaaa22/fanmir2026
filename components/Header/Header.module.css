@@ -22,7 +22,7 @@
   gap: clamp(14px, 1.7vw, 22px);
   min-height: clamp(72px, 9vh, 82px);
   padding: clamp(8px, 1.4vh, 10px) clamp(16px, 2vw, 24px) clamp(8px, 1.4vh, 10px) clamp(14px, 1.4vw, 18px);
-  background: rgba(var(--bg-rgb), 0.96);
+  background-color: #f9f9f9;
   box-shadow: 0 16px 40px rgba(var(--brown-rgb), 0.1);
 }
 
