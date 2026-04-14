@@ -1149,6 +1149,12 @@
   .heroArrow {
     top: 50%;
     transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    background: rgba(242, 242, 242, 0.604);
+    border-radius: 50%;
+ 
+    backdrop-filter: blur(2px);
   }
 
   .heroArrowLeft {
@@ -1264,21 +1270,23 @@
 
   @media (max-width: 529px) {
     .hero {
-      height: 100dvh;
-      min-height: 700px;
+      height: 90dvh;
+      min-height: 0;
     }
 
     .heroContainer {
       height: 100%;
-      min-height: 700px;
+      min-height: 0;
       padding-top: 104px;
       padding-bottom: 14px;
+      padding-left: 10px;
+      padding-right: 10px;
     }
 
     .heroViewport {
       overflow: visible;
       height: 100%;
-      min-height: 700px;
+      min-height: 0;
       padding-top: 0;
       padding-bottom: 0;
       margin-top: 0;
@@ -1287,28 +1295,30 @@
 
     .heroTrack {
       height: 100%;
-      min-height: 700px;
+      min-height: 0;
     }
 
     .heroSlide {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      height: 100%;
-      min-height: 700px;
-      padding: 0;
+      align-items: stretch;
+      justify-content: space-between;
+      height: 90%;
+      min-height: 0;
+      padding: 0 0 12px;
     }
 
     .heroCopy {
-      gap: 18px;
+      gap: 14px;
       max-width: 100%;
-      margin: 30px 0 0 6vw;
+      margin-top: 20px;
       padding: 0 2px;
       min-height: 0px;
       height: auto;
       align-self: stretch;
       align-items: center;
       text-align: center;
+      justify-content: flex-start;
     }
 
     .heroTitle {
@@ -1325,13 +1335,13 @@
     }
 
     .heroBadges {
-      gap: 10px;
+      gap: 8px;
       justify-content: center;
     }
 
     .heroBadge {
       min-height: 40px;
-      padding: 8px 16px;
+      padding: 7px 12px;
       font-size: 16px;
     }
 
@@ -1350,29 +1360,29 @@
       bottom: auto;
       left: auto;
       min-height: 0px;
-      margin: auto 0 0 10px;
+      margin: 0;
       justify-content: center;
-      transform: translateY(-30px);
       align-self: center;
       flex: 0 0 auto;
+      transform: none;
     }
 
     .heroVisualMain {
-      width: 366px;
-      height: 340px;
+      width: 332px;
+      height: 308px;
     }
 
     .heroVisualAccent {
       right: -30px;
       bottom: -5px;
-      width: 157px;
-      height: 146px;
+      width: 142px;
+      height: 132px;
     }
 
     .heroArrow {
       top: 45%;
-      width: 34px;
-      height: 34px;
+      width: 44px;
+      height: 44px;
     }
 
     .heroArrowLeft {
@@ -1511,24 +1521,16 @@
 }
 
 @media (max-width: 514px) {
-  .hero {
-    min-height: 620px;
-  }
-
-  .heroVisual {
-    transform: translateY(-60px);
-  }
+  .heroVisual { transform: none; }
 }
 
 @media (max-width: 462px) {
 
   .heroCopy {
-    margin-top: 30px;
+    margin-top: 0;
   }
 
-  .heroVisual {
-    transform: translateY(-50px);
-  }
+  .heroVisual { transform: none; }
 
   .heroVisualMain {
     width: 323px;
@@ -1544,11 +1546,11 @@
 @media (max-width: 400px) {
 
   .hero {
-    height: 90dvh;
+    height: 100dvh;
   }
 
   .heroCopy {
-    margin-left: 20px;
+    margin-left: 0;
   }
 
   .heroTitle {
@@ -1556,9 +1558,7 @@
     line-height: 1.1;
   }
 
-  .heroVisual {
-    transform: translateY(-110px);
-  }
+  .heroVisual { transform: none; }
 
   .heroVisualMain {
     width: 303px;
