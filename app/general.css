@@ -8,7 +8,7 @@
   --text-black: #000000;
   --text-dark: #1a1a1a;
   --text-muted: #2f2f2f;
-  
+
   --text-ochre: #ba872e;
   --ochre: #f5d088;
   --brown: #563b25;
@@ -45,18 +45,21 @@
   line-height: 1.04;
   font-weight: 400;
   color: var(--color-muted);
+  margin-left: 43px;
 }
 
-@media (max-width: 462px) {
-  .section-title {
-    font-size: 40px;
-  }
-}
-@media (max-width: 739px){
+
+@media (max-width: 739px) {
   .section-title {
     font-size: 36px;
-    margin-right: 56px;
     margin-bottom: 48px;
+    margin-left: 33px;
+  }
+}
+@media (max-width: 462px) {
+  .section-title {
+    font-size: 34px;
+    margin-left: 23px;
   }
 }
 .section-copy {
@@ -65,6 +68,7 @@
   line-height: 1.5;
   color: var(--color-body);
 }
+
 .page {
   background: var(--color-page);
 }
