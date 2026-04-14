@@ -1,3 +1,4 @@
+/* #region Hero */
 .hero {
   position: relative;
   overflow: hidden;
@@ -191,6 +192,9 @@
   transform: scaleX(-1);
 }
 
+/* #endregion Hero */
+
+/* #region Partners */
 .partnersBlock {
   position: absolute;
   right: 128px;
@@ -261,8 +265,12 @@
   height: auto;
 }
 
+/* #endregion Partners */
+
+/* #region Benefits */
 .benefitsSection {
   padding: 86px 0 62px;
+  background-color: var(--bg-items);
 }
 
 .benefitsGrid {
@@ -334,6 +342,9 @@
   height: auto;
 }
 
+/* #endregion Benefits */
+
+/* #region Offers */
 .offersSection {
   padding: 52px 0 72px;
   background-color: var(--bg-secondary);
@@ -435,6 +446,9 @@
     linear-gradient(135deg, var(--ochre) 0%, var(--text-ochre) 100%);
 }
 
+/* #endregion Offers */
+
+/* #region About */
 .aboutSection {
   padding: 54px 0 82px;
   background-color: var(--bg-items);
@@ -506,9 +520,12 @@
   margin: 42px 0 0;
 }
 
+/* #endregion About */
+
+/* #region Contacts */
 .contactsSection {
   padding: 38px 0 90px;
-  background-color: var(--bg-items);
+  background-color: var(--bg-secondary);
 }
 
 .contactsGrid {
@@ -712,7 +729,11 @@
   box-shadow: 0 6px 14px rgba(var(--brown-rgb), 0.12);
 }
 
+/* #endregion Contacts */
+
 @media (max-width: 1299px) {
+
+  /* #region Hero */
   .hero {
     height: 640px;
     min-height: 640px;
@@ -779,6 +800,9 @@
     height: 230px;
   }
 
+  /* #endregion Hero */
+
+  /* #region Partners */
   .partnersBlock {
     right: 80px;
     bottom: 34px;
@@ -798,9 +822,21 @@
     width: 980px;
 
   }
+
+  /* #endregion Partners */
+  /* #region Benefits */
+  /* #endregion Benefits */
+  /* #region Offers */
+  /* #endregion Offers */
+  /* #region About */
+  /* #endregion About */
+  /* #region Contacts */
+  /* #endregion Contacts */
 }
 
 @media (max-width: 1099px) {
+
+  /* #region Hero */
   .hero {
     height: 592px;
     min-height: 592px;
@@ -875,6 +911,9 @@
     height: 204px;
   }
 
+  /* #endregion Hero */
+
+  /* #region Partners */
   .partnersBlock {
     right: 56px;
     bottom: 28px;
@@ -893,9 +932,21 @@
     --partners-scale: 0.79;
     width: 860px;
   }
+
+  /* #endregion Partners */
+  /* #region Benefits */
+  /* #endregion Benefits */
+  /* #region Offers */
+  /* #endregion Offers */
+  /* #region About */
+  /* #endregion About */
+  /* #region Contacts */
+  /* #endregion Contacts */
 }
 
 @media (max-width: 899px) {
+
+  /* #region Hero */
   .hero {
     height: 520px;
     min-height: 520px;
@@ -978,6 +1029,9 @@
     height: 162px;
   }
 
+  /* #endregion Hero */
+
+  /* #region Partners */
   .partnersBlock {
     right: 32px;
     bottom: 20px;
@@ -996,9 +1050,21 @@
     --partners-scale: 0.643;
     width: 700px;
   }
+
+  /* #endregion Partners */
+  /* #region Benefits */
+  /* #endregion Benefits */
+  /* #region Offers */
+  /* #endregion Offers */
+  /* #region About */
+  /* #endregion About */
+  /* #region Contacts */
+  /* #endregion Contacts */
 }
 
 @media (max-width: 739px) {
+
+  /* #region Partners */
   .partnersBlockDesktop {
     display: none;
   }
@@ -1013,6 +1079,9 @@
     margin-bottom: 12px;
   }
 
+  /* #endregion Partners */
+
+  /* #region Hero */
   .hero {
     height: auto;
     min-height: 0px;
@@ -1165,6 +1234,9 @@
     right: -6px;
   }
 
+  /* #endregion Hero */
+
+  /* #region Partners */
   .partnersBlock {
     --partners-mobile-width: 100%;
     --partners-mobile-pad-x: 0px;
@@ -1260,6 +1332,8 @@
     max-width: 100%;
   }
 
+  /* #endregion Partners */
+  /* #region Benefits */
   .benefitsSection {
     padding: 72px 0 48px;
   }
@@ -1273,17 +1347,23 @@
     padding: 24px 20px;
   }
 
+  /* #endregion Benefits */
+  /* #region Advantages */
   .advantagesLogoCircle {
     width: min(100%, 320px);
     height: auto;
     aspect-ratio: 1;
   }
 
+  /* #endregion Advantages */
+  /* #region Offers */
   .offersGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
   }
 
+  /* #endregion Offers */
+  /* #region About */
   .aboutGrid {
     grid-template-columns: minmax(0, 1fr);
     gap: 22px;
@@ -1302,6 +1382,8 @@
     margin-top: 28px;
   }
 
+  /* #endregion About */
+  /* #region Contacts */
   .contactsSection {
     padding: 30px 0 72px;
   }
@@ -1323,16 +1405,62 @@
   .mapCanvas {
     min-height: 340px;
   }
+
+  /* #endregion Contacts */
+}
+
+@media (max-width: 739px) {
+  /* #region Hero */
+  /* #endregion Hero */
+  .partnersBlock {
+    right: 24px;
+    bottom: 16px;
+    left: 24px;
+  }
+
+  .partnersLabel {
+    width: 740px;
+    max-width: 100%;
+    margin: 0 auto 6px;
+    padding-left: 24px;
+    font-size: 13px;
+  }
+
+  .partnersPanel {
+    --partners-scale: 0.66;
+    width: 740px;
+  }
+  /* #region Benefits */
+  /* #endregion Benefits */
+  /* #region Offers */
+  /* #endregion Offers */
+  /* #region About */
+  /* #endregion About */
+  /* #region Contacts */
+  /* #endregion Contacts */
 }
 
 @media (max-width: 668px) {
+  /* #region Hero */
   .heroVisual {
     left: auto;
     right: 10px;
   }
+  /* #endregion Hero */
+  /* #region Partners */
+  /* #endregion Partners */
+  /* #region Benefits */
+  /* #endregion Benefits */
+  /* #region Offers */
+  /* #endregion Offers */
+  /* #region About */
+  /* #endregion About */
+  /* #region Contacts */
+  /* #endregion Contacts */
 }
 
 @media (max-width: 529px) {
+  /* #region Hero */
   .hero {
     --hero-mobile-height: clamp(710px, 92dvh, 860px);
     --hero-mobile-pad-top: 104px;
@@ -1472,7 +1600,9 @@
   .heroArrowRight {
     right: calc(-1 * var(--hero-mobile-inline-pad));
   }
+  /* #endregion Hero */
 
+  /* #region Partners */
   .partnersBlock {
     --partners-mobile-width: min(78vw, 100%);
     --partners-mobile-pad-x: 0px;
@@ -1533,9 +1663,19 @@
     max-height: none;
     max-width: none;
   }
+  /* #endregion Partners */
+  /* #region Benefits */
+  /* #endregion Benefits */
+  /* #region Offers */
+  /* #endregion Offers */
+  /* #region About */
+  /* #endregion About */
+  /* #region Contacts */
+  /* #endregion Contacts */
 }
 
 @media (min-width: 540px) and (max-width: 739px) {
+  /* #region Hero */
   .hero {
     height: 520px;
     min-height: 520px;
@@ -1563,10 +1703,22 @@
     height: 348px;
     min-height: 348px;
   }
+  /* #endregion Hero */
+  /* #region Partners */
+  /* #endregion Partners */
+  /* #region Benefits */
+  /* #endregion Benefits */
+  /* #region Offers */
+  /* #endregion Offers */
+  /* #region About */
+  /* #endregion About */
+  /* #region Contacts */
+  /* #endregion Contacts */
 }
 
 
 @media (max-width: 462px) {
+  /* #region Hero */
   .hero {
     --hero-mobile-height: clamp(650px, 91dvh, 780px);
     --hero-mobile-pad-top: 92px;
@@ -1593,9 +1745,21 @@
   .heroVisualAccent {
     width: clamp(132px, 31vw, 142px);
   }
+  /* #endregion Hero */
+  /* #region Partners */
+  /* #endregion Partners */
+  /* #region Benefits */
+  /* #endregion Benefits */
+  /* #region Offers */
+  /* #endregion Offers */
+  /* #region About */
+  /* #endregion About */
+  /* #region Contacts */
+  /* #endregion Contacts */
 }
 
 @media (max-width: 400px) {
+  /* #region Hero */
   .hero {
     --hero-mobile-height: clamp(610px, 90dvh, 720px);
     --hero-mobile-pad-top: 78px;
@@ -1618,9 +1782,21 @@
   }
 
 
+  /* #endregion Hero */
+  /* #region Partners */
+  /* #endregion Partners */
+  /* #region Benefits */
+  /* #endregion Benefits */
+  /* #region Offers */
+  /* #endregion Offers */
+  /* #region About */
+  /* #endregion About */
+  /* #region Contacts */
+  /* #endregion Contacts */
 }
 
 @media (max-width: 365px) {
+  /* #region Hero */
   .hero {
     --hero-mobile-height: clamp(570px, 89dvh, 680px);
     --hero-mobile-pad-top: 72px;
@@ -1640,9 +1816,21 @@
   .heroArrow {
     top: 46%;
   }
+  /* #endregion Hero */
+  /* #region Partners */
+  /* #endregion Partners */
+  /* #region Benefits */
+  /* #endregion Benefits */
+  /* #region Offers */
+  /* #endregion Offers */
+  /* #region About */
+  /* #endregion About */
+  /* #region Contacts */
+  /* #endregion Contacts */
 }
 
 @media (max-width: 351px) {
+  /* #region Hero */
   .hero {
     --hero-mobile-height: clamp(550px, 88dvh, 640px);
     --hero-mobile-pad-top: 68px;
@@ -1653,4 +1841,15 @@
     width: clamp(250px, 78vw, 260px);
 
   }
+  /* #endregion Hero */
+  /* #region Partners */
+  /* #endregion Partners */
+  /* #region Benefits */
+  /* #endregion Benefits */
+  /* #region Offers */
+  /* #endregion Offers */
+  /* #region About */
+  /* #endregion About */
+  /* #region Contacts */
+  /* #endregion Contacts */
 }

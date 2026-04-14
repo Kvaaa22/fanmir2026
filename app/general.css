@@ -8,6 +8,7 @@
   --text-black: #000000;
   --text-dark: #1a1a1a;
   --text-muted: #2f2f2f;
+  
   --text-ochre: #ba872e;
   --ochre: #f5d088;
   --brown: #563b25;
@@ -43,7 +44,7 @@
   font-size: 46px;
   line-height: 1.04;
   font-weight: 400;
-  color: var(--color-heading);
+  color: var(--color-muted);
 }
 
 @media (max-width: 462px) {
