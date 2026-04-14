@@ -1535,6 +1535,36 @@
   }
 }
 
+@media (min-width: 540px) and (max-width: 739px) {
+  .hero {
+    height: 520px;
+    min-height: 520px;
+  }
+
+  .heroContainer {
+    height: 520px;
+    min-height: 520px;
+    padding-top: 100px;
+    padding-bottom: 0;
+  }
+
+  .heroViewport {
+    padding-top: 44px;
+    padding-bottom: 44px;
+    margin-top: -44px;
+    margin-bottom: -44px;
+  }
+
+  .heroTrack {
+    height: 348px;
+  }
+
+  .heroSlide {
+    height: 348px;
+    min-height: 348px;
+  }
+}
+
 
 @media (max-width: 462px) {
   .hero {
