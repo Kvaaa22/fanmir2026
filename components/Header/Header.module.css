@@ -663,6 +663,41 @@
   }
 }
 
+@media (max-width: 529px) {
+  .header {
+    inset: 0 0 auto;
+  }
+
+  .header :global(.container) {
+    width: calc(100% - 16px);
+    margin: 0 auto;
+  }
+
+  .headerBar {
+    padding-left: 6px;
+    padding-right: 6px;
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+  .logoLink {
+    margin-left: 14px;
+  }
+
+  .headerBar::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 100vw;
+    transform: translateX(-50%);
+    background-color: #f9f9f9;
+    box-shadow: 0 16px 40px rgba(var(--brown-rgb), 0.1);
+    z-index: -1;
+  }
+}
+
 @media (max-width: 389px) {
   .mobileMenuPanel {
     width: calc(100vw - 48px);
