@@ -1072,13 +1072,12 @@
   .partnersMobileSection {
     display: block;
     background-color: var(--bg);
-    padding: 22px 0 10px;
-    height: 380px;
+    height: 340px;
 
   }
 
   .partnersTitle {
-    margin: 42px 0 36px 43px;
+    margin: 56px 0 36px 43px;
     text-align: left;
   }
 
