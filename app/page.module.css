@@ -14,6 +14,7 @@
   min-height: 696px;
   --hero-slide-bg-top: 105px;
   --hero-slide-bg-bottom: 28px;
+  --hero-slide-bg-viewport-top: 0px;
   padding-top: 105px;
   padding-bottom: 0;
 }
@@ -204,7 +205,7 @@
 
 .heroInStockBackground {
   position: absolute;
-  top: calc(var(--hero-slide-bg-top) * -1);
+  top: calc((var(--hero-slide-bg-top) + var(--hero-slide-bg-viewport-top)) * -1);
   bottom: calc(var(--hero-slide-bg-bottom) * -1);
   left: calc(50% - 50vw);
   width: 100vw;
@@ -258,7 +259,7 @@
 
 .heroHelpCanvas {
   position: absolute;
-  top: calc(var(--hero-slide-bg-top) * -1);
+  top: calc((var(--hero-slide-bg-top) + var(--hero-slide-bg-viewport-top)) * -1);
   bottom: calc(var(--hero-slide-bg-bottom) * -1);
   left: calc(50% - 50vw);
   width: 100vw;
@@ -982,7 +983,7 @@
 
   .heroDesktopTextBase {
     left: clamp(80px, calc(80px + ((100vw - 1185px) * 0.4210526)), 128px);
-    top: 92px;
+    top: 82px;
   }
 
   .heroSlideCutting .heroCopy {
@@ -1104,6 +1105,7 @@
     min-height: 592px;
     --hero-slide-bg-top: 56px;
     --hero-slide-bg-bottom: 92px;
+    --hero-slide-bg-viewport-top: 102px;
     padding-top: 56px;
   }
 
@@ -1138,7 +1140,7 @@
 
   .heroDesktopTextBase {
     left: clamp(65px, calc(65px + ((100vw - 900px) * 0.2030075)), 92px);
-  
+
   }
 
   .heroSlideCutting .heroCopy {
@@ -1223,6 +1225,10 @@
     font-size: 14px;
   }
 
+  .heroInStockBackground {
+    height: 592px;
+  }
+
   /* #endregion Hero */
 
   /* #region Partners */
@@ -1269,6 +1275,7 @@
     min-height: 520px;
     --hero-slide-bg-top: 100px;
     --hero-slide-bg-bottom: 72px;
+    --hero-slide-bg-viewport-top: 44px;
     padding-top: 100px;
     padding-bottom: 0;
   }
@@ -1355,22 +1362,22 @@
 
   .heroInStockCard {
     width: 286px;
-    height: 174px;
-    padding: 10px 12px;
-    gap: 8px;
+    height: 156px;
+    padding: 9px 12px;
+    gap: 6px;
   }
 
   .heroInStockTitle {
     width: 248px;
-    height: 86px;
-    font-size: 27px;
-    line-height: 32px;
+    height: 90px;
+    font-size: 24px;
+    line-height: 30px;
   }
 
   .heroInStockLead {
     width: 246px;
-    height: 30px;
-    font-size: 13px;
+    height: 32px;
+    font-size: 12px;
   }
 
   .heroHelpCanvas {
@@ -1379,21 +1386,21 @@
 
   .heroHelpCopy {
     width: 268px;
-    height: 166px;
+    height: 154px;
   }
 
   .heroHelpTitle {
     width: 268px;
-    height: 86px;
-    font-size: 27px;
-    line-height: 32px;
+    height: 90px;
+    font-size: 24px;
+    line-height: 30px;
   }
 
   .heroHelpLead {
     width: 236px;
-    height: 38px;
-    margin-top: 8px;
-    font-size: 13px;
+    height: 47px;
+    margin-top: 6px;
+    font-size: 12px;
   }
 
   /* #endregion Hero */
@@ -1445,6 +1452,9 @@
   .heroContainer {
     height: 370px;
     min-height: 370px;
+    --hero-slide-bg-top: 76px;
+    --hero-slide-bg-bottom: 0px;
+    --hero-slide-bg-viewport-top: 0px;
     padding-top: 76px;
     padding-bottom: 0;
   }
@@ -1494,8 +1504,8 @@
 
   .heroInStockBackground,
   .heroHelpCanvas {
-    top: 0;
-    bottom: 0;
+    top: calc((var(--hero-slide-bg-top) + var(--hero-slide-bg-viewport-top)) * -1);
+    bottom: calc(var(--hero-slide-bg-bottom) * -1);
   }
 
   .heroHelpCanvas {
@@ -1519,8 +1529,8 @@
     width: min(100%, 390px);
     min-height: 0;
     margin: 0 auto;
-    padding: 14px 14px;
-    gap: 12px;
+    padding: 12px 12px;
+    gap: 10px;
     box-shadow: 0 10px 24px rgba(var(--brown-rgb), 0.18);
   }
 
@@ -1542,15 +1552,15 @@
   .heroHelpTitle {
     width: auto;
     min-height: 0;
-    font-size: 36px;
-    line-height: 1.08;
+    font-size: 34px;
+    line-height: 1.06;
   }
 
   .heroInStockLead,
   .heroHelpLead {
     width: auto;
     min-height: 0;
-    margin-top: 10px;
+    margin-top: 8px;
     font-size: 14px;
     line-height: 1.3;
   }
