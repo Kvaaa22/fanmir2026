@@ -1,63 +1,111 @@
 'use client';
 
-import { useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import styles from "@/app/page.module.css";
 
 type HeroSlide = {
-  badges: [string, string];
-  id: string;
+  id: "cutting" | "inStock" | "help";
   imageAlt: string;
-  lead: string;
-  title: string;
 };
+
+const AUTO_SWITCH_MS = 5000;
+const AUTO_SWITCH_ENABLED = false;
 
 const heroSlides: HeroSlide[] = [
   {
     id: "cutting",
-    title: "Резка по вашим размерам",
-    badges: ["оперативно", "недорого"],
-    lead: "Раскрой в день заказа на форматно-раскроечном станке",
     imageAlt: "Форматный раскрой фанеры",
   },
   {
-    id: "delivery",
-    title: "Фанера и листовые материалы в наличии",
-    badges: ["со склада", "с доставкой"],
-    lead: "Подберем нужный формат и быстро отгрузим заказ по Красноярску",
-    imageAlt: "Листовые материалы на складе",
+    id: "inStock",
+    imageAlt: "Фанера и листовые материалы в наличии",
   },
   {
-    id: "catalogue",
-    title: "Помогаем подобрать материал под задачу",
-    badges: ["подскажем", "подберем"],
-    lead: "Березовая, хвойная, ламинированная фанера, OSB, ДСП и ДВП в одном месте",
-    imageAlt: "Ассортимент фанеры и листовых материалов",
+    id: "help",
+    imageAlt: "Помощь в подборе материалов",
   },
 ];
 
 export function HeroSlider() {
-  const [activeSlide, setActiveSlide] = useState(0);
-  const lastSlideIndex = heroSlides.length - 1;
+  const slideCount = heroSlides.length;
+  const loopSlides = useMemo(
+    () => [heroSlides[slideCount - 1], ...heroSlides, heroSlides[0]],
+    [slideCount],
+  );
+  const [trackIndex, setTrackIndex] = useState(1);
+  const [isTrackAnimated, setIsTrackAnimated] = useState(true);
+  const isTransitioningRef = useRef(false);
+  const autoTimerRef = useRef<number | null>(null);
 
-  const showPreviousSlide = () => {
-    setActiveSlide((currentSlide) =>
-      currentSlide === 0 ? lastSlideIndex : currentSlide - 1,
-    );
+  const showNextSlide = useCallback(() => {
+    if (isTransitioningRef.current) {
+      return;
+    }
+
+    isTransitioningRef.current = true;
+    setIsTrackAnimated(true);
+    setTrackIndex((currentIndex) => Math.min(currentIndex + 1, slideCount + 1));
+  }, [slideCount]);
+
+  const restartAutoSwitchTimer = useCallback(() => {
+    if (autoTimerRef.current !== null) {
+      window.clearInterval(autoTimerRef.current);
+    }
+
+    if (!AUTO_SWITCH_ENABLED) {
+      return;
+    }
+
+    autoTimerRef.current = window.setInterval(() => {
+      showNextSlide();
+    }, AUTO_SWITCH_MS);
+  }, [showNextSlide]);
+
+  useEffect(() => {
+    restartAutoSwitchTimer();
+
+    return () => {
+      if (autoTimerRef.current !== null) {
+        window.clearInterval(autoTimerRef.current);
+      }
+    };
+  }, [restartAutoSwitchTimer]);
+
+  const handleArrowClick = () => {
+    showNextSlide();
+    restartAutoSwitchTimer();
   };
 
-  const showNextSlide = () => {
-    setActiveSlide((currentSlide) =>
-      currentSlide === lastSlideIndex ? 0 : currentSlide + 1,
-    );
+  const handleTrackTransitionEnd = () => {
+    if (!isTransitioningRef.current) {
+      return;
+    }
+
+    if (trackIndex === slideCount + 1) {
+      setIsTrackAnimated(false);
+      setTrackIndex(1);
+
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => {
+          setIsTrackAnimated(true);
+          isTransitioningRef.current = false;
+        });
+      });
+      return;
+    }
+
+    isTransitioningRef.current = false;
   };
+
+  const activeRealSlideIndex = trackIndex === slideCount + 1 ? 0 : trackIndex - 1;
 
   return (
     <div className={styles.heroContent}>
       <button
         aria-label="Предыдущий слайд"
         className={`${styles.heroArrow} ${styles.heroArrowLeft}`}
-        onClick={showPreviousSlide}
+        onClick={handleArrowClick}
         type="button"
       >
         <ArrowIcon />
@@ -69,87 +117,158 @@ export function HeroSlider() {
         className={styles.heroViewport}
       >
         <div
-          className={styles.heroTrack}
-          style={{ transform: `translateX(-${activeSlide * 100}%)` }}
+          className={`${styles.heroTrack} ${!isTrackAnimated ? styles.heroTrackNoTransition : ""}`}
+          onTransitionEnd={handleTrackTransitionEnd}
+          style={{ transform: `translateX(-${trackIndex * 100}%)` }}
         >
-          {heroSlides.map((slide, index) => (
-            <div
-              aria-hidden={index !== activeSlide}
-              className={styles.heroSlide}
-              key={slide.id}
-            >
-              <div className={styles.heroCopy}>
-                <h1 className={styles.heroTitle}>
-                  <span className={styles.heroTitleText}>
-                    {slide.id === "cutting" ? (
-                    <>
-                      {"Резка\u00A0по\u00A0вашим"}
-                      <br />
-                      размерам
-                    </>
-                  ) : (
-                    slide.title
-                    )}
-                  </span>
-                </h1>
+          {loopSlides.map((slide, index) => {
+            const isVisible = index === trackIndex;
+            const isActiveRealSlide =
+              isVisible && index > 0 && index <= slideCount;
 
-                <div className={styles.heroBadges}>
-                  <span className={styles.heroBadge}>{slide.badges[0]}</span>
-                  <span
-                    className={`${styles.heroBadge} ${styles.heroBadgeDark}`}
-                  >
-                    {slide.badges[1]}
-                  </span>
-                </div>
+            return (
+              <div
+                aria-hidden={!isVisible}
+                className={`${styles.heroSlide} ${slide.id === "inStock" ? styles.heroSlideInStock : ""} ${slide.id === "help" ? styles.heroSlideHelp : ""}`}
+                key={`${slide.id}-${index}`}
+              >
+                {slide.id === "cutting" ? (
+                  <>
+                    <div
+                      className={styles.heroCopy}
+                    >
+                      <h1 className={styles.heroTitle}>
+                        <span className={styles.heroTitleText}>
+                          {"Резка\u00A0по\u00A0вашим "}
+                          <br />
+                          размерам
+                        </span>
+                      </h1>
 
-                <p className={styles.heroLead}>
-                  <span className={styles.heroLeadText}>
-                    {slide.id === "cutting" ? (
-                    <>
-                      Раскрой в день заказа на форматно-
-                      <br />
-                      раскроечном станке
-                    </>
-                  ) : (
-                    slide.lead
-                    )}
-                  </span>
-                </p>
+                      <div className={styles.heroBadges}>
+                        <span className={styles.heroBadge}>оперативно</span>
+                        <span
+                          className={`${styles.heroBadge} ${styles.heroBadgeDark}`}
+                        >
+                          недорого
+                        </span>
+                      </div>
+
+                      <p className={styles.heroLead}>
+                        <span className={styles.heroLeadText}>
+                          Раскрой в день заказа на форматно-
+                          <br />
+                          раскроечном станке
+                        </span>
+                      </p>
+                    </div>
+
+                    <div className={styles.heroVisual}>
+                      <div className={styles.heroVisualMain}>
+                        <Image
+                          alt={slide.imageAlt}
+                          fill
+                          preload={index === 1}
+                          quality={95}
+                          sizes="(max-width: 899px) 360px, (max-width: 1099px) 460px, (max-width: 1299px) 520px, 583px"
+                          src="/img/hero/cutting.webp"
+                        />
+                      </div>
+
+                      <div className={styles.heroVisualAccent}>
+                        <Image
+                          alt=""
+                          fill
+                          quality={95}
+                          sizes="180px"
+                          src="/img/hero/wood-circle.webp"
+                        />
+                      </div>
+                    </div>
+                  </>
+                ) : null}
+
+                {slide.id === "inStock" ? (
+                  <>
+                    <div
+                      aria-hidden="true"
+                      className={styles.heroInStockBackground}
+                    />
+
+                    <article
+                      className={`${styles.heroInStockCard} ${isActiveRealSlide ? styles.heroCardActive : ""}`}
+                    >
+                      <h2 className={styles.heroInStockTitle}>
+                        В наличии более
+                        <br />
+                        300 видов
+                        <br />
+                        фанеры
+                      </h2>
+
+                      <p className={styles.heroInStockLead}>
+                        Более трехсот наименований фанеры
+                        <br />
+                        и других листовых материалов
+                      </p>
+                    </article>
+                  </>
+                ) : null}
+
+                {slide.id === "help" ? (
+                  <>
+                    <div aria-hidden="true" className={styles.heroHelpCanvas}>
+                      <div className={styles.heroHelpCanvasShade} />
+                      <div className={styles.heroHelpCanvasImage}>
+                        <Image
+                          alt={slide.imageAlt}
+                          fill
+                          quality={95}
+                          sizes="(max-width: 899px) 54vw, 54vw"
+                          src="/img/hero/slideHelp.webp"
+                        />
+                      </div>
+                    </div>
+
+                    <article
+                      className={`${styles.heroHelpCopy} ${isActiveRealSlide ? styles.heroCardActive : ""}`}
+                    >
+                      <h2 className={styles.heroHelpTitle}>
+                        Помощь в подборе
+                        <br />
+                        материалов под
+                        <br />
+                        ваши задачи
+                      </h2>
+
+                      <p className={styles.heroHelpLead}>
+                        Наши менеджеры помогут в поиске
+                        <br />
+                        подходящих решений, в зависимости
+                        <br />
+                        от условий и бюджета
+                      </p>
+                    </article>
+                  </>
+                ) : null}
               </div>
-
-              <div className={styles.heroVisual}>
-                <div className={styles.heroVisualMain}>
-                  <Image
-                    alt={slide.imageAlt}
-                    fill
-                    preload={index === 0}
-                    sizes="(max-width: 1366px) 48vw, 640px"
-                    src="/img/hero/cutting.webp"
-                  />
-                </div>
-
-                <div className={styles.heroVisualAccent}>
-                  <Image
-                    alt=""
-                    fill
-                    sizes="180px"
-                    src="/img/hero/wood-circle.webp"
-                  />
-                </div>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
       <button
         aria-label="Следующий слайд"
         className={`${styles.heroArrow} ${styles.heroArrowRight}`}
-        onClick={showNextSlide}
+        onClick={handleArrowClick}
         type="button"
       >
         <ArrowIcon />
       </button>
+
+      <span className={styles.heroSrOnly}>
+        Слайд {activeRealSlideIndex + 1} из {slideCount}
+      </span>
     </div>
   );
 }
