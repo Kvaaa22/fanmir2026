@@ -129,13 +129,13 @@ export function HeroSlider() {
             return (
               <div
                 aria-hidden={!isVisible}
-                className={`${styles.heroSlide} ${slide.id === "inStock" ? styles.heroSlideInStock : ""} ${slide.id === "help" ? styles.heroSlideHelp : ""}`}
+                className={`${styles.heroSlide} ${slide.id === "cutting" ? styles.heroSlideCutting : ""} ${slide.id === "inStock" ? styles.heroSlideInStock : ""} ${slide.id === "help" ? styles.heroSlideHelp : ""}`}
                 key={`${slide.id}-${index}`}
               >
                 {slide.id === "cutting" ? (
                   <>
                     <div
-                      className={styles.heroCopy}
+                      className={`${styles.heroCopy} ${styles.heroDesktopTextBase}`}
                     >
                       <h1 className={styles.heroTitle}>
                         <span className={styles.heroTitleText}>
@@ -196,7 +196,7 @@ export function HeroSlider() {
                     />
 
                     <article
-                      className={`${styles.heroInStockCard} ${isActiveRealSlide ? styles.heroCardActive : ""}`}
+                      className={`${styles.heroInStockCard} ${styles.heroDesktopTextBase} ${isActiveRealSlide ? styles.heroCardActive : ""}`}
                     >
                       <h2 className={styles.heroInStockTitle}>
                         В наличии более
@@ -231,7 +231,7 @@ export function HeroSlider() {
                     </div>
 
                     <article
-                      className={`${styles.heroHelpCopy} ${isActiveRealSlide ? styles.heroCardActive : ""}`}
+                      className={`${styles.heroHelpCopy} ${styles.heroDesktopTextBase} ${isActiveRealSlide ? styles.heroCardActive : ""}`}
                     >
                       <h2 className={styles.heroHelpTitle}>
                         Помощь в подборе
