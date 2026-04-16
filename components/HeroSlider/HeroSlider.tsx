@@ -137,7 +137,7 @@ export function HeroSlider() {
                     <div
                       className={`${styles.heroCopy} ${styles.heroDesktopTextBase}`}
                     >
-                      <h1 className={styles.heroTitle}>
+                      <h1 className={`${styles.heroTitle} ${styles.heroSlideHeadingBase}`}>
                         <span className={styles.heroTitleText}>
                           {"Резка\u00A0по\u00A0вашим "}
                           <br />
@@ -154,7 +154,7 @@ export function HeroSlider() {
                         </span>
                       </div>
 
-                      <p className={styles.heroLead}>
+                      <p className={`${styles.heroLead} ${styles.heroSlideLeadBase}`}>
                         <span className={styles.heroLeadText}>
                           Раскрой в день заказа на форматно-
                           <br />
@@ -196,9 +196,9 @@ export function HeroSlider() {
                     />
 
                     <article
-                      className={`${styles.heroInStockCard} ${styles.heroDesktopTextBase} ${isActiveRealSlide ? styles.heroCardActive : ""}`}
+                      className={`${styles.heroInStockCard} ${styles.heroSlideCardBase} ${styles.heroDesktopTextBase} ${isActiveRealSlide ? styles.heroCardActive : ""}`}
                     >
-                      <h2 className={styles.heroInStockTitle}>
+                      <h2 className={`${styles.heroInStockTitle} ${styles.heroSlideHeadingBase}`}>
                         В наличии более
                         <br />
                         300 видов
@@ -206,7 +206,7 @@ export function HeroSlider() {
                         фанеры
                       </h2>
 
-                      <p className={styles.heroInStockLead}>
+                      <p className={`${styles.heroInStockLead} ${styles.heroSlideLeadBase}`}>
                         Более трехсот наименований фанеры
                         <br />
                         и других листовых материалов
@@ -231,9 +231,9 @@ export function HeroSlider() {
                     </div>
 
                     <article
-                      className={`${styles.heroHelpCopy} ${styles.heroDesktopTextBase} ${isActiveRealSlide ? styles.heroCardActive : ""}`}
+                      className={`${styles.heroHelpCopy} ${styles.heroSlideCardBase} ${styles.heroDesktopTextBase} ${isActiveRealSlide ? styles.heroCardActive : ""}`}
                     >
-                      <h2 className={styles.heroHelpTitle}>
+                      <h2 className={`${styles.heroHelpTitle} ${styles.heroSlideHeadingBase}`}>
                         Помощь в подборе
                         <br />
                         материалов под
@@ -241,7 +241,7 @@ export function HeroSlider() {
                         ваши задачи
                       </h2>
 
-                      <p className={styles.heroHelpLead}>
+                      <p className={`${styles.heroHelpLead} ${styles.heroSlideLeadBase}`}>
                         Наши менеджеры помогут в поиске
                         <br />
                         подходящих решений, в зависимости
