@@ -48,6 +48,16 @@ export function HeroSlider() {
     setTrackIndex((currentIndex) => Math.min(currentIndex + 1, slideCount + 1));
   }, [slideCount]);
 
+  const showPrevSlide = useCallback(() => {
+    if (isTransitioningRef.current) {
+      return;
+    }
+
+    isTransitioningRef.current = true;
+    setIsTrackAnimated(true);
+    setTrackIndex((currentIndex) => Math.max(currentIndex - 1, 0));
+  }, []);
+
   const restartAutoSwitchTimer = useCallback(() => {
     if (autoTimerRef.current !== null) {
       window.clearInterval(autoTimerRef.current);
@@ -72,8 +82,13 @@ export function HeroSlider() {
     };
   }, [restartAutoSwitchTimer]);
 
-  const handleArrowClick = () => {
-    showNextSlide();
+  const handleArrowClick = (direction: "prev" | "next") => {
+    if (direction === "prev") {
+      showPrevSlide();
+    } else {
+      showNextSlide();
+    }
+
     restartAutoSwitchTimer();
   };
 
@@ -95,17 +110,35 @@ export function HeroSlider() {
       return;
     }
 
+    if (trackIndex === 0) {
+      setIsTrackAnimated(false);
+      setTrackIndex(slideCount);
+
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => {
+          setIsTrackAnimated(true);
+          isTransitioningRef.current = false;
+        });
+      });
+      return;
+    }
+
     isTransitioningRef.current = false;
   };
 
-  const activeRealSlideIndex = trackIndex === slideCount + 1 ? 0 : trackIndex - 1;
+  const activeRealSlideIndex =
+    trackIndex === 0
+      ? slideCount - 1
+      : trackIndex === slideCount + 1
+        ? 0
+        : trackIndex - 1;
 
   return (
     <div className={styles.heroContent}>
       <button
         aria-label="Предыдущий слайд"
         className={`${styles.heroArrow} ${styles.heroArrowLeft}`}
-        onClick={handleArrowClick}
+        onClick={() => handleArrowClick("prev")}
         type="button"
       >
         <ArrowIcon />
@@ -134,6 +167,11 @@ export function HeroSlider() {
               >
                 {slide.id === "cutting" ? (
                   <>
+                    <div
+                      aria-hidden="true"
+                      className={styles.heroCuttingBackground}
+                    />
+
                     <div
                       className={`${styles.heroCopy} ${styles.heroDesktopTextBase}`}
                     >
@@ -257,10 +295,20 @@ export function HeroSlider() {
         </div>
       </div>
 
+      <div aria-label="Навигация слайдов" className={styles.heroDots} role="tablist">
+        {heroSlides.map((slide, index) => (
+          <span
+            aria-hidden="true"
+            className={`${styles.heroDot} ${index === activeRealSlideIndex ? styles.heroDotActive : ""}`}
+            key={slide.id}
+          />
+        ))}
+      </div>
+
       <button
         aria-label="Следующий слайд"
         className={`${styles.heroArrow} ${styles.heroArrowRight}`}
-        onClick={handleArrowClick}
+        onClick={() => handleArrowClick("next")}
         type="button"
       >
         <ArrowIcon />

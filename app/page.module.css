@@ -4,7 +4,7 @@
   overflow: hidden;
   height: 696px;
   min-height: 696px;
-  background: url("/img/hero/wood-bg.webp") center top / cover no-repeat;
+  background: var(--bg-secondary);
   isolation: isolate;
 }
 
@@ -109,6 +109,18 @@
 
 .heroSlideCutting {
   position: relative;
+  isolation: isolate;
+}
+
+.heroCuttingBackground {
+  position: absolute;
+  top: calc((var(--hero-slide-bg-top) + var(--hero-slide-bg-viewport-top)) * -1);
+  bottom: calc(var(--hero-slide-bg-bottom) * -1);
+  left: calc(50% - 50vw);
+  width: 100vw;
+  background: url("/img/hero/wood-bg.webp") center top / cover no-repeat;
+  z-index: 0;
+  pointer-events: none;
 }
 
 .heroSlideCutting .heroCopy {
@@ -118,6 +130,7 @@
 .heroSlideCutting .heroVisual {
   grid-column: 2 / 3;
   justify-self: end;
+  z-index: 1;
 }
 
 .heroSlideCutting .heroTitle {
@@ -342,6 +355,23 @@
 
 .heroArrowRight {
   right: 6px;
+}
+
+.heroDots {
+  display: none;
+}
+
+.heroDot {
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 2px 8px rgba(var(--brown-rgb), 0.16);
+}
+
+.heroDotActive {
+  background: var(--ochre);
 }
 
 .arrowLeft {
@@ -924,8 +954,8 @@
   .heroContainer {
     height: 640px;
     min-height: 640px;
-    --hero-slide-bg-top: 92px;
-    --hero-slide-bg-bottom: 46px;
+    --hero-slide-bg-top: 105px;
+    --hero-slide-bg-bottom: 33px;
   }
 
   .heroContent {
@@ -1415,15 +1445,13 @@ padding-top: 98px;
     --hero-arrow-inset: clamp(12px, 3.4vw, 25px);
     height: 520px;
     min-height: 520px;
-    background:
-      linear-gradient(0deg, rgba(255, 255, 255, 0.32), rgba(255, 255, 255, 0.32)),
-      url("/img/hero/wood-bg.webp") center top / cover no-repeat;
+    background: var(--bg-secondary);
   }
 
   .heroContainer {
     height: 520px;
     min-height: 520px;
-    --hero-slide-bg-top: 76px;
+    --hero-slide-bg-top: 105px;
     --hero-slide-bg-bottom: 0px;
     --hero-slide-bg-viewport-top: 0px;
   }
@@ -1468,9 +1496,16 @@ padding-top: 98px;
   }
 
   .heroInStockBackground,
-  .heroHelpCanvas {
+  .heroHelpCanvas,
+  .heroCuttingBackground {
     top: calc((var(--hero-slide-bg-top) + var(--hero-slide-bg-viewport-top)) * -1);
     bottom: calc(var(--hero-slide-bg-bottom) * -1);
+  }
+
+  .heroCuttingBackground {
+    background:
+      linear-gradient(0deg, rgba(255, 255, 255, 0.32), rgba(255, 255, 255, 0.32)),
+      url("/img/hero/wood-bg.webp") center top / cover no-repeat;
   }
 
   .heroHelpCanvas {
@@ -1551,11 +1586,14 @@ padding-top: 98px;
     width: min(100%, 390px);
     max-width: 390px;
     margin: 0 auto;
-    padding: 0;
+    padding: 12px;
     align-self: center;
     align-items: center;
-    justify-content: center;
+    justify-content: space-evenly;
     text-align: center;
+    min-height: 243px;
+    background: rgba(var(--bg-secondary-rgb), 0.85);
+    box-shadow: 0 10px 24px rgba(var(--brown-rgb), 0.08);
   }
 
   .heroSlideCutting .heroCopy {
@@ -1627,11 +1665,23 @@ padding-top: 98px;
   }
 
   .heroArrowLeft {
-    left: calc(50% - 54px);
+    left: calc(50% - 86px);
   }
 
   .heroArrowRight {
-    right: calc(50% - 54px);
+    right: calc(50% - 86px);
+  }
+
+  .heroDots {
+    position: absolute;
+    bottom: 33px;
+    left: 50%;
+    z-index: 4;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transform: translateX(-50%);
   }
 
 
@@ -1856,6 +1906,9 @@ padding-top: 98px;
   .heroContainer {
     height: 450px;
     min-height: 450px;
+    --hero-slide-bg-top: var(--hero-mobile-pad-top);
+    --hero-slide-bg-bottom: 0px;
+    --hero-slide-bg-viewport-top: 0px;
     padding-top: var(--hero-mobile-pad-top);
     padding-bottom: 0;
     padding-left: var(--hero-mobile-inline-pad);
@@ -1891,14 +1944,17 @@ padding-top: 98px;
 
   .heroCopy {
     gap: 14px;
-    max-width: 100%;
-    margin: 0;
-    padding: 0 2px;
-    min-height: 0;
+    width: min(100%, 330px);
+    max-width: 330px;
+    margin: 0 auto;
+    padding: 12px;
+    min-height: 243px;
     align-self: center;
     align-items: center;
     text-align: center;
-    justify-content: center;
+    justify-content: space-between;
+    background: rgba(var(--bg-secondary-rgb), 0.95);
+    box-shadow: 0 10px 24px rgba(var(--brown-rgb), 0.18);
   }
 
   .heroTitle {
@@ -1984,9 +2040,11 @@ padding-top: 98px;
   }
 
   .heroArrow {
-    top: 43%;
+    top: auto;
+    bottom: 18px;
     width: 44px;
     height: 44px;
+    transform: none;
   }
 
   .heroArrowLeft {
@@ -2200,7 +2258,8 @@ padding-top: 98px;
   }
 
   .heroArrow {
-    top: 46%;
+    top: auto;
+    bottom: 18px;
   }
 
   .heroSlide {
