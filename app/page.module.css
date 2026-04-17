@@ -1413,16 +1413,16 @@ padding-top: 98px;
   /* #region Hero */
   .hero {
     --hero-arrow-inset: clamp(12px, 3.4vw, 25px);
-    height: 370px;
-    min-height: 370px;
+    height: 520px;
+    min-height: 520px;
     background:
       linear-gradient(0deg, rgba(255, 255, 255, 0.32), rgba(255, 255, 255, 0.32)),
       url("/img/hero/wood-bg.webp") center top / cover no-repeat;
   }
 
   .heroContainer {
-    height: 370px;
-    min-height: 370px;
+    height: 520px;
+    min-height: 520px;
     --hero-slide-bg-top: 76px;
     --hero-slide-bg-bottom: 0px;
     --hero-slide-bg-viewport-top: 0px;
@@ -1492,13 +1492,19 @@ padding-top: 98px;
     top: auto;
     left: auto;
     transform: none;
-    width: min(100%, 390px);
-    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: min(100%, 380px);
+    height: 243px;
+    min-height: 243px;
     margin: 0 auto;
     padding: 12px 12px;
     gap: 10px;
     box-shadow: 0 10px 24px rgba(var(--brown-rgb), 0.18);
     align-self: center;
+    text-align: center;
   }
 
   .heroDesktopTextBase {
@@ -1519,7 +1525,8 @@ padding-top: 98px;
   .heroInStockTitle,
   .heroHelpTitle {
     width: auto;
-    min-height: 0;
+    height: fit-content;
+    text-align: center;
   }
 
   .heroSlideHeadingBase {
@@ -1530,8 +1537,9 @@ padding-top: 98px;
   .heroInStockLead,
   .heroHelpLead {
     width: auto;
-    min-height: 0;
+    height: fit-content;
     margin-top: 8px;
+    text-align: center;
   }
 
   .heroSlideLeadBase {
@@ -1540,7 +1548,8 @@ padding-top: 98px;
   }
 
   .heroCopy {
-    max-width: 100%;
+    width: min(100%, 390px);
+    max-width: 390px;
     margin: 0 auto;
     padding: 0;
     align-self: center;
@@ -1550,7 +1559,9 @@ padding-top: 98px;
   }
 
   .heroSlideCutting .heroCopy {
-    max-width: 100%;
+    width: min(100%, 390px);
+    max-width: 390px;
+    margin-inline: auto;
   }
 
   .heroTitle {
@@ -1606,7 +1617,21 @@ padding-top: 98px;
   }
 
   .heroArrow {
-    display: none;
+    display: inline-flex;
+    top: auto;
+    bottom: 18px;
+    width: 40px;
+    height: 40px;
+    transform: none;
+    z-index: 4;
+  }
+
+  .heroArrowLeft {
+    left: calc(50% - 54px);
+  }
+
+  .heroArrowRight {
+    right: calc(50% - 54px);
   }
 
 
@@ -1824,13 +1849,13 @@ padding-top: 98px;
     --hero-mobile-content-gap: clamp(16px, 4vw, 28px);
     --hero-mobile-slide-bottom-gap: 0px;
     --hero-mobile-visual-bottom-gap: var(--hero-mobile-pad-bottom);
-    height: 350px;
-    min-height: 350px;
+    height: 450px;
+    min-height: 450px;
   }
 
   .heroContainer {
-    height: 350px;
-    min-height: 350px;
+    height: 450px;
+    min-height: 450px;
     padding-top: var(--hero-mobile-pad-top);
     padding-bottom: 0;
     padding-left: var(--hero-mobile-inline-pad);
