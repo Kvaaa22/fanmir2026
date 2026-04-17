@@ -1919,8 +1919,8 @@
   .heroInStockBackground,
   .heroHelpCanvas,
   .heroCuttingBackground {
-    left: calc(50% - 50vw - var(--hero-mobile-inline-pad));
-    right: calc(50% - 50vw - var(--hero-mobile-inline-pad));
+    left: calc(var(--hero-mobile-inline-pad) * -1);
+    right: calc(var(--hero-mobile-inline-pad) * -1);
     width: auto;
   }
 
@@ -1985,7 +1985,7 @@
     width: min(100%, 340px);
     padding: 15px 10px;
     gap: 10px;
-    justify-content: space-between;
+    justify-content: space-evenly;
     height: 220px;
     min-height: 0;
   }
@@ -2163,8 +2163,8 @@
   .heroCopy {
     align-self: center;
     width: 320px;
-    min-height: clamp(208px, 50vw, 243px);
-    padding: 23px;
+    min-height: clamp(234px, 50vw, 243px);
+    padding: 20px 23px;
   }
 
   .heroTitle {
