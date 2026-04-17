@@ -1509,7 +1509,7 @@ padding-top: 98px;
 
   .heroDesktopTextBase {
     position: relative;
-    top: auto;
+    top: -30px;
     left: auto;
     transform: none;
   }
