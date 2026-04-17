@@ -987,7 +987,7 @@
     top: 76px;
   }
 
- 
+
 
 
   .heroSlideHeadingBase {
@@ -2139,15 +2139,26 @@
   .heroHelpCopy {
     width: min(100%, clamp(292px, 72vw, 308px));
     min-height: clamp(208px, 50vw, 243px);
-    height: clamp(208px, 50vw, 243px);
     padding: clamp(14px, 3.8vw, 20px);
     gap: clamp(8px, 2.8vw, 12px);
   }
 
+  .heroInStockCard {
+    height: 210px;
+  }
+
+  .heroInStockTitle {
+    width: 274px;
+  }
+
   .heroInStockTitle,
   .heroHelpTitle {
-    font-size: clamp(28px, 6.4vw, 30px);
-    line-height: clamp(32px, 7vw, 38px);
+    font-size: 30px;
+    line-height: 1.2;
+  }
+
+  .heroInStockLead {
+    width: 268px;
   }
 
   .heroInStockLead,
@@ -2178,7 +2189,7 @@
   }
 
   .heroBadge {
-   
+
     padding: clamp(6px, 1.7vw, 7px) clamp(10px, 2.6vw, 12px);
     font-size: 13px;
   }
@@ -2227,11 +2238,7 @@
     right: clamp(-24px, -6vw, -14px);
   }
 
-  .heroInStockTitle,
-  .heroHelpTitle {
-    font-size: clamp(25px, 7vw, 28px);
-    line-height: clamp(29px, 7.6vw, 34px);
-  }
+
 
   .heroSlide {
     justify-content: center;
@@ -2243,6 +2250,17 @@
     width: 300px;
   }
 
+  .heroInStockCard {
+    height: 220px;
+  }
+
+  .heroInStockTitle {
+    width: 272px;
+  }
+
+  .heroInStockLead {
+    width: 256px;
+  }
 
   /* #endregion Hero */
   /* #region Partners */
@@ -2271,10 +2289,22 @@
     font-size: clamp(11px, 3.4vw, 13px);
   }
 
-  .heroInStockTitle,
-  .heroHelpTitle {
-    font-size: clamp(23px, 7.2vw, 26px);
-    line-height: clamp(27px, 7.8vw, 32px);
+
+  .heroCopy {
+    align-self: center;
+    width: 300px;
+  }
+
+  .heroInStockCard {
+    height: 220px;
+  }
+
+  .heroInStockTitle {
+    width: 272px;
+  }
+
+  .heroInStockLead {
+    width: 256px;
   }
 
   .heroArrow {
@@ -2289,7 +2319,7 @@
 
   .heroCopy {
     align-self: center;
-    
+
   }
 
   /* #endregion Hero */
