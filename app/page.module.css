@@ -129,9 +129,7 @@
   pointer-events: none;
 }
 
-.heroSlideCutting .heroCopy {
-  max-width: 390px;
-}
+
 
 .heroSlideCutting .heroVisual {
   grid-column: 2 / 3;
@@ -989,10 +987,7 @@
     top: 76px;
   }
 
-  .heroSlideCutting .heroCopy {
-    max-width: 340px;
-  }
-
+ 
 
 
   .heroSlideHeadingBase {
@@ -1135,20 +1130,13 @@
   .heroCopy {
     gap: 20px;
     max-width: 300px;
-    margin-left: 1vw;
+    margin-left: 0;
   }
 
   .heroDesktopTextBase {
     left: clamp(65px, calc(65px + ((100vw - 900px) * 0.2030075)), 92px);
 
   }
-
-  .heroSlideCutting .heroCopy {
-    max-width: 300px;
-    margin-left: 0;
-  }
-
-
 
   .heroSlideHeadingBase {
     font-size: 34px;
@@ -1297,7 +1285,6 @@
   .heroCopy {
     max-width: 240px;
     gap: 15px;
-    margin-left: 2vw;
   }
 
   .heroDesktopTextBase {
@@ -1306,10 +1293,7 @@
     transform: translateY(-50%);
   }
 
-  .heroSlideCutting .heroCopy {
-    max-width: 240px;
-    margin-left: 0;
-  }
+
 
 
 
@@ -1599,11 +1583,6 @@
     box-shadow: 0 10px 24px rgba(var(--brown-rgb), 0.08);
   }
 
-  .heroSlideCutting .heroCopy {
-    width: min(100%, 390px);
-    max-width: 390px;
-    margin-inline: auto;
-  }
 
   .heroTitle {
     margin-top: 0;
@@ -1907,6 +1886,9 @@
   }
 
   .heroContainer {
+    width: 100%;
+    max-width: none;
+    margin: 0;
     height: 450px;
     min-height: 450px;
     --hero-slide-bg-top: var(--hero-mobile-pad-top);
@@ -1934,6 +1916,14 @@
     min-height: 100%;
   }
 
+  .heroInStockBackground,
+  .heroHelpCanvas,
+  .heroCuttingBackground {
+    left: calc(50% - 50vw - var(--hero-mobile-inline-pad));
+    right: calc(50% - 50vw - var(--hero-mobile-inline-pad));
+    width: auto;
+  }
+
   .heroSlide {
     display: flex;
     flex-direction: column;
@@ -1946,7 +1936,7 @@
   }
 
   .heroCopy {
-    width: min(100%, 370px);
+    width: min(100%, 360px);
     max-width: 370px;
     margin: 0 auto;
     padding: 30px;
@@ -1955,13 +1945,9 @@
     align-items: center;
     text-align: center;
     box-shadow: 0 10px 24px rgba(var(--brown-rgb), 0.18);
-    justify-content: space-between;
+    justify-content: space-evenly;
   }
 
-  .heroSlideCutting .heroCopy {
-    width: min(100%, 370px);
-    max-width: 370px;
-  }
 
   .heroTitle {
     line-height: 1.08;
@@ -1982,7 +1968,6 @@
   }
 
   .heroBadge {
-    min-height: 38px;
     padding: 7px 12px;
     font-size: 14px;
   }
@@ -2000,7 +1985,7 @@
     width: min(100%, 340px);
     padding: 15px 10px;
     gap: 10px;
-    justify-content: space-evenly;
+    justify-content: space-between;
     height: 220px;
     min-height: 0;
   }
@@ -2152,17 +2137,22 @@
 
   .heroInStockCard,
   .heroHelpCopy {
-    width: min(100%, 308px);
+    width: min(100%, clamp(292px, 72vw, 308px));
+    min-height: clamp(208px, 50vw, 243px);
+    height: clamp(208px, 50vw, 243px);
+    padding: clamp(14px, 3.8vw, 20px);
+    gap: clamp(8px, 2.8vw, 12px);
   }
 
   .heroInStockTitle,
   .heroHelpTitle {
-    font-size: 30px;
+    font-size: clamp(28px, 6.4vw, 30px);
+    line-height: clamp(32px, 7vw, 38px);
   }
 
   .heroInStockLead,
   .heroHelpLead {
-    font-size: 13px;
+    font-size: clamp(12px, 3.1vw, 13px);
   }
 
   .heroSlide {
@@ -2172,8 +2162,36 @@
 
   .heroCopy {
     align-self: center;
-    justify-content: center;
-    width: min(100%, 308px);
+    width: 320px;
+    min-height: clamp(208px, 50vw, 243px);
+    padding: 23px;
+  }
+
+  .heroTitle {
+    font-size: 32px;
+    line-height: 40px;
+  }
+
+  .heroLead {
+    font-size: 13px;
+    line-height: 1.35;
+  }
+
+  .heroBadge {
+   
+    padding: clamp(6px, 1.7vw, 7px) clamp(10px, 2.6vw, 12px);
+    font-size: 13px;
+  }
+
+  .heroTitle br,
+  .heroInStockTitle br,
+  .heroHelpTitle br,
+  .heroLead br,
+  .heroInStockLead br,
+  .heroHelpLead br,
+  .heroTitleText br,
+  .heroLeadText br {
+    display: none;
   }
 
   /* #endregion Hero */
@@ -2200,10 +2218,6 @@
     --hero-mobile-content-gap: clamp(12px, 3.4vw, 18px);
   }
 
-  .heroTitle {
-    font-size: 36px;
-  }
-
   .heroVisualMain {
     width: clamp(236px, 77vw, 284px);
   }
@@ -2215,7 +2229,8 @@
 
   .heroInStockTitle,
   .heroHelpTitle {
-    font-size: 28px;
+    font-size: clamp(25px, 7vw, 28px);
+    line-height: clamp(29px, 7.6vw, 34px);
   }
 
   .heroSlide {
@@ -2225,7 +2240,7 @@
 
   .heroCopy {
     align-self: center;
-    justify-content: center;
+    width: 300px;
   }
 
 
@@ -2252,18 +2267,14 @@
     --hero-mobile-copy-top-gap: 8px;
   }
 
-  .heroTitle {
-    font-size: 34px;
-  }
-
   .heroBadge {
-    min-height: 40px;
-    font-size: 14px;
+    font-size: clamp(11px, 3.4vw, 13px);
   }
 
   .heroInStockTitle,
   .heroHelpTitle {
-    font-size: 26px;
+    font-size: clamp(23px, 7.2vw, 26px);
+    line-height: clamp(27px, 7.8vw, 32px);
   }
 
   .heroArrow {
@@ -2278,7 +2289,7 @@
 
   .heroCopy {
     align-self: center;
-    justify-content: center;
+    
   }
 
   /* #endregion Hero */

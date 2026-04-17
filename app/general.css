@@ -33,6 +33,12 @@
   --shadow-card: 0 20px 48px rgba(var(--brown-rgb), 0.11);
 }
 
+html,
+body {
+  margin: 0;
+  overflow-x: hidden;
+}
+
 .container {
   width: min(calc(100% - 48px), 1284px);
   margin: 0 auto;

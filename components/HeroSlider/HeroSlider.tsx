@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
@@ -179,6 +179,7 @@ export function HeroSlider() {
                         <span className={styles.heroTitleText}>
                           {"Резка\u00A0по\u00A0вашим "}
                           <br />
+                          {" "}
                           размерам
                         </span>
                       </h1>
@@ -239,14 +240,17 @@ export function HeroSlider() {
                       <h2 className={`${styles.heroInStockTitle} ${styles.heroSlideHeadingBase}`}>
                         В наличии более
                         <br />
+                        {" "}
                         300 видов
                         <br />
+                        {" "}
                         фанеры
                       </h2>
 
                       <p className={`${styles.heroInStockLead} ${styles.heroSlideLeadBase}`}>
                         Более трехсот наименований фанеры
                         <br />
+                        {" "}
                         и других листовых материалов
                       </p>
                     </article>
@@ -274,16 +278,20 @@ export function HeroSlider() {
                       <h2 className={`${styles.heroHelpTitle} ${styles.heroSlideHeadingBase}`}>
                         Помощь в подборе
                         <br />
+                        {" "}
                         материалов под
                         <br />
+                        {" "}
                         ваши задачи
                       </h2>
 
                       <p className={`${styles.heroHelpLead} ${styles.heroSlideLeadBase}`}>
                         Наши менеджеры помогут в поиске
                         <br />
+                        {" "}
                         подходящих решений, в зависимости
                         <br />
+                        {" "}
                         от условий и бюджета
                       </p>
                     </article>
