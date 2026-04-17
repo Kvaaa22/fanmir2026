@@ -96,6 +96,7 @@
   line-height: 56px;
   color: #2f2f2f;
 }
+
 .heroTitle {
   margin: 64px 0 0;
   white-space: pre-line;
@@ -262,7 +263,7 @@
 
 .heroInStockLead {
   width: 367px;
- height: fit-content;
+  height: fit-content;
 }
 
 .heroHelpCanvas {
@@ -1223,7 +1224,7 @@
   }
 
   .heroHelpLead {
-    margin-top: 16px;
+    margin-top: 10px;
   }
 
   /* #endregion Hero */
@@ -1534,7 +1535,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    
+
     width: min(100%, 370px);
     height: 243px;
     min-height: 243px;
@@ -1945,17 +1946,21 @@
   }
 
   .heroCopy {
-    gap: 14px;
-    width: min(100%, 330px);
-    max-width: 330px;
+    width: min(100%, 370px);
+    max-width: 370px;
     margin: 0 auto;
-    padding: 12px;
-    min-height: 243px;
+    padding: 30px;
+    min-height: 253px;
     align-self: center;
     align-items: center;
     text-align: center;
-    background: rgba(var(--bg-secondary-rgb), 0.95);
     box-shadow: 0 10px 24px rgba(var(--brown-rgb), 0.18);
+    justify-content: space-between;
+  }
+
+  .heroSlideCutting .heroCopy {
+    width: min(100%, 370px);
+    max-width: 370px;
   }
 
   .heroTitle {
@@ -1992,9 +1997,12 @@
 
   .heroInStockCard,
   .heroHelpCopy {
-    width: min(100%, 330px);
-    padding: 12px;
+    width: min(100%, 340px);
+    padding: 15px 10px;
     gap: 10px;
+    justify-content: space-evenly;
+    height: 220px;
+    min-height: 0;
   }
 
   .heroInStockTitle,
@@ -2165,6 +2173,7 @@
   .heroCopy {
     align-self: center;
     justify-content: center;
+    width: min(100%, 308px);
   }
 
   /* #endregion Hero */
