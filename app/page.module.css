@@ -31,10 +31,6 @@
 .heroViewport {
   grid-column: 1 / -1;
   overflow: visible;
-  padding-top: 72px;
-  padding-bottom: 72px;
-  margin-top: -72px;
-  margin-bottom: -72px;
   min-width: 0;
 }
 
@@ -930,7 +926,6 @@
     min-height: 640px;
     --hero-slide-bg-top: 92px;
     --hero-slide-bg-bottom: 46px;
-    padding-top: 92px;
   }
 
   .heroContent {
@@ -943,12 +938,6 @@
     height: 502px;
   }
 
-  .heroViewport {
-    padding-top: 60px;
-    padding-bottom: 60px;
-    margin-top: -60px;
-    margin-bottom: -60px;
-  }
 
   .heroSlide {
     grid-template-columns: 340px 520px;
@@ -1087,7 +1076,7 @@
     --hero-slide-bg-top: 56px;
     --hero-slide-bg-bottom: 92px;
     --hero-slide-bg-viewport-top: 102px;
-    padding-top: 56px;
+padding-top: 98px;
   }
 
   .heroContent {
@@ -1100,11 +1089,6 @@
     height: 444px;
   }
 
-  .heroViewport {
-    padding-top: 102px;
-    padding-bottom: 52px;
-    margin-bottom: -52px;
-  }
 
   .heroSlide {
     grid-template-columns: 300px 460px;
@@ -1255,16 +1239,8 @@
     --hero-slide-bg-top: 100px;
     --hero-slide-bg-bottom: 72px;
     --hero-slide-bg-viewport-top: 44px;
-    padding-top: 100px;
-    padding-bottom: 0;
   }
 
-  .heroViewport {
-    padding-top: 44px;
-    padding-bottom: 44px;
-    margin-top: -44px;
-    margin-bottom: -44px;
-  }
 
   .heroContent {
     grid-template-columns: 1fr 360px;
@@ -1450,18 +1426,12 @@
     --hero-slide-bg-top: 76px;
     --hero-slide-bg-bottom: 0px;
     --hero-slide-bg-viewport-top: 0px;
-    padding-top: 76px;
-    padding-bottom: 0;
   }
 
   .heroViewport {
     overflow: visible;
     height: 100%;
     min-height: 100%;
-    padding-top: 0;
-    padding-bottom: 0;
-    margin-top: 0;
-    margin-bottom: 0;
   }
 
   .heroContent {
@@ -1876,8 +1846,6 @@
     overflow: visible;
     height: 100%;
     min-height: 100%;
-    padding: 0;
-    margin: 0;
   }
 
   .heroTrack {
