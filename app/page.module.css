@@ -1384,7 +1384,7 @@
   /* #region Partners */
   .partnersBlock {
     right: 32px;
-    bottom: 20px;
+    bottom: 35px;
     left: 32px;
   }
 
@@ -1432,9 +1432,12 @@
   /* #region Hero */
   .hero {
     --hero-arrow-inset: clamp(12px, 3.4vw, 25px);
+    --partners-section-height: calc(100dvh - 520px);
     height: 520px;
     min-height: 520px;
     background: var(--bg-secondary);
+    overflow: visible;
+    margin-bottom: var(--partners-section-height);
   }
 
   .heroContainer {
@@ -1677,26 +1680,39 @@
 
   .partnersMobileSection {
     display: block;
-    margin-top: 12px;
-    background: transparent;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: var(--partners-section-height);
+    min-height: var(--partners-section-height);
+    padding: 26px 0 28px;
+    background: #ffffff;
   }
 
   .hero .partnersMobileSection {
-    display: none;
+    display: block;
   }
 
   .partnersAfterBenefitsMobileSection {
-    display: block;
-    padding: 20px 0;
-    background:
-      linear-gradient(0deg, rgba(255, 255, 255, 0.32), rgba(255, 255, 255, 0.32)),
-      url("/img/hero/wood-bg.webp") center top / cover no-repeat;
+    display: none;
   }
 
   .partnersAfterBenefitsMobileInner .partnersLabel {
     width: 100%;
     margin: 0 0 8px;
     padding-left: 0;
+  }
+
+  .partnersLabel {
+    width: 100%;
+    margin: 0 0 20px;
+    padding-left: 33px;
+    font-family: var(--font-heading), serif;
+    font-size: 34px;
+    line-height: 1.04;
+    font-weight: 400;
+    color: var(--color-muted);
   }
 
   .partnersTitle {
@@ -1723,14 +1739,26 @@
     background: transparent;
     box-shadow: none;
     align-items: stretch;
-    justify-items: stretch;
+    justify-items: center;
   }
 
   .partnersPanel>* {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
     min-height: 92px;
     background: rgba(var(--bg-grey-rgb), 0.88);
     /*filter: drop-shadow(0px 18px 45px rgba(10, 13, 15, 0.178));*/
 
+  }
+
+  .partnersPanel>.partnerLogoWide,
+  .partnersPanel>.partnerLogoMedium,
+  .partnersPanel>.partnerLogoRound {
+    justify-self: center;
+    justify-content: center;
+    text-align: center;
   }
 
   .partnersPanel> :nth-child(1) {
@@ -1869,6 +1897,64 @@
   /* #endregion Hero */
 }
 
+@media (max-width: 739px) and (min-width: 530px) {
+
+  /* #region Hero */
+  .hero {
+    height: 500px;
+    min-height: 500px;
+    --partners-section-height: calc(100dvh - 500px);
+    margin-bottom: var(--partners-section-height);
+  }
+
+  .heroContainer {
+    height: 500px;
+    min-height: 500px;
+  }
+
+  /* #endregion Hero */
+
+  /* #region Partners */
+  .partnersMobileSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    min-height: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .partnersBlock {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    width: min(calc(100% - 48px), 620px);
+    min-height: var(--partners-section-height);
+    height: auto;
+    margin: 0;
+  }
+
+  .partnersLabel {
+    margin: 0;
+    padding-left: 0;
+    text-align: left;
+  }
+
+  .partnersPanel {
+    grid-template-rows: repeat(2, minmax(86px, auto));
+    width: 100%;
+    margin: 0;
+  }
+
+  .partnersPanel>* {
+    min-height: 86px;
+  }
+
+  /* #endregion Partners */
+}
+
 
 @media (max-width: 529px) {
 
@@ -1881,8 +1967,10 @@
     --hero-mobile-content-gap: clamp(16px, 4vw, 28px);
     --hero-mobile-slide-bottom-gap: 0px;
     --hero-mobile-visual-bottom-gap: var(--hero-mobile-pad-bottom);
+    --partners-section-height: calc(100dvh - 450px);
     height: 450px;
     min-height: 450px;
+    margin-bottom: var(--partners-section-height);
   }
 
   .heroContainer {
@@ -2053,6 +2141,8 @@
   /* #region Partners */
   .partnersMobileSection {
     --partners-hero-inline-pad: 10px;
+    height: var(--partners-section-height);
+    min-height: var(--partners-section-height);
   }
 
   .partnersBlock {
@@ -2364,6 +2454,10 @@
 
   /* #endregion Hero */
   /* #region Partners */
+
+
+
+
   /* #endregion Partners */
   /* #region Benefits */
   /* #endregion Benefits */

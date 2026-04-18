@@ -58,14 +58,14 @@ body {
 
 @media (max-width: 739px) {
   .section-title {
-    font-size: 36px;
+    font-size: 34px;
     margin-bottom: 48px;
     margin-left: 33px;
   }
 }
 @media (max-width: 462px) {
   .section-title {
-    font-size: 34px;
+    font-size: 33px;
     margin-left: 23px;
   }
 }
