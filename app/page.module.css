@@ -1422,12 +1422,12 @@
   /* #region Hero */
   .hero {
     --hero-arrow-inset: clamp(12px, 3.4vw, 25px);
-    --partners-section-height: calc(100dvh - 500px);
+    --partners-section-height: 360px;
     height: 500px;
     min-height: 500px;
     background: var(--bg-secondary);
     overflow: visible;
-    margin-bottom: max(var(--partners-section-height), 360px);
+    margin-bottom: var(--partners-section-height);
   }
 
   .heroContainer {
@@ -1676,8 +1676,8 @@
     top: 100%;
     left: 0;
     right: 0;
-    height: max(var(--partners-section-height), 360px);
-    min-height: max(var(--partners-section-height), 360px);
+    height: var(--partners-section-height);
+    min-height: var(--partners-section-height);
     padding: 0;
     background: #ffffff;
     box-sizing: border-box;
@@ -1722,7 +1722,7 @@
     position: static;
     width: min(calc(100% - 48px), 620px);
     max-width: min(calc(100% - 48px), 620px);
-    min-height: max(var(--partners-section-height), 360px);
+    min-height: var(--partners-section-height);
     height: 100%;
     margin: 0 auto;
   }
@@ -1899,10 +1899,10 @@
     --hero-mobile-content-gap: clamp(16px, 4vw, 28px);
     --hero-mobile-slide-bottom-gap: 0px;
     --hero-mobile-visual-bottom-gap: var(--hero-mobile-pad-bottom);
-    --partners-section-height: calc(100dvh - 480px);
+    --partners-section-height: 360px;
     height: 480px;
     min-height: 480px;
-    margin-bottom: max(var(--partners-section-height), 360px);
+    margin-bottom: var(--partners-section-height);
   }
 
   .heroContainer {
@@ -2094,7 +2094,7 @@
     align-items: center;
     width: calc(100% - (var(--partners-hero-inline-pad) * 2));
     max-width: 100%;
-    min-height: max(var(--partners-section-height), 340px);
+    min-height: var(--partners-section-height);
     height: auto;
     margin: 0 auto;
   }
@@ -2163,7 +2163,8 @@
     --hero-mobile-pad-top: 74px;
     --hero-mobile-copy-top-gap: 14px;
     --hero-mobile-content-gap: clamp(14px, 3.8vw, 22px);
-    margin-bottom: max(var(--partners-section-height), 590px);
+    --partners-section-height: 590px;
+    margin-bottom: var(--partners-section-height);
   }
 
   .heroArrowLeft {
@@ -2264,11 +2265,11 @@
   /* #endregion Hero */
   /* #region Partners */
   .partnersMobileSection {
-    min-height: max(var(--partners-section-height), 590px);
+    min-height: var(--partners-section-height);
   }
 
   .partnersBlock {
-    min-height: max(var(--partners-section-height), 590px);
+    min-height: var(--partners-section-height);
   }
 
   .partnersLabel {
