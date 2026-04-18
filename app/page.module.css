@@ -1703,7 +1703,7 @@
     margin: 0;
     padding-left: 0;
     font-family: var(--font-heading), serif;
-    font-size: 34px;
+    font-size: clamp(32px, calc(26.93px + 0.9569vw), 34px);
     line-height: 1.04;
     font-weight: 400;
     color: var(--color-muted);
@@ -1724,7 +1724,7 @@
     max-width: min(calc(100% - 48px), 620px);
     min-height: var(--partners-section-height);
     height: auto;
-    margin: 0;
+    margin: 0 auto;
   }
 
   .partnersPanel {
