@@ -2163,7 +2163,7 @@
     --hero-mobile-pad-top: 74px;
     --hero-mobile-copy-top-gap: 14px;
     --hero-mobile-content-gap: clamp(14px, 3.8vw, 22px);
-    margin-bottom: max(var(--partners-section-height), 500px);
+    margin-bottom: max(var(--partners-section-height), 590px);
   }
 
   .heroArrowLeft {
@@ -2264,27 +2264,28 @@
   /* #endregion Hero */
   /* #region Partners */
   .partnersMobileSection {
-    min-height: max(var(--partners-section-height), 500px);
+    min-height: max(var(--partners-section-height), 590px);
   }
 
   .partnersBlock {
-    min-height: max(var(--partners-section-height), 500px);
+    min-height: max(var(--partners-section-height), 590px);
   }
 
   .partnersLabel {
     font-size: 30px;
-    padding-left: 52px;
+    padding-left: 38px;
+    margin-top: 30px;
   }
 
   .partnersPanel {
-    width: 74%;
+    width: 82%;
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: repeat(4, minmax(72px, auto));
+    grid-template-rows: repeat(4, minmax(88px, auto));
   }
 
   .partnersPanel>* {
-    min-height: 72px;
-    padding: 12px 10px;
+    min-height: 88px;
+    padding: 18px 14px;
   }
 
   .partnersPanel> :nth-child(1),
@@ -2311,23 +2312,23 @@
   }
 
   .partnersPanel> :nth-child(1) img {
-    max-width: min(100%, 176px);
-    max-height: 34px;
+    max-width: min(100%, 218px);
+    max-height: 46px;
   }
 
   .partnersPanel> :nth-child(2) img {
-    max-width: 68px;
-    max-height: 68px;
+    max-width: 92px;
+    max-height: 92px;
   }
 
   .partnersPanel> :nth-child(3) img {
-    max-width: min(100%, 154px);
-    max-height: 38px;
+    max-width: min(100%, 194px);
+    max-height: 50px;
   }
 
   .partnersPanel> :nth-child(4) img {
-    max-width: min(100%, 140px);
-    max-height: 36px;
+    max-width: min(100%, 180px);
+    max-height: 48px;
   }
 
   /* #endregion Partners */
@@ -2438,6 +2439,12 @@
   /* #region Partners */
   .partnersMobileSection {
     --partners-hero-inline-pad: 8px;
+  }
+
+   .partnersLabel {
+    font-size: 29px;
+    padding-left: 28px;
+    margin-top: 40px;
   }
 
   /* #endregion Partners */
