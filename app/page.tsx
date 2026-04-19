@@ -184,26 +184,28 @@ export default function Home() {
       <section className={styles.benefitsSection}>
         <div className="container">
           <div className={styles.benefitsStage}>
-            <h2 className={`section-title ${styles.benefitsTitle}`}>Наши преимущества</h2>
-
             <div className={styles.benefitsGrid}>
-              <div className={styles.benefitsCard}>
-                <ul className={styles.benefitsList}>
-                  {benefits.map((benefit) => (
-                    <li className={styles.benefitsItem} key={benefit.title}>
-                      <span className={styles.benefitsIcon}>
-                        <Image
-                          src={benefit.iconSrc}
-                          alt=""
-                          width={benefit.iconWidth}
-                          height={benefit.iconHeight}
-                          className={styles.benefitsIconImage}
-                        />
-                      </span>
-                      <span className={styles.benefitsText}>{benefit.title}</span>
-                    </li>
-                  ))}
-                </ul>
+              <div className={styles.benefitsContentColumn}>
+                <h2 className={`section-title ${styles.benefitsTitle}`}>Наши преимущества</h2>
+
+                <div className={styles.benefitsCard}>
+                  <ul className={styles.benefitsList}>
+                    {benefits.map((benefit) => (
+                      <li className={styles.benefitsItem} key={benefit.title}>
+                        <span className={styles.benefitsIcon}>
+                          <Image
+                            src={benefit.iconSrc}
+                            alt=""
+                            width={benefit.iconWidth}
+                            height={benefit.iconHeight}
+                            className={styles.benefitsIconImage}
+                          />
+                        </span>
+                        <span className={styles.benefitsText}>{benefit.title}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
 
               <div className={styles.advantagesLogoWrap}>
