@@ -1156,7 +1156,7 @@
   }
 
   .benefitsSection :global(.container) {
-    width: min(calc(100% - 56px), 1284px);
+    width: min(calc(100% - 86px), 1284px);
   }
 
   .benefitsStage {
@@ -1387,9 +1387,10 @@
     --advantages-section-padding-top: clamp(60px, 5.8vw, 68px);
     --advantages-section-padding-bottom: clamp(44px, 4.4vw, 52px);
     --advantages-container-gap: 48px;
-    --advantages-grid-columns: minmax(0, 1.08fr) minmax(300px, 0.82fr);
-    --advantages-grid-gap: clamp(22px, 2.8vw, 28px);
+    --advantages-stage-min-height: clamp(470px, calc(52vw - 90px), 530px);
+    --advantages-grid-columns: var(--advantages-card-width) var(--advantages-logo-width);
     --advantages-content-gap: clamp(20px, 2.4vw, 26px);
+    --advantages-card-width: clamp(500px, calc(44vw + 52px), 522px);
     --advantages-card-padding-block: clamp(24px, 2.6vw, 28px);
     --advantages-card-padding-inline: clamp(24px, 3.2vw, 34px);
     --advantages-card-radius: clamp(18px, 1.9vw, 20px);
@@ -1410,14 +1411,15 @@
 
   .benefitsStage {
     width: 100%;
-    min-height: auto;
+    min-height: var(--advantages-stage-min-height);
   }
 
   .benefitsContentColumn {
     display: flex;
     flex-direction: column;
+    justify-content: space-around;
     gap: var(--advantages-content-gap);
-    width: 100%;
+    width: var(--advantages-card-width);
     min-width: 0;
     padding: 0;
   }
@@ -1429,15 +1431,16 @@
     margin: 0 0 0 30px;
     font-size: var(--advantages-title-size);
     line-height: var(--advantages-title-line-height);
-    text-wrap: balance;
+    text-wrap: nowrap;
   }
 
   .benefitsGrid {
     display: grid;
     grid-template-columns: var(--advantages-grid-columns);
-    align-items: center;
+    align-items: stretch;
     gap: var(--advantages-grid-gap);
-    min-height: 0;
+    justify-content: space-evenly;
+    min-height: var(--advantages-stage-min-height);
     margin-top: 0;
   }
 
@@ -1445,7 +1448,7 @@
     position: relative;
     top: auto;
     left: auto;
-    width: 100%;
+    width: min(100%, var(--advantages-card-width));
     min-height: auto;
     padding: var(--advantages-card-padding-block) var(--advantages-card-padding-inline);
     border-radius: var(--advantages-card-radius);
@@ -1484,7 +1487,7 @@
     max-width: 390px;
     height: auto;
     aspect-ratio: 500.13 / 490;
-    margin: 0;
+    margin: 0 12px 0 0;
     min-width: 0;
   }
 
@@ -1662,6 +1665,7 @@
     --advantages-section-padding-top: clamp(60px, 7.2vw, 64px);
     --advantages-section-padding-bottom: clamp(42px, 5.2vw, 48px);
     --advantages-container-gap: 40px;
+    --advantages-stage-min-height: clamp(540px, 60vw, 600px);
     --advantages-grid-gap: clamp(18px, 2.8vw, 22px);
     --advantages-content-gap: clamp(18px, 2.8vw, 22px);
     --advantages-card-padding-block: clamp(22px, 2.8vw, 24px);
@@ -1684,6 +1688,7 @@
     align-items: center;
     justify-items: stretch;
     gap: var(--advantages-grid-gap);
+    min-height: var(--advantages-stage-min-height);
   }
 
   .advantagesLogoWrap {
@@ -2101,6 +2106,7 @@
     --advantages-section-padding-top: clamp(56px, 8vw, 64px);
     --advantages-section-padding-bottom: clamp(40px, 6vw, 48px);
     --advantages-container-gap: 40px;
+    --advantages-stage-min-height: clamp(520px, 72vw, 580px);
     --advantages-grid-gap: clamp(18px, 3.4vw, 24px);
     --advantages-content-gap: clamp(18px, 3.4vw, 22px);
     --advantages-card-padding-block: clamp(22px, 4vw, 26px);
@@ -2121,7 +2127,7 @@
 
   .benefitsStage {
     width: 100%;
-    min-height: auto;
+    min-height: var(--advantages-stage-min-height);
   }
 
   .benefitsContentColumn {
@@ -2147,7 +2153,7 @@
     justify-items: stretch;
     align-items: start;
     gap: var(--advantages-grid-gap);
-    min-height: 0;
+    min-height: var(--advantages-stage-min-height);
     margin-top: 0;
     width: min(100%, 620px);
     margin-inline: auto;
@@ -2521,6 +2527,7 @@
     --advantages-section-padding-top: clamp(50px, 10vw, 56px);
     --advantages-section-padding-bottom: clamp(36px, 8vw, 40px);
     --advantages-container-gap: 32px;
+    --advantages-stage-min-height: clamp(500px, 82vw, 560px);
     --advantages-grid-gap: clamp(16px, 4vw, 20px);
     --advantages-content-gap: clamp(16px, 4vw, 20px);
     --advantages-card-padding-block: clamp(20px, 4.2vw, 22px);
@@ -2538,6 +2545,7 @@
 
   .benefitsGrid {
     gap: var(--advantages-grid-gap);
+    min-height: var(--advantages-stage-min-height);
     width: min(100%, 540px);
   }
 
@@ -2736,6 +2744,7 @@
   .benefitsSection {
     --advantages-section-padding-top: clamp(48px, 11vw, 52px);
     --advantages-section-padding-bottom: clamp(34px, 8vw, 38px);
+    --advantages-stage-min-height: clamp(480px, 90vw, 540px);
     --advantages-grid-gap: clamp(16px, 4.2vw, 18px);
     --advantages-content-gap: clamp(16px, 4.2vw, 18px);
     --advantages-card-padding-block: clamp(20px, 4.4vw, 21px);
@@ -2813,6 +2822,7 @@
   .benefitsSection {
     --advantages-section-padding-top: clamp(44px, 12vw, 48px);
     --advantages-section-padding-bottom: clamp(32px, 9vw, 36px);
+    --advantages-stage-min-height: clamp(460px, 96vw, 520px);
     --advantages-card-padding-block: clamp(18px, 4.8vw, 20px);
     --advantages-card-padding-inline: clamp(14px, 4vw, 16px);
     --advantages-card-radius: clamp(14px, 4vw, 15px);
@@ -2886,6 +2896,7 @@
     --advantages-section-padding-top: clamp(42px, 12vw, 44px);
     --advantages-section-padding-bottom: clamp(30px, 8vw, 32px);
     --advantages-container-gap: 24px;
+    --advantages-stage-min-height: clamp(440px, 104vw, 500px);
     --advantages-grid-gap: 14px;
     --advantages-content-gap: 14px;
     --advantages-card-padding-block: clamp(16px, 4.8vw, 18px);
@@ -2955,6 +2966,7 @@
   .benefitsSection {
     --advantages-section-padding-top: clamp(40px, 13vw, 42px);
     --advantages-section-padding-bottom: clamp(28px, 9vw, 30px);
+    --advantages-stage-min-height: clamp(420px, 110vw, 480px);
     --advantages-card-padding-block: clamp(15px, 4.8vw, 16px);
     --advantages-card-padding-inline: clamp(11px, 4vw, 12px);
     --advantages-logo-width: clamp(184px, 61vw, 196px);
