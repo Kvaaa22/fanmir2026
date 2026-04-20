@@ -1588,7 +1588,7 @@
     --advantages-section-padding-top: clamp(60px, 5.8vw, 68px);
     --advantages-section-padding-bottom: clamp(44px, 4.4vw, 52px);
     --advantages-container-gap: 48px;
-    --advantages-stage-min-height: clamp(520px, calc(52vw - 40px), 580px);
+    --advantages-stage-min-height: clamp(470px, calc(15.08vw + 334.28px), 500px);
     --advantages-grid-columns: minmax(0, var(--advantages-card-width)) minmax(0, var(--advantages-logo-width));
     --advantages-grid-gap: clamp(20px, calc(-114.85px + 15vw), 50px);
     --advantages-content-gap: 20px;
@@ -1603,7 +1603,7 @@
     --advantages-text-line-height: 1.45;
     --advantages-list-gap: 20px;
     --advantages-item-gap: 20px;
-    --advantages-logo-width: clamp(320px, 35vw, 390px);
+    --advantages-logo-width: clamp(350px, 38vw, 430px);
     padding: var(--advantages-section-padding-top) 0 var(--advantages-section-padding-bottom);
   }
 
@@ -1644,6 +1644,7 @@
     justify-content: center;
     min-height: var(--advantages-stage-min-height);
     margin-top: 0;
+    margin-left: 10px;
   }
 
   .benefitsCard {
@@ -1690,6 +1691,7 @@
     height: auto;
     aspect-ratio: 500.13 / 490;
     margin: 0 12px 0 0;
+    transform: translateX(clamp(0px, calc((1099px - 100vw) * 0.1005), 20px));
     min-width: 0;
   }
 
@@ -1892,8 +1894,8 @@
     --advantages-stage-min-height: 0px;
     --advantages-card-width: clamp(371px, calc(23px + 47vw), 440px);
     --advantages-grid-gap: 8px;
-    --advantages-content-gap: 10px;
-    --advantages-card-padding-block: 14px;
+    --advantages-content-gap: 0px;
+    --advantages-card-padding-block: 4px;
     --advantages-card-padding-inline: clamp(20px, 3.8vw, 26px);
     --advantages-card-radius: clamp(16px, 2vw, 18px);
     --advantages-icon-size: clamp(20px, 2.4vw, 21px);
