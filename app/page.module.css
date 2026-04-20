@@ -1630,7 +1630,7 @@
     position: relative;
     top: auto;
     left: auto;
-    margin: 0 0 0 30px;
+    margin: 0 0 0 3и0px;
     font-size: var(--advantages-title-size);
     line-height: var(--advantages-title-line-height);
     text-wrap: nowrap;
@@ -1691,7 +1691,6 @@
     height: auto;
     aspect-ratio: 500.13 / 490;
     margin: 0 12px 0 0;
-    transform: translateX(clamp(0px, calc((1099px - 100vw) * 0.1005), 20px));
     min-width: 0;
   }
 
