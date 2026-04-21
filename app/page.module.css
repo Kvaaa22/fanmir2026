@@ -1977,7 +1977,7 @@
   /* #region Hero */
   .hero {
     --hero-arrow-inset: clamp(12px, 3.4vw, 25px);
-    --partners-section-height: 360px;
+    --partners-section-height: 380px;
     height: 500px;
     min-height: 500px;
     background: var(--bg-secondary);
@@ -2255,14 +2255,15 @@
 
   .partnersLabel {
     width: 100%;
-    margin: 20px 0 0 0;
+    text-align: center;
+    margin-top: 20px;
     padding-left: 0;
     font-family: var(--font-heading), serif;
     font-size: clamp(32px, calc(26.93px + 0.9569vw), 34px);
     line-height: 1.04;
     font-weight: 400;
     color: var(--color-muted);
-    text-align: left;
+
   }
 
   .partnersTitle {
@@ -2273,13 +2274,15 @@
   .partnersBlock {
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: center;
     position: static;
     width: min(calc(100% - 48px), 620px);
     max-width: min(calc(100% - 48px), 620px);
     min-height: var(--partners-section-height);
     height: 100%;
     margin: 0 auto;
+    gap: 40px;
+
   }
 
   .partnersPanel {
@@ -2398,7 +2401,7 @@
   .benefitsContentColumn {
     display: flex;
     flex-direction: column;
-    gap: var(--advantages-content-gap);
+    gap: 45px;
     width: 100%;
     min-height: 100%;
     min-width: 0;
@@ -2408,7 +2411,7 @@
     position: relative;
     top: auto;
     left: auto;
-    margin: 0;
+    margin: 0 auto;
     font-size: var(--advantages-title-size);
     line-height: var(--advantages-title-line-height);
   }
@@ -2418,7 +2421,6 @@
     grid-template-columns: minmax(0, 1fr);
     justify-items: stretch;
     align-items: start;
-    gap: var(--advantages-grid-gap);
     min-height: var(--advantages-stage-min-height);
     margin-top: 0;
     width: min(100%, 620px);
@@ -2429,10 +2431,11 @@
     position: relative;
     top: auto;
     left: auto;
-    width: 100%;
+    width: 90%;
     min-height: auto;
-    padding: var(--advantages-card-padding-block) var(--advantages-card-padding-inline);
+    padding: 35px 40px;
     border-radius: var(--advantages-card-radius);
+    margin: 0 auto 40px auto;
   }
 
   .benefitsList {
@@ -2559,7 +2562,7 @@
     --hero-mobile-content-gap: clamp(16px, 4vw, 28px);
     --hero-mobile-slide-bottom-gap: 0px;
     --hero-mobile-visual-bottom-gap: var(--hero-mobile-pad-bottom);
-    --partners-section-height: 360px;
+    --partners-section-height: 380px;
     height: 480px;
     min-height: 480px;
     margin-bottom: var(--partners-section-height);
@@ -2750,7 +2753,6 @@
   .partnersBlock {
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
     align-items: center;
     width: calc(100% - (var(--partners-hero-inline-pad) * 2));
     max-width: 100%;
@@ -2759,10 +2761,7 @@
     margin: 0 auto;
   }
 
-  .partnersLabel {
-    margin-top: 25px;
-    padding-left: 24px;
-  }
+
 
   .partnersTitle {
     margin: 40px 0 40px 24px;
@@ -2863,7 +2862,7 @@
     --hero-mobile-pad-top: 74px;
     --hero-mobile-copy-top-gap: 14px;
     --hero-mobile-content-gap: clamp(14px, 3.8vw, 22px);
-    --partners-section-height: 590px;
+    --partners-section-height: 610px;
     margin-bottom: var(--partners-section-height);
   }
 
@@ -2974,8 +2973,9 @@
 
   .partnersLabel {
     font-size: 30px;
-    padding-left: 38px;
+    padding-left: 43px;
     margin-top: 30px;
+    text-align: left;
   }
 
   .partnersPanel {
