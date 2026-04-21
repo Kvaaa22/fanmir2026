@@ -1588,11 +1588,11 @@
     --advantages-section-padding-top: clamp(48px, calc(48px + 12 * ((100vw - 900px) / 199)), 60px);
     --advantages-section-padding-bottom: clamp(36px, calc(36px + 8 * ((100vw - 900px) / 199)), 44px);
     --advantages-container-gap: 86px;
-    --advantages-stage-min-height: clamp(432px, calc(480px - 48 * ((100vw - 900px) / 199)), 480px);
-    --advantages-grid-columns: minmax(0, var(--advantages-card-width)) minmax(0, var(--advantages-logo-width));
+    --advantages-stage-min-height: clamp(420px, calc(480px - 30 * ((100vw - 900px) / 199)), 480px);
+    --advantages-grid-columns: var(--advantages-card-width) var(--advantages-logo-width);
     --advantages-grid-gap: clamp(18px, calc(18px + 10 * ((100vw - 900px) / 199)), 28px);
     --advantages-content-gap: clamp(14px, calc(14px + 4 * ((100vw - 900px) / 199)), 18px);
-    --advantages-card-width: clamp(430px, calc(430px + 50 * ((100vw - 900px) / 199)), 480px);
+    --advantages-card-width: clamp(410px, calc(410px + 100 * ((100vw - 900px) / 199)), 510px);
     --advantages-card-padding-block: clamp(18px, calc(18px + 6 * ((100vw - 900px) / 199)), 24px);
     --advantages-card-padding-inline: clamp(20px, calc(20px + 10 * ((100vw - 900px) / 199)), 30px);
     --advantages-card-radius: clamp(16px, calc(16px + 2 * ((100vw - 900px) / 199)), 18px);
@@ -1603,7 +1603,7 @@
     --advantages-text-line-height: 1.45;
     --advantages-list-gap: clamp(14px, calc(14px + 4 * ((100vw - 900px) / 199)), 18px);
     --advantages-item-gap: clamp(14px, calc(14px + 4 * ((100vw - 900px) / 199)), 18px);
-    --advantages-logo-width: clamp(300px, calc(300px + 60 * ((100vw - 900px) / 199)), 360px);
+    --advantages-logo-width: clamp(320px, calc(320px + 80 * ((100vw - 900px) / 199)), 400px);
     padding: var(--advantages-section-padding-top) 0 var(--advantages-section-padding-bottom);
   }
 
@@ -1632,7 +1632,7 @@
     position: relative;
     top: auto;
     left: auto;
-    margin: 0 0 0 40px;
+    margin: 0 0 0 30px;
     font-size: var(--advantages-title-size);
     line-height: var(--advantages-title-line-height);
     text-wrap: nowrap;
@@ -1642,10 +1642,11 @@
     display: grid;
     grid-template-columns: var(--advantages-grid-columns);
     align-items: start;
-    justify-content: space-evenly;
+    justify-content: center;
     min-height: var(--advantages-stage-min-height);
     margin-top: 0;
     margin-left: 10px;
+    gap: 15px;
   }
 
   .benefitsCard {
@@ -1656,6 +1657,7 @@
     min-height: auto;
     padding: 25px 35px;
     border-radius: var(--advantages-card-radius);
+    margin-bottom: 20px;
   }
 
   .benefitsList {
@@ -1665,7 +1667,7 @@
   .benefitsItem {
     grid-template-columns: var(--advantages-icon-size) minmax(0, 1fr);
     column-gap: var(--advantages-item-gap);
-    font-size: var(--advantages-text-size);
+    font-size: 15px;
     line-height: var(--advantages-text-line-height);
   }
 
