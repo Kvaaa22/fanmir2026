@@ -46,13 +46,13 @@ body {
 }
 
 .section-title {
-  margin: 0;
   font-family: var(--font-heading), serif;
+  font-style: normal;
   font-size: 46px;
-  line-height: 1.04;
-  font-weight: 400;
-  color: var(--color-muted);
-  margin-left: 43px;
+  line-height: 56px;
+  font-weight: 500;
+  color: #2f2f2f;
+  margin: 25px 0 35px 50px;
 }
 
 

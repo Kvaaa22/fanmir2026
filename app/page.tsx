@@ -73,10 +73,6 @@ const offers: OfferItem[] = [
   },
   { title: "ДСП", patternClassName: "offerPatternChipboard" },
   { title: "ДВП", patternClassName: "offerPatternFiberboard" },
-  {
-    title: "Изделия из фанеры",
-    patternClassName: "offerPatternProducts",
-  },
   { title: "PLYDEX", patternClassName: "offerPatternPlydex" },
   {
     title: "Строительная фанера",
@@ -85,6 +81,8 @@ const offers: OfferItem[] = [
 ];
 
 export default function Home() {
+  const offerRows = [offers.slice(0, 5), offers.slice(5)];
+
   return (
     <>
 
@@ -280,14 +278,18 @@ export default function Home() {
           <h2 className="section-title">Что мы предлагаем</h2>
 
           <div className={styles.offersGrid}>
-            {offers.map((offer) => (
-              <article className={styles.offerCard} key={offer.title}>
-                <div
-                  className={`${styles.offerImage} ${styles[offer.patternClassName]
-                    }`}
-                />
-                <div className={styles.offerCaption}>{offer.title}</div>
-              </article>
+            {offerRows.map((row, rowIndex) => (
+              <div className={styles.offersRow} key={`offers-row-${rowIndex}`}>
+                {row.map((offer) => (
+                  <article className={styles.offerCard} key={offer.title}>
+                    <div
+                      className={`${styles.offerImage} ${styles[offer.patternClassName]
+                        }`}
+                    />
+                    <div className={styles.offerCaption}>{offer.title}</div>
+                  </article>
+                ))}
+              </div>
             ))}
           </div>
         </div>
