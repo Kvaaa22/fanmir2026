@@ -2386,6 +2386,7 @@
     --advantages-list-gap: clamp(14px, 2.6vw, 16px);
     --advantages-item-gap: clamp(14px, 2.6vw, 16px);
     --advantages-logo-width: clamp(290px, 52vw, 350px);
+    --advantages-card-width: clamp(90%, calc(90% + 10% * ((100vw - 530px) / 209px)), 100%);
     padding: var(--advantages-section-padding-top) 0 var(--advantages-section-padding-bottom);
   }
 
@@ -2431,14 +2432,49 @@
     position: relative;
     top: auto;
     left: auto;
-    width: 90%;
+    width: var(--advantages-card-width);
     min-height: auto;
     padding: 35px 40px;
     border-radius: var(--advantages-card-radius);
     margin: 0 auto 40px auto;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .benefitsCard::before,
+  .benefitsCard::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    z-index: 0;
+  }
+
+  .benefitsCard::before {
+    top: 50%;
+    right: 14px;
+    width: min(76%, 270px);
+    aspect-ratio: 500.13 / 490;
+    background-image: url("/img/advantages/ohreCircule.svg");
+    opacity: 0.22;
+    transform: translateY(-50%);
+  }
+
+  .benefitsCard::after {
+    top: 50%;
+    right: 42px;
+    width: min(60%, 216px);
+    aspect-ratio: 400.13 / 315;
+    background-image: url("/img/advantages/aboutLogo.svg");
+    opacity: 0.14;
+    transform: translateY(-46%);
   }
 
   .benefitsList {
+    position: relative;
+    z-index: 1;
     gap: var(--advantages-list-gap);
   }
 
@@ -2456,13 +2492,7 @@
   }
 
   .advantagesLogoWrap {
-    position: relative;
-    top: auto;
-    left: auto;
-    width: min(100%, var(--advantages-logo-width));
-    height: auto;
-    aspect-ratio: 500.13 / 490;
-    margin: 0 auto;
+    display: none;
   }
 
   /* #endregion Benefits */
@@ -2825,6 +2855,11 @@
     width: min(calc(100% - var(--advantages-container-gap)), 1284px);
   }
 
+  .benefitsCard {
+    width: 90%;
+    padding: 30px 20px 20px 30px;
+  }
+
   .benefitsGrid {
     gap: var(--advantages-grid-gap);
     min-height: var(--advantages-stage-min-height);
@@ -3051,6 +3086,14 @@
     width: min(100%, var(--advantages-logo-width));
   }
 
+  .benefitsCard::before,
+  .benefitsCard::after {
+    top: 50%;
+    right: auto;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
   /* #endregion Benefits */
   /* #region Offers */
   .offersSection {
@@ -3138,6 +3181,10 @@
     --advantages-list-gap: 12px;
     --advantages-item-gap: 12px;
     --advantages-logo-width: clamp(214px, 62vw, 240px);
+  }
+
+  .benefitsCard {
+    width: 95%;
   }
 
   .advantagesLogoWrap {
