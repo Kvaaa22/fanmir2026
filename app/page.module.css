@@ -1841,60 +1841,27 @@
 
   /* #endregion Offers */
   /* #region About */
-  .aboutSection {
-    padding: 54px 0 72px;
-  }
-
-  .aboutSection :global(.container) {
-    width: min(calc(100% - 48px), 860px);
-    max-width: none;
-  }
-
-  .aboutSection :global(.section-title) {
-    position: relative;
-    top: auto;
-    left: auto;
-    margin: 0 0 32px;
-  }
-
   .aboutGrid {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 24px;
-    min-height: 0;
-    margin: 0;
-    padding: 0;
+    min-height: 580px;
   }
 
   .aboutCard {
-    position: relative;
-    top: auto;
-    left: auto;
-    width: 100%;
-    height: auto;
-    min-height: 0;
-    padding: 24px 28px;
-    overflow: visible;
+    width: min(70vw, 854px);
   }
 
   .aboutImage {
-    position: relative;
-    top: auto;
-    right: auto;
+    top: 75px;
+    right: 0;
     left: auto;
-    width: 100%;
-    height: auto;
-    min-height: 320px;
+    bottom: 0;
+    width: auto;
+    height: calc(100% - 105px);
+    max-width: 60vw;
     aspect-ratio: 633 / 493;
   }
 
   .aboutNote {
-    position: relative;
-    top: auto;
-    left: auto;
-    width: 100%;
-    height: auto;
-    margin: 28px 0 0;
+    width: min(80vw, 998px);
   }
 
   /* #endregion About */
@@ -2134,6 +2101,8 @@
 
   /* #endregion Offers */
   /* #region About */
+
+
   /* #endregion About */
   /* #region Contacts */
   /* #endregion Contacts */
@@ -2705,22 +2674,52 @@
 
   /* #endregion Offers */
   /* #region About */
+  .aboutSection {
+    padding: 48px 0 64px;
+  }
+
+  .aboutSection :global(.container) {
+    width: min(calc(100% - 24px), 720px);
+  }
+
+  .aboutSection :global(.section-title) {
+    margin: 0 0 28px 24px;
+  }
+
   .aboutGrid {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 22px;
+    position: relative;
+    display: block;
+    min-height: 0;
+    padding: 0 0 12px;
   }
 
   .aboutCard {
-    margin-top: 0;
+    position: relative;
+    z-index: 1;
+    width: 80vw;
+    margin: 0;
     padding: 24px 20px;
   }
 
   .aboutImage {
-    min-height: 320px;
+    position: absolute;
+    top: 24px;
+    right: 0;
+    left: auto;
+    bottom: 18px;
+    z-index: 0;
+    width: auto;
+    max-width: min(84%, 420px);
+    min-height: 0;
+    height: auto;
+    margin: 0;
+    aspect-ratio: 633 / 493;
   }
 
   .aboutNote {
-    margin-top: 28px;
+    width: auto;
+    margin: 28px 0 0 24px;
+    padding-right: 24px;
   }
 
   /* #endregion About */
@@ -3057,6 +3056,35 @@
 
   /* #endregion Offers */
   /* #region About */
+  .aboutSection {
+    padding: 42px 0 54px;
+  }
+
+  .aboutSection :global(.container) {
+    width: min(calc(100% - 16px), 560px);
+  }
+
+  .aboutSection :global(.section-title) {
+    margin: 0 0 24px 20px;
+  }
+
+  .aboutCard {
+    padding: 20px 16px;
+  }
+
+  .aboutImage {
+    top: 20px;
+    bottom: 14px;
+    width: auto;
+    max-width: min(90%, 360px);
+    margin: 0;
+  }
+
+  .aboutNote {
+    margin: 22px 0 0 20px;
+    padding-right: 20px;
+  }
+
   /* #endregion About */
   /* #region Contacts */
   /* #endregion Contacts */
@@ -3285,6 +3313,31 @@
 
   /* #endregion Offers */
   /* #region About */
+  .aboutSection {
+    padding: 40px 0 50px;
+  }
+
+  .aboutSection :global(.section-title) {
+    margin: 0 0 22px 18px;
+  }
+
+  .aboutCard {
+    padding: 18px 14px;
+  }
+
+  .aboutImage {
+    top: 18px;
+    bottom: 12px;
+    width: auto;
+    max-width: min(92%, 330px);
+    margin: 0;
+  }
+
+  .aboutNote {
+    margin: 20px 0 0 18px;
+    padding-right: 18px;
+  }
+
   /* #endregion About */
   /* #region Contacts */
   /* #endregion Contacts */
@@ -3388,6 +3441,10 @@
 
   /* #endregion Offers */
   /* #region About */
+  .aboutCard {
+    width: 80vw;
+  }
+
   /* #endregion About */
   /* #region Contacts */
   /* #endregion Contacts */
@@ -3474,6 +3531,10 @@
 
   /* #endregion Offers */
   /* #region About */
+  .aboutCard {
+    width: 80vw;
+  }
+
   /* #endregion About */
   /* #region Contacts */
   /* #endregion Contacts */
@@ -3541,6 +3602,10 @@
 
   /* #endregion Offers */
   /* #region About */
+  .aboutCard {
+    width: 80vw;
+  }
+  
   /* #endregion About */
   /* #region Contacts */
   /* #endregion Contacts */
