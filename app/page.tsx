@@ -311,7 +311,8 @@ export default function Home() {
 
               <p className="section-copy">
                 В продаже есть <span>березовая</span> и <span>хвойная</span>{" "}
-                фанера толщиной от 3 до 40 мм.
+                фанера толщиной от <span className={styles.aboutStrong}>3</span> до{" "}
+                <span className={styles.aboutStrong}>40 мм</span>.
               </p>
 
               <div className={styles.aboutGroup}>
