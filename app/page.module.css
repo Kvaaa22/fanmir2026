@@ -782,19 +782,17 @@
 }
 
 .aboutSection :global(.section-title) {
-  position: absolute;
-  top: 0;
-  left: calc(var(--about-container-padding-inline) + var(--about-text-left));
   width: auto;
-  padding-left: 0;
-  margin: 0;
+  padding: 0;
+  margin: 0 0 0 93px;
+  ;
 }
 
 .aboutGrid {
   position: relative;
   min-height: 554px;
   margin: 0;
-  padding-top: 92px;
+  padding-top: 50px;
 }
 
 .aboutCard {
@@ -878,7 +876,7 @@
 
 .aboutImage {
   position: absolute;
-  top: 50px;
+  top: 7px;
   right: 0;
   left: auto;
   width: 633px;
@@ -1398,12 +1396,9 @@
   }
 
   .aboutSection :global(.section-title) {
-    position: absolute;
-    top: 0;
-    left: calc(var(--about-container-padding-inline) + var(--about-text-left));
     width: auto;
     padding-left: 0;
-    margin: 0;
+    margin: 0 0 0 33px;
   }
 
   .aboutGrid {
@@ -1412,7 +1407,7 @@
     min-height: 554px;
     margin: 0;
     padding: 0;
-    padding-top: 118px;
+    padding-top: 68px;
   }
 
   .aboutCard {
@@ -1423,7 +1418,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    width: min(824px, calc(100% - 250px));
+    width: min(824px, calc(100% - 150px));
     min-height: 462px;
     height: auto;
     max-width: none;
@@ -1485,7 +1480,7 @@
 
   .aboutImage {
     position: absolute;
-    top: 75px;
+    top: 20px;
     right: 0;
     left: auto;
     z-index: 0;
@@ -1859,14 +1854,11 @@
     padding-inline: 0;
   }
 
-  .aboutSection :global(.section-title) {
-    top: -14px;
-    left: 39px;
-  }
+  .aboutSection :global(.section-title) {}
 
   .aboutGrid {
     min-height: 580px;
-    padding: 125px 0 0;
+    padding: 76px 0 0;
   }
 
   .aboutCard {
@@ -1874,7 +1866,7 @@
   }
 
   .aboutImage {
-    top: 75px;
+    top: 28px;
     right: 0;
     left: auto;
     bottom: 0;
@@ -2125,9 +2117,9 @@
 
   /* #endregion Offers */
   /* #region About */
-    .aboutCard {
-        width: min(80vw, 854px);
-    }
+  .aboutCard {
+    width: min(80vw, 854px);
+  }
 
   /* #endregion About */
   /* #region Contacts */
@@ -2700,15 +2692,16 @@
   /* #endregion Offers */
   /* #region About */
   .aboutGrid {
-    padding: 80px 0 0;
+    padding: 38px 0 0;
   }
 
   .aboutCard {
     width: min(80vw, 854px);
     margin: 0 auto;
+    padding: 22px 32px;
   }
 
- .aboutImage {
+  .aboutImage {
     top: clamp(129px, calc(129px + ((100vw - 530px) * 0.076555)), 145px);
     right: auto;
     bottom: 0;
@@ -3051,34 +3044,7 @@
 
   /* #endregion Offers */
   /* #region About */
-  .aboutSection {
-    padding: 42px 0 54px;
-  }
 
-  .aboutSection :global(.container) {
-    width: min(calc(100% - 16px), 560px);
-  }
-
-  .aboutSection :global(.section-title) {
-    margin: 0 0 24px 20px;
-  }
-
-  .aboutCard {
-    padding: 20px 16px;
-  }
-
-  .aboutImage {
-    top: 20px;
-    bottom: 14px;
-    width: auto;
-    max-width: min(90%, 360px);
-    margin: 0;
-  }
-
-  .aboutNote {
-    margin: 22px 0 0 20px;
-    padding-right: 20px;
-  }
 
   /* #endregion About */
   /* #region Contacts */
@@ -3308,30 +3274,6 @@
 
   /* #endregion Offers */
   /* #region About */
-  .aboutSection {
-    padding: 40px 0 50px;
-  }
-
-  .aboutSection :global(.section-title) {
-    margin: 0 0 22px 18px;
-  }
-
-  .aboutCard {
-    padding: 18px 14px;
-  }
-
-  .aboutImage {
-    top: 18px;
-    bottom: 12px;
-    width: auto;
-    max-width: min(92%, 330px);
-    margin: 0;
-  }
-
-  .aboutNote {
-    margin: 20px 0 0 18px;
-    padding-right: 18px;
-  }
 
   /* #endregion About */
   /* #region Contacts */
@@ -3436,9 +3378,6 @@
 
   /* #endregion Offers */
   /* #region About */
-  .aboutCard {
-    width: 80vw;
-  }
 
   /* #endregion About */
   /* #region Contacts */
@@ -3526,9 +3465,7 @@
 
   /* #endregion Offers */
   /* #region About */
-  .aboutCard {
-    width: 80vw;
-  }
+
 
   /* #endregion About */
   /* #region Contacts */
@@ -3566,10 +3503,6 @@
 
   /* #endregion Hero */
   /* #region Partners */
-
-
-
-
   /* #endregion Partners */
   /* #region Benefits */
   .benefitsSection {
@@ -3597,9 +3530,7 @@
 
   /* #endregion Offers */
   /* #region About */
-  .aboutCard {
-    width: 80vw;
-  }
+
 
   /* #endregion About */
   /* #region Contacts */
