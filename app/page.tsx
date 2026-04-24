@@ -347,7 +347,16 @@ export default function Home() {
               </p>
             </article>
 
-            <div className={styles.aboutImage} />
+            <div className={styles.aboutImage}>
+              <Image
+                src="/img/main/about.webp"
+                alt=""
+                fill
+                quality={100}
+                sizes="(max-width: 1099px) 60vw, 633px"
+                className={styles.aboutImageDesktopAsset}
+              />
+            </div>
           </div>
 
           <p className={`${styles.aboutNote} section-copy`}>
