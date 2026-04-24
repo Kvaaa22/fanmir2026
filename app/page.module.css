@@ -813,9 +813,9 @@
   padding: 22px var(--about-card-padding-inline);
   overflow: visible;
   border-radius: 8px;
-  background: #f9f9f9;
-  box-shadow: none;
+  background: var(--bg-items);
   font-family: var(--font-sans), sans-serif;
+
 }
 
 .aboutCard span {
@@ -1431,8 +1431,6 @@
     padding: 22px var(--about-card-padding-inline);
     overflow: visible;
     border-radius: 8px;
-    background: #f9f9f9;
-    box-shadow: none;
     font-family: var(--font-sans), sans-serif;
   }
 
@@ -1882,7 +1880,7 @@
     bottom: 0;
     width: auto;
     height: calc(100% - 105px);
-    max-width: 65vw;
+    max-width: 70vw;
     aspect-ratio: 633 / 493;
   }
 
@@ -2127,7 +2125,9 @@
 
   /* #endregion Offers */
   /* #region About */
-
+    .aboutCard {
+        width: min(80vw, 854px);
+    }
 
   /* #endregion About */
   /* #region Contacts */
@@ -2135,6 +2135,7 @@
 }
 
 @media (max-width: 739px) {
+
   /* #region Hero */
   .hero {
     --hero-arrow-inset: clamp(12px, 3.4vw, 25px);
@@ -2698,52 +2699,20 @@
 
   /* #endregion Offers */
   /* #region About */
-  .aboutSection {
-    padding: 48px 0 64px;
-  }
-
-  .aboutSection :global(.container) {
-    width: min(calc(100% - 24px), 720px);
-  }
-
-  .aboutSection :global(.section-title) {
-    margin: 0 0 28px 24px;
-  }
-
   .aboutGrid {
-    position: relative;
-    display: block;
-    min-height: 0;
-    padding: 0 0 12px;
+    padding: 80px 0 0;
   }
 
   .aboutCard {
-    position: relative;
-    z-index: 1;
-    width: 80vw;
-    margin: 0;
-    padding: 24px 20px;
+    width: min(80vw, 854px);
+    margin: 0 auto;
   }
 
-  .aboutImage {
-    position: absolute;
-    top: 24px;
-    right: 0;
-    left: auto;
-    bottom: 18px;
-    z-index: 0;
-    width: auto;
-    max-width: min(84%, 420px);
-    min-height: 0;
-    height: auto;
-    margin: 0;
-    aspect-ratio: 633 / 493;
-  }
-
-  .aboutNote {
-    width: auto;
-    margin: 28px 0 0 24px;
-    padding-right: 24px;
+ .aboutImage {
+    top: clamp(129px, calc(129px + ((100vw - 530px) * 0.076555)), 145px);
+    right: auto;
+    bottom: 0;
+    left: clamp(90px, calc(90px + ((100vw - 530px) * 0.210526)), 134px);
   }
 
   /* #endregion About */
@@ -2772,6 +2741,8 @@
 
   /* #endregion Contacts */
 }
+
+
 
 
 @media (max-width: 529px) {
