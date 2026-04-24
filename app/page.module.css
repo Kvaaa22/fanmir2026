@@ -2641,7 +2641,7 @@
   /* #endregion Offers */
   /* #region About */
   .aboutGrid {
-    padding: 38px 0 0;
+    padding: 28px 0 0;
   }
 
   .aboutCard {
@@ -3236,15 +3236,23 @@
 
   /* #endregion Offers */
   /* #region About */
+  .aboutSection :global(.section-title) {
+    font-size: 35px;
+  }
+
   .aboutImage {
     top: clamp(95px, calc(95px + ((529px - 100vw) * 0.07575758)), 100px);
     right: 0;
     bottom: 0;
-    left: clamp(50px, calc(63px - ((529px - 100vw) * 0.1969697)), 63px);
+    left: clamp(30px, calc(63px - ((529px - 100vw) * 0.1969697)), 63px);
+  }
+
+  .aboutCard {
+    padding: 22px 28px;
   }
 
   .aboutNote {
-    margin-top: 132px;
+    margin-top: 102px;
   }
 
   /* #endregion About */
@@ -3337,6 +3345,13 @@
 
   /* #endregion Offers */
   /* #region About */
+  .aboutSection :global(.section-title) {
+    font-size: 32px;
+  }
+
+  .aboutCard {
+    padding: 18px 20px;
+  }
 
   /* #endregion About */
   /* #region Contacts */
