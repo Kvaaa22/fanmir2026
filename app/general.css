@@ -31,6 +31,7 @@
   --color-accent-circle: var(--ochre);
   --color-accent-strong: var(--text-ochre);
   --shadow-card: 0 20px 48px rgba(var(--brown-rgb), 0.11);
+  --section-title-size: clamp(40px, calc(40px + 6 * ((100vw - 739px) / 21)), 46px);
 }
 
 html,
@@ -48,7 +49,7 @@ body {
 .section-title {
   font-family: var(--font-heading), serif;
   font-style: normal;
-  font-size: 46px;
+  font-size: var(--section-title-size);
   line-height: 56px;
   font-weight: 500;
   color: #2f2f2f;
@@ -57,15 +58,21 @@ body {
 
 
 @media (max-width: 739px) {
+  :root {
+    --section-title-size: clamp(34px, calc(34px + 5 * ((100vw - 462px) / 20)), 39px);
+  }
+
   .section-title {
-    font-size: 40px;
     margin-bottom: 48px;
     margin-left: 33px;
   }
 }
 @media (max-width: 462px) {
+  :root {
+    --section-title-size: clamp(32px, calc(32px + 3 * ((100vw - 400px) / 20)), 35px);
+  }
+
   .section-title {
-    font-size: 36px;
     margin-left: 23px;
   }
 }

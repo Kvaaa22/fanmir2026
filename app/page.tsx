@@ -227,52 +227,6 @@ export default function Home() {
         </div>
       </section>
 
-      <section className={styles.partnersAfterBenefitsMobileSection}>
-        <div className="container">
-          <div className={styles.partnersAfterBenefitsMobileInner}>
-            <span className={styles.partnersLabel}>Наши партнеры</span>
-
-            <div className={styles.partnersPanel}>
-              <div className={styles.partnerLogoWide}>
-                <Image
-                  src="/img/hero/ilim.svg"
-                  alt="ILIM Timber"
-                  width={289}
-                  height={31}
-                />
-              </div>
-
-              <div className={styles.partnerLogoRound}>
-                <Image
-                  src="/img/hero/bff.png"
-                  alt="Байкальский фанерный комбинат"
-                  width={65}
-                  height={63}
-                />
-              </div>
-
-              <div className={styles.partnerLogoMedium}>
-                <Image
-                  src="/img/hero/bfk.png"
-                  alt="Бийский фанерный комбинат"
-                  width={215}
-                  height={39}
-                />
-              </div>
-
-              <div className={styles.partnerLogoWide}>
-                <Image
-                  src="/img/hero/sveza.svg"
-                  alt="Свеза"
-                  width={178}
-                  height={39}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <section className={styles.offersSection} id="offers">
         <div className="container">
           <h2 className="section-title">Что мы предлагаем</h2>
@@ -357,6 +311,52 @@ export default function Home() {
             перевозкой, транспортировка до терминала логистической компании.
             Возможен наличный и безналичный расчет.
           </p>
+        </div>
+      </section>
+
+      <section className={styles.partnersAfterBenefitsMobileSection}>
+        <div className="container">
+          <div className={`${styles.partnersAfterBenefitsMobileInner} ${styles.partnersBlock}`}>
+            <span className={styles.partnersLabel}>Наши партнеры</span>
+
+            <div className={styles.partnersPanel}>
+              <div className={styles.partnerLogoWide}>
+                <Image
+                  src="/img/hero/ilim.svg"
+                  alt="ILIM Timber"
+                  width={289}
+                  height={31}
+                />
+              </div>
+
+              <div className={styles.partnerLogoRound}>
+                <Image
+                  src="/img/hero/bff.png"
+                  alt="Байкальский фанерный комбинат"
+                  width={65}
+                  height={63}
+                />
+              </div>
+
+              <div className={styles.partnerLogoMedium}>
+                <Image
+                  src="/img/hero/bfk.png"
+                  alt="Бийский фанерный комбинат"
+                  width={215}
+                  height={39}
+                />
+              </div>
+
+              <div className={styles.partnerLogoWide}>
+                <Image
+                  src="/img/hero/sveza.svg"
+                  alt="Свеза"
+                  width={178}
+                  height={39}
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 

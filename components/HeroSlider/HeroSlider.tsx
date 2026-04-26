@@ -10,7 +10,7 @@ type HeroSlide = {
 };
 
 const AUTO_SWITCH_MS = 5000;
-const AUTO_SWITCH_ENABLED = true;
+const AUTO_SWITCH_ENABLED = false;
 
 const heroSlides: HeroSlide[] = [
   {
