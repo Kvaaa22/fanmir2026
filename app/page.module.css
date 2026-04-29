@@ -902,37 +902,65 @@
 
 /* #region Contacts */
 .contactsSection {
-  padding: 38px 0 90px;
-  background-color: var(--bg-items);
+  min-height: 786px;
+  padding: 45px 0 154px;
+  background: #ffffff;
+}
+
+.contactsSection :global(.container) {
+  width: 1102px;
+  max-width: calc(100% - 48px);
+  margin: 0 auto;
+}
+
+.contactsTitle {
+  width: 525px;
+  height: 56px;
+  margin: 0 0 0 7px;
+  font-family: var(--font-heading), serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 46px;
+  line-height: 56px;
+  color: #2f2f2f;
 }
 
 .contactsGrid {
   display: grid;
-  grid-template-columns: 460px minmax(0, 1fr);
-  gap: 28px;
-  align-items: stretch;
-  margin-top: 32px;
+  grid-template-columns: 500px 541px;
+  align-items: start;
+  width: 100%;
+  max-width: 1041px;
+  height: 500px;
+  margin-top: 46px;
+  justify-content: space-between;
+  border-radius: 8px;
+  background: #fafafa;
+  box-shadow: 0 18px 45px rgba(0, 25, 49, 0.08);
 }
 
 .contactsCard {
-  padding: 36px 34px 32px;
-  border-radius: 12px;
-  background: var(--color-white);
-  box-shadow: var(--shadow-card);
+  width: 387px;
+  margin: 59px auto;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 .contactsList {
   display: grid;
-  gap: 26px;
+  width: 268px;
+  gap: 23px;
   list-style: none;
 }
 
 .contactsItem {
   display: grid;
-  grid-template-columns: 28px 1fr;
-  gap: 14px;
+  grid-template-columns: 30px max-content;
+  column-gap: 22px;
   align-items: start;
-  color: var(--color-body);
+  color: #000000;
 }
 
 .contactsItem strong,
@@ -941,168 +969,171 @@
   display: block;
 }
 
-.contactsItem strong,
-.contactsItem a:first-child {
-  font-size: 17px;
-  line-height: 1.35;
-  font-weight: 700;
+.contactsAddress {
+  width: 268px;
+  min-height: 55px;
+  font-family: var(--font-heading), serif;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 130%;
+  color: #000000;
 }
 
-.contactsItem span,
-.contactsItem a:not(:first-child) {
-  font-size: 17px;
-  line-height: 1.35;
+.contactsAddress strong {
+  font-weight: 600;
+}
+
+.contactsAddress span {
+  font-weight: 400;
+}
+
+.contactsPhones {
+  width: 144px;
+  min-height: 42px;
+  font-family: var(--font-sans), sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 130%;
+  text-align: center;
+  color: #000000;
+}
+
+.contactsPhones a {
+  font: inherit;
+}
+
+.contactsHours {
+  width: 186px;
+  min-height: 56px;
+  font-family: var(--font-heading), serif;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 140%;
+  color: #000000;
+}
+
+.contactsHours strong {
+  font-weight: 400;
+}
+
+.contactsHours span {
+  font-weight: 600;
+}
+
+.contactsMail {
+  width: 199px;
+  min-height: 26px;
+  font-family: var(--font-heading), serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 130%;
+  color: #000000;
+}
+
+.contactsMail a {
+  font: inherit;
 }
 
 .contactsIcon {
   display: inline-flex;
-  width: 24px;
-  height: 24px;
-  color: var(--color-accent-strong);
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  color: #000000;
 }
 
 .contactsIcon svg {
-  width: 24px;
-  height: 24px;
+  width: 30px;
+  height: 30px;
 }
 
 .contactsCompany {
   display: grid;
-  grid-template-columns: 62px 1fr;
-  gap: 18px;
+  grid-template-columns: 87.65px 1fr;
+  gap: 35px;
   align-items: center;
-  margin-top: 32px;
-  padding-top: 22px;
-  border-top: 1px solid rgba(var(--brown-rgb), 0.2);
+  width: 387px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #000000;
+}
+
+.contactsCompany img {
+  width: 87.65px;
+  height: 69px;
+  object-fit: contain;
 }
 
 .contactsCompany span {
   display: block;
-  font-size: 16px;
-  line-height: 1.2;
-  color: var(--color-muted);
+  font-family: var(--font-heading), serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 140%;
+  letter-spacing: 0;
+  color: #2f2f2f;
 }
 
 .contactsCompany strong {
   display: block;
-  margin-top: 6px;
+  margin-top: 0;
   font-family: var(--font-heading), serif;
-  font-size: 36px;
-  line-height: 1;
-  font-weight: 400;
-  color: var(--color-heading);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 140%;
+  letter-spacing: 0;
+  color: #2f2f2f;
 }
 
 .mapCard {
   overflow: hidden;
-  min-height: 488px;
-  border-radius: 12px;
-  box-shadow: var(--shadow-card);
-  background: var(--color-white);
+  width: 543px;
+  height: 500px;
+  border-radius: 0 8px 8px 0;
 }
 
-.mapCanvas {
-  position: relative;
-  min-height: 488px;
-  background:
-    radial-gradient(circle at 16% 18%, rgba(var(--ochre-rgb), 0.22) 0 14%, transparent 15%),
-    radial-gradient(circle at 86% 18%, rgba(var(--bg-items-rgb), 0.74) 0 18%, transparent 19%),
-    linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-grey) 100%);
-}
-
-.mapRiver {
-  position: absolute;
-  top: 0;
-  right: 14%;
-  width: 18%;
+.mapCard :global(.yandex-map) {
+  width: 100%;
   height: 100%;
-  background: linear-gradient(180deg, rgba(var(--bg-items-rgb), 0.9), rgba(var(--bg-secondary-rgb), 0.64));
-  opacity: 0.8;
+  min-height: 500px;
 }
 
-.mapRoad {
-  position: absolute;
-  border-radius: 999px;
-  transform-origin: center;
-}
-
-.mapRoadPrimary {
-  top: 48%;
-  left: -10%;
-  width: 124%;
-  height: 12px;
-  background: var(--ochre);
-  transform: rotate(-10deg);
-  box-shadow: 0 0 0 6px rgba(var(--bg-rgb), 0.9);
-}
-
-.mapRoadSecondary {
-  top: 58%;
-  left: -6%;
-  width: 78%;
-  height: 10px;
-  background: var(--text-ochre);
-  transform: rotate(-3deg);
-  box-shadow: 0 0 0 5px rgba(var(--bg-rgb), 0.92);
-}
-
-.mapRoadTertiary {
-  top: 16%;
-  left: 52%;
-  width: 44%;
-  height: 9px;
-  background: var(--bg-grey);
-  transform: rotate(82deg);
-  box-shadow: 0 0 0 4px rgba(var(--bg-rgb), 0.9);
-}
-
-.mapRoadCross {
-  top: 24%;
-  left: 8%;
-  width: 52%;
-  height: 8px;
-  background: var(--bg-grey);
-  transform: rotate(22deg);
-  box-shadow: 0 0 0 4px rgba(var(--bg-rgb), 0.88);
-}
-
-.mapMarker {
-  position: absolute;
-  top: 45%;
-  left: 57%;
+.mapCard :global(.yandex-map-marker) {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 50% 50% 50% 0;
-  background: var(--text-ochre);
-  transform: rotate(-45deg);
-  box-shadow: 0 14px 26px rgba(var(--text-ochre-rgb), 0.34);
+  gap: 8px;
+  width: max-content;
+  height: 44px;
+  pointer-events: none;
+  transform: translate(-22px, -44px);
 }
 
-.mapMarker span {
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  background: var(--color-white);
-  transform: rotate(45deg);
+.mapCard :global(.yandex-map-marker__icon) {
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  color: #ff2f24;
+  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.22));
 }
 
-.mapControls {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  display: flex;
-  gap: 6px;
-}
-
-.mapControls span {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: rgba(var(--bg-rgb), 0.92);
-  box-shadow: 0 6px 14px rgba(var(--brown-rgb), 0.12);
+.mapCard :global(.yandex-map-marker__label) {
+  display: block;
+  max-width: 180px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: #ffffff;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.16);
+  font-family: var(--font-sans), sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 130%;
+  color: #000000;
+  white-space: nowrap;
 }
 
 /* #endregion Contacts */
@@ -2635,18 +2666,31 @@
     --offers-caption-size: 16px;
   }
 
+  .offersSection :global(.section-title) {
+    margin-left: clamp(20px, calc(-68.756px + 16.746vw), 55px);
+  }
+
   .offersGrid {
     justify-content: space-evenly;
-    width: 80%;
+    width: clamp(80%, calc(90% - 33.445vw + 177.258px), 90%);
+    ;
     margin: var(--offers-grid-margin-top) auto 0;
     column-gap: var(--offers-grid-column-gap);
     row-gap: var(--offers-grid-row-gap);
+  }
+
+  .offerCard {
+    width: clamp(140px, calc(63.923px + 14.354vw), 170px);
   }
 
   /* #endregion Offers */
   /* #region About */
   .aboutGrid {
     padding: 28px 0 0;
+  }
+
+  .aboutSection {
+    padding: 58px 0 86px;
   }
 
   .aboutCard {
@@ -2674,21 +2718,58 @@
     background: #fff;
   }
 
+  .contactsSection :global(.container) {
+    width: min(calc(100% - 48px), 1284px);
+  }
+
+  .contactsTitle {
+    width: auto;
+    height: auto;
+    margin-left: 0;
+    font-size: var(--section-title-size);
+    line-height: 1.2;
+  }
+
   .contactsGrid {
+    display: grid;
     grid-template-columns: minmax(0, 1fr);
     gap: 20px;
+    width: 100%;
+    max-width: none;
+    height: auto;
+    margin-top: 32px;
+    padding-left: 0;
+    background: transparent;
+    box-shadow: none;
   }
 
   .contactsCard {
+    width: 100%;
+    margin-top: 0;
     padding: 24px 20px;
+    border-radius: 8px;
+    background: #fafafa;
   }
 
+  .contactsList,
+  .contactsCompany {
+    width: 100%;
+    max-width: 387px;
+  }
+
+  .contactsCompany span,
   .contactsCompany strong {
-    font-size: 30px;
+    font-size: 28px;
   }
 
-  .mapCard,
-  .mapCanvas {
+  .mapCard {
+    width: 100%;
+    height: 340px;
+    min-height: 340px;
+    border-radius: 8px;
+  }
+
+  .mapCard :global(.yandex-map) {
     min-height: 340px;
   }
 
@@ -3005,8 +3086,18 @@
     --offers-image-height: clamp(136px, 34vw, 158px);
   }
 
+  .offersSection :global(.section-title) {
+    margin-left: 30px;
+  }
+
   .offersGrid {
     width: 90%;
+    column-gap: 5px;
+    row-gap: 20px;
+  }
+
+  .offerCard {
+    width: var(--offers-card-width);
   }
 
   /* #endregion Offers */
@@ -3256,24 +3347,30 @@
   /* #endregion Benefits */
   /* #region Offers */
   .offersSection {
-    --offers-section-padding-top: 0;
     --offers-section-padding-bottom: 42px;
     --offers-container-inline-gap: 24px;
     --offers-title-size: var(--section-title-size);
     --offers-grid-margin-top: 20px;
     --offers-grid-width: 90%;
-    --offers-grid-columns: minmax(0, var(--offers-card-width));
-    --offers-grid-column-gap: 0px;
-    --offers-card-width: clamp(128px, calc(((100vw - var(--offers-container-inline-gap)) * 0.9 - var(--offers-grid-column-gap)) / 2), 180px);
+    --offers-grid-columns: repeat(2, minmax(0, var(--offers-card-width)));
+    --offers-grid-column-gap: clamp(10px, 3vw, 14px);
+    --offers-card-width: clamp(118px, calc(((100vw - var(--offers-container-inline-gap)) * 0.82 - var(--offers-grid-column-gap)) / 2), 168px);
     --offers-image-height: clamp(164px, 46vw, 196px);
     --offers-caption-min-height: 56px;
-    --offers-card-width: min(100%, 204px);
-    --offers-title-left: calc(5% + ((90% - var(--offers-card-width)) / 2));
-    --offers-image-height: clamp(132px, 36vw, 152px);
+    --offers-title-left: calc(5% + ((90% - ((var(--offers-card-width) * 2) + var(--offers-grid-column-gap))) / 3));
+    --offers-image-height: clamp(112px, 31vw, 136px);
+  }
+
+  .offersSection :global(.section-title) {
+    margin-bottom: 38px;
   }
 
   /* #endregion Offers */
   /* #region About */
+  .aboutSection {
+    padding: 48px 0 86px;
+  }
+
   .aboutSection :global(.section-title) {
     font-size: var(--section-title-size);
   }
@@ -3380,7 +3477,7 @@
   }
 
   .benefitsCard {
-    width: 95%;
+    width: 90%;
   }
 
   .benefitsTitle {
@@ -3401,16 +3498,41 @@
     --offers-section-padding-top: 22px;
     --offers-section-padding-bottom: 40px;
     --offers-title-size: var(--section-title-size);
-    --offers-image-height: clamp(156px, 48vw, 186px);
+    --offers-image-height: 138px;
+  }
+
+  .offersGrid {
+    width: 95%;
+  }
+
+  .offersSection :global(.section-title) {
+    margin-left: 20px;
+  }
+
+  .offerCaption {
+    overflow-wrap: anywhere;
+    word-break: break-all;
+  }
+
+  .offerCard {
+    width: calc(120px + (30px * (100vw - 365px) / 635));
   }
 
   /* #endregion Offers */
   /* #region About */
+  .aboutSection {
+    --about-container-padding-inline: 8px;
+    padding: 38px 0 86px;
+  }
+
   .aboutSection :global(.section-title) {
     font-size: var(--section-title-size);
+    line-height: 1.3em;
   }
 
   .aboutCard {
+    width: 100%;
+    margin: 0;
     padding: 18px 20px;
   }
 
@@ -3539,7 +3661,6 @@
     --offers-title-size: var(--section-title-size);
     --offers-section-padding-bottom: 36px;
     --offers-container-inline-gap: 16px;
-    --offers-image-height: clamp(140px, 52vw, 170px);
   }
 
   /* #endregion Offers */

@@ -2,6 +2,7 @@ import type { SVGProps } from "react";
 import Image from "next/image";
 import { HeroSlider } from "@/components/HeroSlider/HeroSlider";
 import styles from "./page.module.css";
+import YandexMap from '@/components/YandexMap/YandexMap';
 
 type IconProps = SVGProps<SVGSVGElement>;
 
@@ -362,7 +363,7 @@ export default function Home() {
 
       <section className={styles.contactsSection} id="contacts">
         <div className="container">
-          <h2 className="section-title">Контакты</h2>
+          <h2 className={`section-title ${styles.contactsTitle}`}>Контакты</h2>
 
           <div className={styles.contactsGrid}>
             <article className={styles.contactsCard}>
@@ -371,7 +372,7 @@ export default function Home() {
                   <span className={styles.contactsIcon}>
                     <PinIcon />
                   </span>
-                  <div>
+                  <div className={styles.contactsAddress}>
                     <strong>г. Красноярск,</strong>
                     <span>ул. Калинина 169, офис 1-05</span>
                   </div>
@@ -381,7 +382,7 @@ export default function Home() {
                   <span className={styles.contactsIcon}>
                     <PhoneIcon />
                   </span>
-                  <div>
+                  <div className={styles.contactsPhones}>
                     <a href="tel:+73912683233">+7 (391) 268-32-33</a>
                     <a href="tel:+73912683223">+7 (391) 268-32-23</a>
                   </div>
@@ -391,7 +392,7 @@ export default function Home() {
                   <span className={styles.contactsIcon}>
                     <ClockIcon />
                   </span>
-                  <div>
+                  <div className={styles.contactsHours}>
                     <strong>Мы работаем</strong>
                     <span>Пн - Пт 9:00 - 17:00</span>
                   </div>
@@ -401,7 +402,7 @@ export default function Home() {
                   <span className={styles.contactsIcon}>
                     <MailIcon />
                   </span>
-                  <div>
+                  <div className={styles.contactsMail}>
                     <a href="mailto:fanmir24@yandex.ru">fanmir24@yandex.ru</a>
                   </div>
                 </li>
@@ -411,8 +412,8 @@ export default function Home() {
                 <Image
                   src="/img/logoFull.png"
                   alt="Фанерный мир"
-                  width={62}
-                  height={49}
+                  width={88}
+                  height={69}
                 />
                 <div>
                   <span>ООО ТД</span>
@@ -422,29 +423,7 @@ export default function Home() {
             </article>
 
             <div className={styles.mapCard}>
-              <div className={styles.mapCanvas}>
-                <span className={styles.mapRiver} />
-                <span
-                  className={`${styles.mapRoad} ${styles.mapRoadPrimary}`}
-                />
-                <span
-                  className={`${styles.mapRoad} ${styles.mapRoadSecondary}`}
-                />
-                <span
-                  className={`${styles.mapRoad} ${styles.mapRoadTertiary}`}
-                />
-                <span
-                  className={`${styles.mapRoad} ${styles.mapRoadCross}`}
-                />
-                <span className={styles.mapMarker}>
-                  <span />
-                </span>
-                <div className={styles.mapControls}>
-                  <span />
-                  <span />
-                  <span />
-                </div>
-              </div>
+              <YandexMap center={[92.745941, 56.053861]} zoom={18} />
             </div>
           </div>
         </div>
