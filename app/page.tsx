@@ -1,10 +1,7 @@
-import type { SVGProps } from "react";
 import Image from "next/image";
 import { HeroSlider } from "@/components/HeroSlider/HeroSlider";
 import styles from "./page.module.css";
 import YandexMap from '@/components/YandexMap/YandexMap';
-
-type IconProps = SVGProps<SVGSVGElement>;
 
 type BenefitItem = {
   iconSrc: string;
@@ -370,7 +367,13 @@ export default function Home() {
               <ul className={styles.contactsList}>
                 <li className={styles.contactsItem}>
                   <span className={styles.contactsIcon}>
-                    <PinIcon />
+                    <Image
+                      src="/img/contact/geo-contact.svg"
+                      alt=""
+                      width={32}
+                      height={46}
+                      className={`${styles.contactsIconImage} ${styles.contactsIconGeo}`}
+                    />
                   </span>
                   <div className={styles.contactsAddress}>
                     <strong>г. Красноярск,</strong>
@@ -380,7 +383,13 @@ export default function Home() {
 
                 <li className={styles.contactsItem}>
                   <span className={styles.contactsIcon}>
-                    <PhoneIcon />
+                    <Image
+                      src="/img/contact/phone-contact.svg"
+                      alt=""
+                      width={32}
+                      height={32}
+                      className={styles.contactsIconImage}
+                    />
                   </span>
                   <div className={styles.contactsPhones}>
                     <a href="tel:+73912683233">+7 (391) 268-32-33</a>
@@ -390,7 +399,13 @@ export default function Home() {
 
                 <li className={styles.contactsItem}>
                   <span className={styles.contactsIcon}>
-                    <ClockIcon />
+                    <Image
+                      src="/img/contact/clock-phone.svg"
+                      alt=""
+                      width={30}
+                      height={30}
+                      className={styles.contactsIconImage}
+                    />
                   </span>
                   <div className={styles.contactsHours}>
                     <strong>Мы работаем</strong>
@@ -400,7 +415,13 @@ export default function Home() {
 
                 <li className={styles.contactsItem}>
                   <span className={styles.contactsIcon}>
-                    <MailIcon />
+                    <Image
+                      src="/img/contact/mail-contact.svg"
+                      alt=""
+                      width={30}
+                      height={30}
+                      className={styles.contactsIconImage}
+                    />
                   </span>
                   <div className={styles.contactsMail}>
                     <a href="mailto:fanmir24@yandex.ru">fanmir24@yandex.ru</a>
@@ -434,78 +455,3 @@ export default function Home() {
   );
 }
 
-function PinIcon(props: IconProps) {
-  return (
-    <svg fill="none" viewBox="0 0 24 24" {...props}>
-      <path
-        d="M12 20c4.5-4.3 6.75-7.5 6.75-10.1A6.75 6.75 0 0 0 5.25 9.9C5.25 12.5 7.5 15.7 12 20Z"
-        stroke="currentColor"
-        strokeWidth="1.8"
-      />
-      <circle
-        cx="12"
-        cy="10"
-        r="2.5"
-        stroke="currentColor"
-        strokeWidth="1.8"
-      />
-    </svg>
-  );
-}
-
-function PhoneIcon(props: IconProps) {
-  return (
-    <svg fill="none" viewBox="0 0 24 24" {...props}>
-      <path
-        d="M7.8 5.5c.4-.4 1-.5 1.5-.2l1.8 1c.6.3.8 1 .5 1.6l-.9 1.9c1.1 2.2 2.8 3.9 5 5l1.9-.9c.6-.3 1.3-.1 1.6.5l1 1.8c.3.5.2 1.1-.2 1.5l-1.3 1.3c-.5.5-1.3.8-2 .6-2.3-.6-4.4-1.8-6.3-3.7-1.9-1.9-3.1-4-3.7-6.3-.2-.7.1-1.5.6-2l1.5-1.1Z"
-        stroke="currentColor"
-        strokeLinejoin="round"
-        strokeWidth="1.8"
-      />
-    </svg>
-  );
-}
-
-function ClockIcon(props: IconProps) {
-  return (
-    <svg fill="none" viewBox="0 0 24 24" {...props}>
-      <circle
-        cx="12"
-        cy="12"
-        r="8"
-        stroke="currentColor"
-        strokeWidth="1.8"
-      />
-      <path
-        d="M12 8v4l2.5 2.5"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.8"
-      />
-    </svg>
-  );
-}
-
-function MailIcon(props: IconProps) {
-  return (
-    <svg fill="none" viewBox="0 0 24 24" {...props}>
-      <rect
-        height="13"
-        rx="2.5"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        width="17"
-        x="3.5"
-        y="5.5"
-      />
-      <path
-        d="m5 8 7 5 7-5"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.8"
-      />
-    </svg>
-  );
-}

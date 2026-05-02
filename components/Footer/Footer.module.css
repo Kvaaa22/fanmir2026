@@ -325,8 +325,10 @@
   }
 
   .contactIcon img {
+    box-sizing: content-box;
     width: 18px;
     height: 18px;
+    padding: 1px;
   }
 
   .contactText {
@@ -392,8 +394,10 @@
   }
 
   .contactIcon img {
+    box-sizing: content-box;
     width: 16px;
     height: 16px;
+    padding: 1px;
   }
 
   .inlineEmailItem {
@@ -519,8 +523,10 @@
   }
 
   .contactIcon img {
+    box-sizing: content-box;
     width: 16px;
     height: 16px;
+    padding: 1px;
   }
 }
 

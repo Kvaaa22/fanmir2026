@@ -66,8 +66,10 @@
 
 .navLink img,
 .mobileNavLink img {
+  box-sizing: content-box;
   width: 11px;
   height: 6px;
+  padding: 1px;
 }
 
 .meta {
@@ -88,6 +90,7 @@
 .metaItem img,
 .mobileMetaItem img {
   flex: none;
+  padding: 1px;
 }
 
 .metaItem>span,
@@ -527,8 +530,10 @@
   }
 
   .mobileMetaSchedule img {
+    box-sizing: content-box;
     width: 16px;
     height: 16px;
+    padding: 1px;
     opacity: 0.76;
   }
 
