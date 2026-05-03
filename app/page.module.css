@@ -965,7 +965,7 @@
   display: grid;
   grid-template-columns: max-content max-content;
   column-gap: 22px;
-  align-items: start;
+  align-items: center;
   color: #000000;
 }
 
@@ -3057,8 +3057,6 @@
     padding: 60px 10px;
   }
 
-
-
   .partnersAfterBenefitsMobileSection .partnersLabel {
     width: auto;
     margin-left: 23px;
@@ -3187,7 +3185,9 @@
     padding-inline: 37px;
   }
 
-  .contactsTitle {margin-left: 6px;}
+  .contactsTitle {
+    margin-left: 6px;
+  }
 
   .contactsGrid {
     width: 100%;
@@ -3360,6 +3360,10 @@
     padding-top: 50px;
   }
 
+  .partnersAfterBenefitsMobileSection .partnersLabel {
+    margin-left: 25px;
+  }
+
   .partnersLabel {
     font-size: var(--section-title-size);
     width: 74%;
@@ -3368,7 +3372,7 @@
   }
 
   .partnersPanel {
-    width: 72%;
+    width: 89%;
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: repeat(4, minmax(88px, auto));
   }
@@ -3451,6 +3455,10 @@
     gap: 40px;
   }
 
+  .benefitsTitle {
+    padding-left: 26px;
+  }
+
   /* #endregion Benefits */
   /* #region Offers */
   .offersSection {
@@ -3469,7 +3477,7 @@
   }
 
   .offersSection :global(.section-title) {
-    margin-bottom: 38px;
+    margin-bottom: 45px;
   }
 
   /* #endregion Offers */
@@ -3501,6 +3509,19 @@
   /* #region Contacts */
   .contactsSection :global(.container) {
     padding-inline: 20px;
+  }
+
+  .contactsSection {
+    padding: 52px 0 30px;
+  }
+
+  .contactsTitle {
+    margin-left: 27px;
+  }
+
+  .contactsGrid {
+    width: 89%;
+    margin-top: 40px;
   }
 
   .contactsCard {
@@ -3566,9 +3587,7 @@
 
   /* #endregion Hero */
   /* #region Partners */
-  .partnersPanel {
-    width: 83%;
-  }
+
 
   .partnersLabel {
     margin: 0 auto;
@@ -3589,6 +3608,7 @@
     --advantages-item-gap: 12px;
     --advantages-logo-width: clamp(214px, 62vw, 240px);
     --advantages-card-width: 95%;
+    --advantages-section-padding-top: 65px;
   }
 
   .benefitsCard {
@@ -3596,7 +3616,7 @@
   }
 
   .benefitsTitle {
-    padding-left: 18px;
+    padding-left: 25px;
   }
 
   .benefitsContentColumn {
@@ -3621,7 +3641,7 @@
   }
 
   .offersSection :global(.section-title) {
-    margin-left: 20px;
+    margin: 35px 0 35px 25px;
   }
 
   .offerCaption {
@@ -3637,12 +3657,13 @@
   /* #region About */
   .aboutSection {
     --about-container-padding-inline: 8px;
-    padding: 38px 0 86px;
+    padding: 48px 0 66px;
   }
 
   .aboutSection :global(.section-title) {
     font-size: var(--section-title-size);
     line-height: 1.3em;
+    margin: 0;
   }
 
   .aboutCard {
@@ -3657,136 +3678,57 @@
     padding-inline: 17px;
   }
 
-  /* #endregion Contacts */
-}
-
-@media (max-width: 365px) {
-
-  /* #region Hero */
-  .hero {
-    --hero-mobile-height: clamp(550px, 88dvh, 640px);
-    --hero-mobile-pad-top: 60px;
-    --hero-mobile-inline-pad: 8px;
-    --hero-mobile-copy-top-gap: 8px;
+  .contactsGrid {
+    margin-top: 35px;
   }
 
-  .heroBadge {
-    font-size: clamp(11px, 3.4vw, 13px);
-  }
-
-
-  .heroCopy {
-    align-self: center;
-    width: 290px;
-    justify-content: center;
-  }
-
-
-  .heroArrow {
-    bottom: 18px;
-  }
-
-  .heroSlide {
-    justify-content: center;
-    align-items: center;
-  }
-
-  .heroVisualMain {
-    width: clamp(250px, 78vw, 260px);
-  }
-
-  .heroHelpTitle {
+  .contactsCompany span,
+  .contactsCompany strong {
     font-size: 25px;
-    line-height: 31px;
-    width: 255px;
   }
 
-  .heroHelpLead {
-    width: 247px;
-    font-size: 12px;
-    margin: 0;
+  .contactsHours {
+    line-height: 130%;
   }
 
-  .heroHelpCopy {
-    height: 205px;
+  .contactsList .contactsAddress,
+  .contactsList .contactsHours,
+  .contactsList .contactsMail {
+    font-size: 18px;
   }
 
-
-  /* #endregion Hero */
-  /* #region Partners */
-  .partnersMobileSection,
-  .partnersAfterBenefitsMobileSection {
-    --partners-hero-inline-pad: 8px;
+  .contactsList .contactsPhones {
+    font-size: 16px;
   }
 
-  .partnersBlock {}
-
-  .partnersLabel {
-    font-size: var(--section-title-size);
+  .contactsList .contactsItem {
+    align-items: center;
+    column-gap: 20px;
   }
 
-  .partnersPanel> :nth-child(1) img {
-    max-width: 100%;
-    max-height: 100%;
+  .contactsList .contactsAddress,
+  .contactsList .contactsPhones,
+  .contactsList .contactsHours,
+  .contactsList .contactsMail {
+    min-height: 0;
+    height: fit-content;
   }
 
-  .partnersPanel> :nth-child(2) img {
-    max-width: 100%;
-    max-height: 100%;
+  .contactsList .contactsIcon {
+    align-self: stretch;
+    min-height: 0;
   }
 
-  .partnersPanel> :nth-child(3) img {
-    max-width: 100%;
-    max-height: 100%;
+  .contactsList .contactsIconImage {
+    height: 100%;
+    min-height: 0;
+    object-fit: contain;
+    padding: 0;
+    min-width: 0;
+    width: 28px;
   }
+  
 
-  .partnersPanel> :nth-child(4) img {
-    max-width: 100%;
-    max-height: 100%;
-  }
-
-  /* #endregion Partners */
-  /* #region Benefits */
-  .benefitsSection {
-    --advantages-container-gap: 24px;
-    --advantages-stage-min-height: clamp(320px, 110vw, 380px);
-    --advantages-grid-gap: 14px;
-    --advantages-content-gap: 14px;
-    --advantages-card-padding-block: clamp(15px, 4.8vw, 16px);
-    --advantages-card-padding-inline: clamp(11px, 4vw, 12px);
-    --advantages-card-radius: 14px;
-    --advantages-list-gap: 12px;
-    --advantages-item-gap: 12px;
-    --advantages-title-size: var(--section-title-size);
-    --advantages-logo-width: clamp(196px, 63vw, 208px);
-    padding: var(--advantages-section-padding-top) 0 var(--advantages-section-padding-bottom);
-  }
-
-  .benefitsSection :global(.container) {
-    width: min(calc(100% - var(--advantages-container-gap)), 1284px);
-  }
-
-  .benefitsContentColumn {
-    gap: 30px;
-  }
-
-  .advantagesLogoWrap {
-    width: min(100%, var(--advantages-logo-width));
-  }
-
-  /* #endregion Benefits */
-  /* #region Offers */
-  .offersSection {
-    --offers-title-size: var(--section-title-size);
-    --offers-section-padding-bottom: 36px;
-    --offers-container-inline-gap: 16px;
-  }
-
-  /* #endregion Offers */
-  /* #region About */
-
-
-  /* #endregion About */
-  /* #region Contacts */
   /* #endregion Contacts */
 }
+
