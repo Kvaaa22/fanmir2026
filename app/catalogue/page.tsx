@@ -66,6 +66,8 @@ export default function PricesPage() {
                 />
               </div>
 
+              <div className={styles.productBody}>
+                <div className={styles.productDetails}>
               <h2 className={styles.productTitle}>
                 <span>{product.titleLineOne}</span>
                 <span>{product.titleLineTwo}</span>
@@ -85,6 +87,7 @@ export default function PricesPage() {
                   <dd>{product.size}</dd>
                 </div>
               </dl>
+                </div>
 
               <div className={styles.productPrice}>{product.price}</div>
 
@@ -103,6 +106,7 @@ export default function PricesPage() {
                   <span>В корзину</span>
                   <CartIcon />
                 </button>
+              </div>
               </div>
             </article>
           ))}
