@@ -717,3 +717,21 @@
     right: 0;
   }
 }
+
+@media (max-width: 374px) {
+  .header {
+    --header-min-width: var(--layout-min-width, 375px);
+    width: var(--layout-min-width, 375px);
+    min-width: var(--layout-min-width, 375px);
+  }
+
+  .header :global(.container) {
+    width: calc(var(--layout-min-width, 375px) - 16px);
+  }
+
+  .mobileMenuPanel {
+    width: calc(var(--layout-min-width, 375px) - 48px);
+    min-width: calc(var(--layout-min-width, 375px) - 48px);
+    right: 0;
+  }
+}

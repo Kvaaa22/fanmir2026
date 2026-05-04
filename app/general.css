@@ -86,3 +86,16 @@ body {
 .page {
   background: var(--color-page);
 }
+
+@media (max-width: 374px) {
+  :root {
+    --layout-min-width: 375px;
+  }
+
+  html,
+  body,
+  .page {
+    min-width: var(--layout-min-width);
+  }
+
+}

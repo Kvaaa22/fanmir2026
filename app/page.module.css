@@ -3732,3 +3732,12 @@
   /* #endregion Contacts */
 }
 
+@media (max-width: 374px) {
+  .aboutImage {
+    top: 100px;
+    left: 32.67px;
+    width: 281.25px;
+    max-width: 281.25px;
+  }
+}
+
