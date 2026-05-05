@@ -570,6 +570,7 @@
     width: calc(100% - 101px);
     min-width: 0;
     padding-inline: clamp(16px, 2vw, 24px);
+    font-size: clamp(11px, calc(6.4516vw - 53.3226px), 15px);
   }
 }
 
