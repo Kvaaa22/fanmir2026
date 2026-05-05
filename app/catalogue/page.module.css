@@ -505,3 +505,120 @@
   height: 24px;
   flex: 0 0 auto;
 }
+
+@media (max-width: 1299px) {
+  .catalogPage {
+    min-height: auto;
+    padding-bottom: clamp(72px, 8vw, 96px);
+  }
+
+  .catalogFrame {
+    grid-template-columns: 392px clamp(16px, 2vw, 24px) minmax(0, 1fr);
+    justify-content: center;
+    width: min(calc(100% - 40px), 1120px);
+    padding-top: clamp(112px, 9.5vw, 128px);
+  }
+
+  .sidebar {
+    width: 392px;
+  }
+
+  .productsGrid {
+    grid-column: 3;
+    grid-template-columns: repeat(2, minmax(245px, 309px));
+    justify-content: start;
+    column-gap: clamp(24px, 4.8vw, 62px);
+    row-gap: 44px;
+  }
+
+  .productCard {
+    width: 100%;
+    min-height: auto;
+  }
+
+  .productBody {
+    width: 100%;
+    height: auto;
+    min-height: 200px;
+  }
+
+  .productDetails {
+    height: auto;
+    min-height: 83px;
+  }
+
+  .productTitle {
+    width: calc(100% - 24px);
+    height: auto;
+    min-height: 40px;
+  }
+
+  .productMeta {
+    justify-content: center;
+    gap: clamp(24px, 3.2vw, 42px);
+  }
+
+  .productPrice {
+    width: calc(100% - 20px);
+  }
+
+  .quantityControl {
+    width: 98px;
+  }
+
+  .cartButton {
+    width: calc(100% - 101px);
+    min-width: 0;
+    padding-inline: clamp(16px, 2vw, 24px);
+  }
+}
+
+@media (max-width: 996px) {
+  .catalogFrame {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 42px;
+    width: min(calc(100% - 40px), 720px);
+    padding-top: 96px;
+  }
+
+  .sidebar {
+    grid-column: 1;
+    justify-self: center;
+    width: min(100%, 392px);
+  }
+
+  .productsGrid {
+    grid-column: 1;
+    grid-template-columns: repeat(2, minmax(245px, 309px));
+    justify-content: center;
+    column-gap: 32px;
+  }
+}
+
+@media (max-width: 700px) {
+  .catalogPage {
+    padding-bottom: 64px;
+  }
+
+  .catalogFrame {
+    width: min(calc(100% - 32px), 392px);
+    padding-top: 82px;
+  }
+
+  .sidebar {
+    padding: 18px 24px 18px 32px;
+  }
+
+  .filterColumns {
+    column-gap: 24px;
+  }
+
+  .filterGroups {
+    gap: 12px;
+  }
+
+  .productsGrid {
+    grid-template-columns: minmax(245px, 309px);
+    row-gap: 36px;
+  }
+}
