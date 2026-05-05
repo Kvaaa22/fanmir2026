@@ -310,7 +310,7 @@ export default function PricesPage() {
           <ul className={styles.categoryList}>
             {dropdownCategories.map(({ category, filters }) => (
               <li className={styles.categoryItem} key={category}>
-                <details className={styles.categoryDropdown}>
+                <details className={styles.categoryDropdown} name="catalogue-category">
                   <summary className={styles.categoryButton}>
                     <span>{category}</span>
                     <span className={styles.categoryArrow} aria-hidden="true" />
