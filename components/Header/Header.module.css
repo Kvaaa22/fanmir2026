@@ -172,6 +172,10 @@
 }
 
 @media (max-width: 1280px) {
+  .header :global(.container) {
+    width: min(calc(100% - 40px), 1120px);
+  }
+
   .headerBar {
     gap: 16px;
   }

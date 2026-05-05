@@ -290,7 +290,7 @@ const dropdownCategories = [
 
 const products: ProductCard[] = Array.from({ length: 6 }, (_, index) => ({
   id: `fanera-berezovaya-${index + 1}`,
-  titleLineOne: "Фанера березовая ФК 1525х1525 мм",
+  titleLineOne: "Фанера березовая ФК 1525 х 1525 мм",
   titleLineTwo: "3мм Ш2 (В/ВВ) СВЕЗА",
   sort: "Сорт 1/2",
   thickness: "3мм",
