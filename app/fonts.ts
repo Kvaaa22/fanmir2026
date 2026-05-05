@@ -3,6 +3,11 @@ import localFont from 'next/font/local'
 export const bitter = localFont({
   src: [
     {
+      path: '../public/fonts/Bitter-Light.ttf',
+      weight: '300',
+      style: 'normal',
+    },
+    {
       path: '../public/fonts/Bitter-Regular.ttf',
       weight: '400',
       style: 'normal',

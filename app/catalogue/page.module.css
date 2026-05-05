@@ -1,5 +1,9 @@
 .catalogPage {
+  display: flow-root;
+  height: auto;
   min-height: 1424px;
+  padding-bottom: 96px;
+  overflow: visible;
   background: #ffffff;
 }
 
@@ -16,14 +20,146 @@
   grid-column: 1;
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: start;
+  align-items: flex-start;
+  justify-content: flex-start;
   width: 392px;
-  height: 328px;
-  padding: 18px 43px;
+  min-height: 328px;
+  height: auto;
+  padding: 18px 35px 18px 51px;
   border: 1px solid #f2f2f2;
   border-radius: 10px;
   background: #ffffff;
+}
+
+.filterDropdown {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+}
+
+.filterColumns {
+  display: grid;
+  grid-template-columns: repeat(3, max-content);
+  column-gap: 35px;
+  width: fit-content;
+  margin-top: 16px;
+}
+
+.filterColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: fit-content;
+  min-width: 0;
+}
+
+.filterSection {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.filterGroups {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  width: max-content;
+  margin-top: 16px;
+}
+
+.filterGroup {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+}
+
+.filterGroupTitle {
+  margin: 0 0 18px;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.4;
+  color: #000000;
+  text-shadow: 0 4px 16px rgba(255, 255, 255, 0.58);
+}
+
+.filterGroupTitle:empty::before {
+  content: "\00a0";
+}
+
+.filterGroupColumns {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: fit-content;
+}
+
+.filterColumn h3,
+.filterSection h3 {
+  margin: 0;
+  font-family: var(--font-heading), serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 160%;
+  letter-spacing: -0.02em;
+  color: #000000;
+  text-shadow: 0 4px 16px rgba(255, 255, 255, 0.58);
+}
+
+.filterColumn ul,
+.filterSection ul {
+  display: grid;
+  row-gap: 3px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.filterColumn li,
+.filterSection li {
+  margin: 0;
+  white-space: nowrap;
+}
+
+.filterOption {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  min-height: 19px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-family: var(--font-heading), serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 160%;
+  letter-spacing: -0.02em;
+  color: #000000;
+  text-align: left;
+  text-shadow: 0 4px 16px rgba(255, 255, 255, 0.58);
+  text-decoration: none;
+  white-space: pre-line;
+  cursor: pointer;
+}
+
+.filterOption:hover,
+.filterOption:focus,
+.filterOption:focus-visible,
+.filterOption:active {
+  text-decoration: none;
+}
+
+.filterOption:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 2px;
+}
+
+.filterColumn:nth-child(2) .filterSection:nth-child(2) li:nth-child(2) .filterOption {
+  color: #2f2f2f;
 }
 
 .categoryList {
@@ -36,11 +172,18 @@
 
 .categoryItem {
   width: 100%;
-  border-bottom: 1px solid #a9a9a9;
 }
 
-.categoryItem:last-child {
-  border-bottom: 0;
+.categoryItem::after {
+  content: "";
+  display: block;
+  width: 100%;
+  margin: 16px 0;
+  border-bottom: 1px solid #2f2f2f;
+}
+
+.categoryItem:last-child::after {
+  display: none;
 }
 
 .categoryButton {
@@ -49,7 +192,7 @@
   justify-content: flex-start;
   gap: 4px;
   width: 100%;
-  min-height: 47px;
+  min-height: 22px;
   padding: 0;
   border: 0;
   background: transparent;
@@ -63,13 +206,42 @@
   cursor: pointer;
 }
 
+.categoryDropdown {
+  width: 100%;
+}
+
+.categoryDropdown > summary {
+  list-style: none;
+}
+
+.categoryDropdown > summary::-webkit-details-marker {
+  display: none;
+}
+
+
+
+.categoryDropdown[open] > .categoryButton .categoryArrow::before {
+  transform: translateY(2px) rotate(225deg);
+}
+
 .categoryArrow {
+  position: relative;
   flex: 0 0 auto;
+  width: 10px;
+  height: 10px;
+}
+
+.categoryArrow::before {
+  content: "";
+  position: absolute;
+  top: 1px;
+  left: 1px;
   width: 7px;
   height: 7px;
   border-right: 1px solid currentColor;
   border-bottom: 1px solid currentColor;
-  transform: rotate(45deg) translateY(-2px);
+  transform: rotate(45deg);
+  transform-origin: center;
 }
 
 .productsGrid {
