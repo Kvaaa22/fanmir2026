@@ -2834,9 +2834,6 @@
     --section-title-size: clamp(35px, calc(35px + 4 * ((100vw - 465px) / 64)), 39px);
   }
 
-  .aboutImage {
-    background-image: url("/img/main/about-530.webp");
-  }
 
   /* #region Hero */
   .hero {
@@ -3473,9 +3470,7 @@
 
   /* #endregion Offers */
   /* #region About */
-  .aboutImage {
-    background-image: image-set(url("/img/main/about-530.webp") 1x);
-  }
+
 
   .aboutSection {
     padding: 48px 0 86px;
