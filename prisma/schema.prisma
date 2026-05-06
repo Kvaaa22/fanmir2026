@@ -1,0 +1,84 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+enum PriceSource {
+  MAIN
+  PLYDEX
+}
+
+model Product {
+  id            Int      @id @default(autoincrement())
+  slug          String   @unique
+  title         String
+  categorySlug  String
+  categoryTitle String
+  imageUrl      String?
+  isActive      Boolean  @default(true)
+  sortOrder     Int      @default(0)
+
+  prices        Price[]
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Price {
+  id            Int         @id @default(autoincrement())
+
+  productId     Int
+  product       Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  source        PriceSource
+  variantKey    String
+
+  variantTitle  String?
+  sort          String?
+  surface       String?
+  finish        String?
+
+  thicknessMm   Float?
+  size          String?
+
+  unit          String
+  priceRub      Int?
+  pricePerM2Rub Float?
+
+  note          String?
+  rowNumber     Int?
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@unique([source, productId, variantKey])
+  @@index([source])
+  @@index([productId])
+  @@index([thicknessMm])
+  @@index([sort])
+  @@index([finish])
+}
+
+model PriceImport {
+  id               Int         @id @default(autoincrement())
+  source           PriceSource
+
+  originalFileName String
+  storedFilePath   String?
+  imagePath        String?
+
+  rowsCount        Int
+  status           String
+  errorText        String?
+
+  createdAt        DateTime @default(now())
+}

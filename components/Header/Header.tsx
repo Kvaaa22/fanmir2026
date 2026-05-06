@@ -26,7 +26,7 @@ const navigation: NavigationItem[] = [
   { id: "about", href: "#", label: "О нас" },
   {
     id: "catalog",
-    href: "/catalogue",
+    href: "/catalog",
     label: "Каталог",
     withArrow: true,
     children: [
