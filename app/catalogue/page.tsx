@@ -279,12 +279,12 @@ const plydexFilters: FilterColumn[] = [
 ];
 
 const dropdownCategories = [
-  { category: categories[0], filters: birchFilters },
-  { category: categories[1], filters: coniferFilters },
-  { category: categories[2], filters: laminatedFilters },
-  { category: categories[3], filters: osbFilters },
-  { category: categories[4], filters: dspDvpFilters },
-  { category: categories[5], filters: plydexFilters },
+  { category: categories[0], filters: birchFilters, id: "fanera-berezovaya" },
+  { category: categories[1], filters: coniferFilters, id: "fanera-xvoinaya" },
+  { category: categories[2], filters: laminatedFilters, id: "fanera-laminirovannaya" },
+  { category: categories[3], filters: osbFilters, id: "plity-osb-3" },
+  { category: categories[4], filters: dspDvpFilters, id: "dvp-i-dsp" },
+  { category: categories[5], filters: plydexFilters, id: "paneli-plydex" },
 ];
 
 const products: ProductCard[] = Array.from({ length: 6 }, (_, index) => ({
@@ -308,8 +308,8 @@ export default function PricesPage() {
       <div className={styles.catalogFrame}>
         <aside className={styles.sidebar} aria-label="Категории каталога">
           <ul className={styles.categoryList}>
-            {dropdownCategories.map(({ category, filters }) => (
-              <li className={styles.categoryItem} key={category}>
+            {dropdownCategories.map(({ category, filters, id }) => (
+              <li className={styles.categoryItem} id={id} key={category}>
                 <details className={styles.categoryDropdown} name="catalogue-category">
                   <summary className={styles.categoryButton}>
                     <span>{category}</span>

@@ -19,40 +19,38 @@ type NavigationItem = {
 };
 
 type NavigationChild = {
-  href: string;
   label: string;
 };
 
 const navigation: NavigationItem[] = [
-  { id: "about", href: "/#about", label: "О нас" },
+  { id: "about", href: "#", label: "О нас" },
   {
     id: "catalog",
-    href: "/#offers",
+    href: "/catalogue",
     label: "Каталог",
     withArrow: true,
     children: [
-      { href: "/prices#fanera-berezovaya", label: "Фанера березовая" },
-      { href: "/prices#fanera-xvoinaya", label: "Фанера хвойная" },
+      { label: "Фанера березовая" },
+      { label: "Фанера хвойная" },
       {
-        href: "/prices#fanera-laminirovannaya",
         label: "Фанера ламинированная",
       },
-      { href: "/prices#plity-osb-3", label: "Плиты OSB-3 (ОСП)" },
-      { href: "/prices#dvp-i-dsp", label: "ДВП и ДСП" },
-      { href: "/prices#paneli-plydex", label: "Панели PLYDEX" },
+      { label: "Плиты OSB-3 (ОСП)" },
+      { label: "ДВП и ДСП" },
+      { label: "PLYDEX" },
     ],
   },
   {
     id: "services",
-    href: "/#hero",
+    href: "#",
     label: "Услуги",
     withArrow: true,
     children: [
-      { href: "/#hero", label: "Резка по вашим размерам" },
-      { href: "/#hero-cutting", label: "Раскрой / кромление" },
+      { label: "Доставка и оплата" },
+      { label: "Распил" },
     ],
   },
-  { id: "prices", href: "/prices", label: "Наши цены" },
+  { id: "prices", href: "#", label: "Наши цены" },
   { id: "contacts", href: "/#contacts", label: "Контакты" },
 ];
 
@@ -62,6 +60,7 @@ const callOrderLabel = "Заказать звонок";
 
 export function Header({ className }: HeaderProps) {
   const menuRef = useRef<HTMLDetailsElement>(null);
+  const [openDesktopGroupId, setOpenDesktopGroupId] = useState<string | null>(null);
   const [openGroupId, setOpenGroupId] = useState<string | null>(null);
 
   const closeMobileMenu = () => {
@@ -91,6 +90,8 @@ export function Header({ className }: HeaderProps) {
               itemClassName={styles.navItem}
               linkClassName={styles.navLink}
               listClassName={styles.navList}
+              openGroupId={openDesktopGroupId}
+              setOpenGroupId={setOpenDesktopGroupId}
             />
           </nav>
 
@@ -209,28 +210,72 @@ function DesktopNavigationLinks({
   itemClassName,
   linkClassName,
   listClassName,
+  openGroupId,
+  setOpenGroupId,
 }: {
   itemClassName: string;
   linkClassName: string;
   listClassName: string;
+  openGroupId: string | null;
+  setOpenGroupId: Dispatch<SetStateAction<string | null>>;
 }) {
   return (
     <ul className={listClassName}>
-      {navigation.map((item) => (
-        <li className={itemClassName} key={item.label}>
-          <Link className={linkClassName} href={item.href}>
-            <span>{item.label}</span>
-            {item.withArrow ? (
-              <Image
-                src="/img/icons/triang.svg"
-                alt=""
-                height={6}
-                width={11}
-              />
+      {navigation.map((item) => {
+        const isGroupOpen = openGroupId === item.id;
+
+        return (
+          <li
+            className={[itemClassName, isGroupOpen ? styles.navItemOpen : ""]
+              .filter(Boolean)
+              .join(" ")}
+            key={item.label}
+          >
+            <Link
+              className={linkClassName}
+              href={item.href}
+              onClick={() => setOpenGroupId(null)}
+            >
+              <span>{item.label}</span>
+            </Link>
+
+            {item.withArrow && item.children ? (
+              <>
+                <button
+                  aria-expanded={isGroupOpen}
+                  aria-label={`Открыть раздел ${item.label}`}
+                  className={styles.navArrowButton}
+                  onClick={() =>
+                    setOpenGroupId((currentId) =>
+                      currentId === item.id ? null : item.id,
+                    )
+                  }
+                  type="button"
+                >
+                  <Image
+                    src="/img/icons/triang.svg"
+                    alt=""
+                    height={6}
+                    width={11}
+                  />
+                </button>
+
+                <div className={styles.desktopSubmenu}>
+                  {item.children.map((child) => (
+                    <button
+                      className={styles.desktopSubmenuButton}
+                      key={child.label}
+                      type="button"
+                    >
+                      {child.label}
+                    </button>
+                  ))}
+                </div>
+              </>
             ) : null}
-          </Link>
-        </li>
-      ))}
+          </li>
+        );
+      })}
     </ul>
   );
 }
@@ -281,14 +326,13 @@ function MobileNavigationLinks({
                   <div className={styles.mobileSubmenu}>
                     {item.children.map((child) => {
                       return (
-                        <div className={styles.mobileSubmenuItem} key={child.href}>
-                          <Link
+                        <div className={styles.mobileSubmenuItem} key={child.label}>
+                          <button
                             className={styles.mobileSubmenuLink}
-                            href={child.href}
-                            onClick={closeMobileMenu}
+                            type="button"
                           >
                             {child.label}
-                          </Link>
+                          </button>
                         </div>
                       );
                     })}

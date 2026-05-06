@@ -177,7 +177,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className={styles.benefitsSection}>
+      <section className={styles.benefitsSection} id="delivery">
         <div className="container">
           <div className={styles.benefitsStage}>
             <div className={styles.benefitsGrid}>
@@ -233,7 +233,11 @@ export default function Home() {
             {offerRows.map((row, rowIndex) => (
               <div className={styles.offersRow} key={`offers-row-${rowIndex}`}>
                 {row.map((offer) => (
-                  <article className={styles.offerCard} key={offer.title}>
+                  <article
+                    className={styles.offerCard}
+                    id={offer.patternClassName === "offerPatternSaw" ? "cutting" : undefined}
+                    key={offer.title}
+                  >
                     <div
                       className={`${styles.offerImage} ${styles[offer.patternClassName]
                         }`}

@@ -52,6 +52,7 @@
 }
 
 .navItem {
+  position: relative;
   display: flex;
   align-items: center;
 }
@@ -60,16 +61,108 @@
 .mobileNavLink {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
   white-space: nowrap;
 }
 
-.navLink img,
 .mobileNavLink img {
   box-sizing: content-box;
   width: 11px;
   height: 6px;
   padding: 1px;
+}
+
+.navArrowButton {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 19px;
+  height: 19px;
+  margin-left: 6px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.navArrowButton img {
+  box-sizing: content-box;
+  width: 11px;
+  height: 6px;
+  padding: 1px;
+  transition: transform 0.18s ease;
+}
+
+.navArrowButton[aria-expanded="true"] img {
+  transform: rotate(180deg);
+}
+
+.desktopSubmenu {
+  position: absolute;
+  top: calc(100% + 14px);
+  left: 50%;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  min-width: 258px;
+  padding: 18px 35px;
+  border: 1px solid #f2f2f2;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: none;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 6px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.desktopSubmenu::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 100%;
+  left: 0;
+  height: 14px;
+}
+
+.navItemOpen .desktopSubmenu {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, 0);
+}
+
+.desktopSubmenuButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 22px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 16px;
+  line-height: 1.4;
+  font-weight: 400;
+  color: #000000;
+  text-align: left;
+  text-shadow: 0 4px 16px rgba(255, 255, 255, 0.58);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.desktopSubmenuButton:not(:last-child) {
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #2f2f2f;
+}
+
+.desktopSubmenuButton:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 2px;
 }
 
 .meta {
@@ -485,13 +578,19 @@
   .mobileSubmenuLink {
     display: flex;
     align-items: center;
+    width: 100%;
     min-height: 56px;
     padding: 0 16px;
+    border: 0;
     border-radius: 14px;
+    background: transparent;
+    font-family: var(--font-sans), sans-serif;
     font-size: 16px;
     line-height: 1.25;
     color: var(--text-muted);
+    text-align: left;
     transition: color 0.2s ease;
+    cursor: pointer;
   }
 
   .mobileMeta {
