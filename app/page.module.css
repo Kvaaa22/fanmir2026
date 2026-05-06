@@ -875,22 +875,10 @@
   min-height: 0;
   overflow: hidden;
   border-radius: 16px;
-  background: url("/img/main/about-768.avif") center center / cover no-repeat;
+  background: url("/img/main/about.webp") center center / cover no-repeat;
   box-shadow: 0px 18px 45px rgba(0, 25, 49, 0.25);
 }
 
-@media (min-width: 750px) {
-  .aboutImage {
-    background-image: image-set(url("/img/main/about-1280.avif") 1x,
-        url("/img/main/about.avif") 2x);
-  }
-}
-
-@media (min-width: 1300px) {
-  .aboutImage {
-    background-image: url("/img/main/about.avif");
-  }
-}
 
 .aboutNote {
   position: relative;
@@ -2777,8 +2765,7 @@
   }
 
   .aboutNote {
-    margin-top: 122px;
-
+    margin-top: 92px;
   }
 
   /* #endregion About */
@@ -2845,6 +2832,10 @@
 @media (max-width: 530px) {
   :global(:root) {
     --section-title-size: clamp(35px, calc(35px + 4 * ((100vw - 465px) / 64)), 39px);
+  }
+
+  .aboutImage {
+    background-image: url("/img/main/about-530.webp");
   }
 
   /* #region Hero */
@@ -3482,6 +3473,10 @@
 
   /* #endregion Offers */
   /* #region About */
+  .aboutImage {
+    background-image: image-set(url("/img/main/about-530.webp") 1x);
+  }
+
   .aboutSection {
     padding: 48px 0 86px;
   }
