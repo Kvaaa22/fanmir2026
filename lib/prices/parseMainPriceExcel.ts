@@ -17,6 +17,7 @@ type PriceColumnConfig = {
 type MatrixBlockConfig = {
   productSlug: string;
   productTitle: string;
+  titleRow?: number;
   categorySlug: string;
   categoryTitle: string;
 
@@ -36,6 +37,7 @@ const MAIN_BLOCKS: MatrixBlockConfig[] = [
   {
     productSlug: "fanera-hvoinaya-fsf-nsh-2440x1220",
     productTitle: "Фанера хвойных пород ФСФ НШ 2440x1220",
+    titleRow: 10,
     categorySlug: "plywood-softwood",
     categoryTitle: "Хвойная фанера",
     size: "2440x1220",
@@ -59,6 +61,7 @@ const MAIN_BLOCKS: MatrixBlockConfig[] = [
   {
     productSlug: "fanera-berezovaya-fk-nsh-1525x1525",
     productTitle: "Фанера березовая ФК НШ 1525x1525",
+    titleRow: 17,
     categorySlug: "plywood-birch-fk",
     categoryTitle: "Березовая фанера ФК",
     size: "1525x1525",
@@ -85,6 +88,7 @@ const MAIN_BLOCKS: MatrixBlockConfig[] = [
   {
     productSlug: "fanera-berezovaya-fk-sh2-sveza-1525x1525",
     productTitle: "Фанера березовая ФК Ш2 СВЕЗА 1525x1525",
+    titleRow: 21,
     categorySlug: "plywood-birch-fk",
     categoryTitle: "Березовая фанера ФК",
     size: "1525x1525",
@@ -110,6 +114,7 @@ const MAIN_BLOCKS: MatrixBlockConfig[] = [
   {
     productSlug: "fanera-berezovaya-fsf-sveza-2440x1220",
     productTitle: "Фанера березовая ФСФ СВЕЗА 2440x1220",
+    titleRow: 29,
     categorySlug: "plywood-birch-fsf",
     categoryTitle: "Березовая фанера ФСФ",
     size: "2440x1220",
@@ -137,6 +142,7 @@ const MAIN_BLOCKS: MatrixBlockConfig[] = [
   {
     productSlug: "fanera-berezovaya-fsf-sveza-1500x3000",
     productTitle: "Фанера березовая ФСФ СВЕЗА 1500x3000",
+    titleRow: 38,
     categorySlug: "plywood-birch-fsf",
     categoryTitle: "Березовая фанера ФСФ",
     size: "1500x3000",
@@ -160,6 +166,7 @@ const MAIN_BLOCKS: MatrixBlockConfig[] = [
   {
     productSlug: "fanera-berezovaya-laminirovannaya-2440x1220",
     productTitle: "Фанера березовая ламинированная 2440x1220",
+    titleRow: 47,
     categorySlug: "plywood-laminated",
     categoryTitle: "Ламинированная фанера",
     size: "2440x1220",
@@ -185,6 +192,7 @@ const MAIN_BLOCKS: MatrixBlockConfig[] = [
   {
     productSlug: "fanera-berezovaya-laminirovannaya-1500x3000",
     productTitle: "Фанера березовая ламинированная 1500x3000",
+    titleRow: 52,
     categorySlug: "plywood-laminated",
     categoryTitle: "Ламинированная фанера",
     size: "1500x3000",
@@ -205,6 +213,7 @@ const MAIN_BLOCKS: MatrixBlockConfig[] = [
   {
     productSlug: "osb-3-2500x1250",
     productTitle: "Ориентированно-стружечная плита OSB-3 2500x1250",
+    titleRow: 57,
     categorySlug: "osb",
     categoryTitle: "OSB-3",
     size: "2500x1250",
@@ -225,6 +234,7 @@ const MAIN_BLOCKS: MatrixBlockConfig[] = [
   {
     productSlug: "mdf-sort-1-shlifovannaya-2800x2070",
     productTitle: "МДФ сорт 1 шлифованная 2800x2070",
+    titleRow: 73,
     categorySlug: "mdf",
     categoryTitle: "МДФ",
     size: "2800x2070",
@@ -273,11 +283,59 @@ export async function parseMainPriceExcel(
   return rows;
 }
 
+function getCellText(cell: ExcelJS.Cell) {
+  try {
+    return cell.text.trim();
+  } catch {
+    return "";
+  }
+}
+
+function formatTitleSize(size: string) {
+  const normalizedSize = normalizeSize(size).replaceAll("*", "x");
+
+  return /мм/i.test(normalizedSize) ? normalizedSize : `${normalizedSize} мм`;
+}
+
+function normalizeProductTitle(title: string, size: string) {
+  const normalizedTitle = title
+    .replace(/\s+/g, " ")
+    .replace(/[«»]/g, "")
+    .replace(/\s*\([^)]*кв\.?\s*м\.?[^)]*\)/gi, "")
+    .replace(/\s*\(ГОСТ[^)]*\)/gi, "")
+    .replace(/\s*СТО\b.*$/i, "")
+    .replace(/\bмарка\s+/gi, "")
+    .replace(/,?\s*формат\s*:?\s*/gi, " ")
+    .replace(/\s*мм\./gi, " мм")
+    .replace(/\s+,/g, ",")
+    .replace(/,\s*(\d{3,4}\s*[xх×*]\s*\d{3,4})/gi, " $1")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (/\bмм\b/i.test(normalizedTitle)) {
+    return normalizedTitle;
+  }
+
+  return `${normalizedTitle} ${formatTitleSize(size)}`.trim();
+}
+
+function getBlockProductTitle(
+  worksheet: ExcelJS.Worksheet,
+  block: MatrixBlockConfig
+) {
+  const titleFromSheet = block.titleRow
+    ? getCellText(worksheet.getCell(block.titleRow, 1))
+    : "";
+
+  return normalizeProductTitle(titleFromSheet || block.productTitle, block.size);
+}
+
 function parseMatrixBlock(
   worksheet: ExcelJS.Worksheet,
   block: MatrixBlockConfig
 ): ParsedPriceRow[] {
   const result: ParsedPriceRow[] = [];
+  const productTitle = getBlockProductTitle(worksheet, block);
 
   for (const rowNumber of block.dataRows) {
     const rowLabel = worksheet.getCell(rowNumber, block.labelCol).text.trim();
@@ -305,7 +363,6 @@ function parseMatrixBlock(
         [
           rowLabel,
           priceColumn.thicknessMm ? `${priceColumn.thicknessMm} мм` : undefined,
-          block.size,
         ]
           .filter(Boolean)
           .join(", ");
@@ -314,7 +371,7 @@ function parseMatrixBlock(
         source: PRICE_SOURCE.MAIN,
 
         productSlug: block.productSlug,
-        productTitle: block.productTitle,
+        productTitle,
 
         categorySlug: block.categorySlug,
         categoryTitle: block.categoryTitle,

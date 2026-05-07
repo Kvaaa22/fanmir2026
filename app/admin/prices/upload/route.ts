@@ -1,12 +1,17 @@
 import { NextResponse } from "next/server";
 import { mkdir, writeFile } from "fs/promises";
 import path from "path";
+import prisma from "@/lib/prisma";
 import { parsePriceSource } from "@/lib/prices/priceSource";
 import { parsePriceExcel } from "@/lib/prices/parsePriceExcel";
 import { importPrices } from "@/lib/prices/importPrices";
 import { saveUploadedPdf } from "@/lib/prices/saveUploadedPdf";
 
 export const runtime = "nodejs";
+
+function isUploadedFile(value: FormDataEntryValue | null): value is File {
+  return value instanceof File && value.name.trim() !== "" && value.size > 0;
+}
 
 export async function POST(request: Request) {
   try {
@@ -15,6 +20,8 @@ export async function POST(request: Request) {
     const source = parsePriceSource(formData.get("source"));
     const excelFile = formData.get("priceFile");
     const pdfFile = formData.get("pricePdf");
+    const uploadedExcelFile = isUploadedFile(excelFile) ? excelFile : null;
+    const uploadedPdfFile = isUploadedFile(pdfFile) ? pdfFile : null;
 
     if (!source) {
       return NextResponse.json(
@@ -23,28 +30,62 @@ export async function POST(request: Request) {
       );
     }
 
-    if (!(excelFile instanceof File)) {
+    if (!uploadedExcelFile && !uploadedPdfFile) {
       return NextResponse.json(
-        { error: "Excel-файл не найден" },
+        { error: "Выберите Excel-файл, PDF-файл или оба файла" },
         { status: 400 }
       );
     }
 
-    if (!(pdfFile instanceof File)) {
-      return NextResponse.json(
-        { error: "PDF-файл не найден" },
-        { status: 400 }
-      );
-    }
-
-    if (!excelFile.name.toLowerCase().endsWith(".xlsx")) {
+    if (
+      uploadedExcelFile &&
+      !uploadedExcelFile.name.toLowerCase().endsWith(".xlsx")
+    ) {
       return NextResponse.json(
         { error: "Можно загружать только .xlsx" },
         { status: 400 }
       );
     }
 
-    const excelBuffer = Buffer.from(await excelFile.arrayBuffer());
+    if (
+      uploadedPdfFile &&
+      !uploadedPdfFile.name.toLowerCase().endsWith(".pdf")
+    ) {
+      return NextResponse.json(
+        { error: "Можно загружать только PDF-файл" },
+        { status: 400 }
+      );
+    }
+
+    const pdfPath = uploadedPdfFile
+      ? await saveUploadedPdf({
+          file: uploadedPdfFile,
+          source,
+        })
+      : undefined;
+
+    if (!uploadedExcelFile) {
+      if (!uploadedPdfFile) {
+        return NextResponse.json(
+          { error: "PDF-файл не найден" },
+          { status: 400 }
+        );
+      }
+
+      await prisma.priceImport.create({
+        data: {
+          source,
+          originalFileName: uploadedPdfFile.name,
+          pdfPath,
+          rowsCount: 0,
+          status: "success",
+        },
+      });
+
+      return NextResponse.redirect(new URL("/admin/prices", request.url), 303);
+    }
+
+    const excelBuffer = Buffer.from(await uploadedExcelFile.arrayBuffer());
 
     const uploadDir = path.join(process.cwd(), "storage", "uploads");
 
@@ -52,16 +93,11 @@ export async function POST(request: Request) {
       recursive: true,
     });
 
-    const safeFileName = excelFile.name.replace(/[^\wа-яА-ЯёЁ.\- ]/g, "_");
+    const safeFileName = uploadedExcelFile.name.replace(/[^\wа-яА-ЯёЁ.\- ]/g, "_");
     const storedFileName = `${Date.now()}-${source.toLowerCase()}-${safeFileName}`;
     const storedFilePath = path.join(uploadDir, storedFileName);
 
     await writeFile(storedFilePath, excelBuffer);
-
-    const pdfPath = await saveUploadedPdf({
-      file: pdfFile,
-      source,
-    });
 
     const rows = await parsePriceExcel(excelBuffer, source);
 
@@ -75,7 +111,7 @@ export async function POST(request: Request) {
     await importPrices({
       source,
       rows,
-      originalFileName: excelFile.name,
+      originalFileName: uploadedExcelFile.name,
       storedFilePath,
       pdfPath,
     });

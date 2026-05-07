@@ -1,16 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { connection } from "next/server";
+import { getCatalogPriceCards } from "@/lib/catalog/getCatalogData";
 import styles from "./page.module.css";
-
-type ProductCard = {
-  id: string;
-  titleLineOne: string;
-  titleLineTwo: string;
-  sort: string;
-  thickness: string;
-  size: string;
-  price: string;
-};
 
 type FilterSection = {
   title: string;
@@ -287,22 +279,16 @@ const dropdownCategories = [
   { category: categories[5], filters: plydexFilters, id: "paneli-plydex" },
 ];
 
-const products: ProductCard[] = Array.from({ length: 6 }, (_, index) => ({
-  id: `fanera-berezovaya-${index + 1}`,
-  titleLineOne: "Фанера березовая ФК 1525 х 1525 мм",
-  titleLineTwo: "3мм Ш2 (В/ВВ) СВЕЗА",
-  sort: "Сорт 1/2",
-  thickness: "3мм",
-  size: "1525*1525 мм",
-  price: "890 р/лист",
-}));
-
 export const metadata: Metadata = {
   title: "Наши цены | Фанерный мир",
   description: "Каталог фанеры и листовых материалов.",
 };
 
-export default function PricesPage() {
+export default async function PricesPage() {
+  await connection();
+
+  const products = await getCatalogPriceCards();
+
   return (
     <section className={styles.catalogPage} aria-label="Каталог товаров">
       <div className={styles.catalogFrame}>
@@ -333,13 +319,18 @@ export default function PricesPage() {
         </aside>
 
         <div className={styles.productsGrid}>
-          {products.map((product) => (
-            <article className={styles.productCard} key={product.id}>
+          {products.length === 0 ? (
+            <p className={styles.catalogEmpty}>
+              Прайс пока не загружен. Добавьте Excel-файл в админке.
+            </p>
+          ) : (
+            products.map((product, index) => (
+              <article className={styles.productCard} key={product.id}>
               <div className={styles.productImage}>
                 <Image
                   alt=""
                   fill
-                  priority={product.id === "fanera-berezovaya-1"}
+                  priority={index === 0}
                   sizes="309px"
                   src="/img/catalogue/card.png"
                 />
@@ -353,22 +344,19 @@ export default function PricesPage() {
                   </h2>
 
                   <dl className={styles.productMeta}>
-                    <div className={styles.metaColumn}>
-                      <dt>Сорт</dt>
-                      <dd>{product.sort}</dd>
-                    </div>
-                    <div className={styles.metaColumn}>
-                      <dt>Толщина</dt>
-                      <dd>{product.thickness}</dd>
-                    </div>
-                    <div className={styles.metaColumn}>
-                      <dt>Размер</dt>
-                      <dd>{product.size}</dd>
-                    </div>
+                    {product.meta.map((metaItem) => (
+                      <div className={styles.metaColumn} key={metaItem.label}>
+                        <dt>{metaItem.label}</dt>
+                        <dd>{metaItem.value}</dd>
+                      </div>
+                    ))}
                   </dl>
                 </div>
 
-                <div className={styles.productPrice}>{product.price}</div>
+                <div className={styles.productPrice}>
+                  <span>{product.price}</span>
+                  {product.pricePerM2 ? <small>{product.pricePerM2}</small> : null}
+                </div>
 
                 <div className={styles.productActions}>
                   <div className={styles.quantityControl} aria-label="Количество">
@@ -388,7 +376,8 @@ export default function PricesPage() {
                 </div>
               </div>
             </article>
-          ))}
+            ))
+          )}
         </div>
       </div>
     </section>

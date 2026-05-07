@@ -92,7 +92,6 @@ export default async function AdminPricesPage() {
               type="file"
               name="priceFile"
               accept=".xlsx"
-              required
             />
           </label>
 
@@ -103,12 +102,11 @@ export default async function AdminPricesPage() {
               type="file"
               name="pricePdf"
               accept=".pdf"
-              required
             />
           </label>
 
           <button className={styles.submitButton} type="submit">
-            Загрузить и обновить цены
+            Загрузить
           </button>
         </form>
 
