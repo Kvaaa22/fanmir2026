@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import styles from "./page.module.css";
 
 const PRICE_SOURCE_LABELS: Record<string, string> = {
   MAIN: "Основной прайс",
@@ -46,127 +47,157 @@ function getFileHref(
   return `/api/price-import-file?${params.toString()}`;
 }
 
-const fileActionsStyle = {
-  display: "flex",
-  flexWrap: "wrap",
-  gap: 8,
-  marginTop: 4,
-} as const;
-
 export default async function AdminPricesPage() {
   const imports = await prisma.priceImport.findMany({
     orderBy: {
       createdAt: "desc",
     },
     take: 20,
+    select: {
+      id: true,
+      source: true,
+      originalFileName: true,
+      storedFilePath: true,
+      pdfPath: true,
+      status: true,
+      createdAt: true,
+    },
   });
 
   return (
-    <main style={{ padding: "120px 40px" }}>
- <div className={`container`}>
-      <h1>Обновление цен</h1>
+    <main className={styles.page}>
+      <div className={styles.container}>
+        <header className={styles.header}>
+          <h1 className={styles.title}>Обновление цен</h1>
+        </header>
 
-      <form
-        action="/admin/prices/upload"
-        method="post"
-        encType="multipart/form-data"
-        style={{
-          display: "grid",
-          gap: 16,
-          maxWidth: 520,
-        }}
-      >
-        <label>
-          Тип прайса
-          <br />
-          <select name="source" required defaultValue="MAIN">
-            <option value="MAIN">Основной прайс</option>
-            <option value="PLYDEX">Plydex</option>
-          </select>
-        </label>
+        <form
+          action="/admin/prices/upload"
+          method="post"
+          encType="multipart/form-data"
+          className={styles.form}
+        >
+          <label className={styles.field}>
+            <span className={styles.label}>Тип прайса</span>
+            <select className={styles.control} name="source" required defaultValue="MAIN">
+              <option value="MAIN">Основной прайс</option>
+              <option value="PLYDEX">Plydex</option>
+            </select>
+          </label>
 
-        <label>
-          Excel-файл
-          <br />
-          <input type="file" name="priceFile" accept=".xlsx" required />
-        </label>
+          <label className={styles.field}>
+            <span className={styles.label}>Excel-файл</span>
+            <input
+              className={styles.control}
+              type="file"
+              name="priceFile"
+              accept=".xlsx"
+              required
+            />
+          </label>
 
-        <label>
-          PDF-файл
-          <br />
-          <input type="file" name="pricePdf" accept=".pdf" required />
-        </label>
+          <label className={styles.field}>
+            <span className={styles.label}>PDF-файл</span>
+            <input
+              className={styles.control}
+              type="file"
+              name="pricePdf"
+              accept=".pdf"
+              required
+            />
+          </label>
 
-        <button type="submit">Загрузить и обновить цены</button>
-      </form>
+          <button className={styles.submitButton} type="submit">
+            Загрузить и обновить цены
+          </button>
+        </form>
 
-      <section style={{ marginTop: 40 }}>
-        <h2>Последние загрузки</h2>
+        <section className={styles.importsSection}>
+          <h2 className={styles.sectionTitle}>Последние загрузки</h2>
 
-        {imports.length === 0 ? (
-          <p>Загрузок пока нет.</p>
-        ) : (
-          <table border={1} cellPadding={8}>
-            <thead>
-              <tr>
-                <th>Дата</th>
-                <th>Тип прайса</th>
-                <th>Excel-файл</th>
-                <th>PDF-файл</th>
-                <th>Позиции</th>
-                <th>Статус</th>
-              </tr>
-            </thead>
+          {imports.length === 0 ? (
+            <p className={styles.empty}>Загрузок пока нет.</p>
+          ) : (
+            <div className={styles.tableWrap}>
+              <table className={styles.table}>
+                <thead>
+                  <tr>
+                    <th>Дата</th>
+                    <th>Тип прайса</th>
+                    <th>Excel-файл</th>
+                    <th>PDF-файл</th>
+                    <th>Статус</th>
+                  </tr>
+                </thead>
 
-            <tbody>
-              {imports.map((item) => (
-                <tr key={item.id}>
-                  <td>{item.createdAt.toLocaleString("ru-RU")}</td>
-                  <td>{getSourceLabel(item.source)}</td>
-                  <td>
-                    {item.storedFilePath ? (
-                      <>
-                        <div>{item.originalFileName}</div>
-                        <div style={fileActionsStyle}>
-                          <a href={getFileHref(item.id, "excel", true)}>
-                            Скачать XLSX
-                          </a>
-                        </div>
-                      </>
-                    ) : (
-                      "—"
-                    )}
-                  </td>
-                  <td>
-                    {item.pdfPath ? (
-                      <>
-                        <div>{getStoredFileName(item.pdfPath, "price.pdf")}</div>
-                        <div style={fileActionsStyle}>
-                          <a
-                            href={getFileHref(item.id, "pdf")}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            Открыть
-                          </a>
-                          <a href={getFileHref(item.id, "pdf", true)}>
-                            Скачать PDF
-                          </a>
-                        </div>
-                      </>
-                    ) : (
-                      "—"
-                    )}
-                  </td>
-                  <td>{item.rowsCount.toLocaleString("ru-RU")}</td>
-                  <td>{getStatusLabel(item.status)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </section>
-    </div>
+                <tbody>
+                  {imports.map((item) => (
+                    <tr key={item.id}>
+                      <td data-label="Дата">
+                        {item.createdAt.toLocaleString("ru-RU")}
+                      </td>
+                      <td data-label="Тип прайса">
+                        {getSourceLabel(item.source)}
+                      </td>
+                      <td data-label="Excel-файл">
+                        {item.storedFilePath ? (
+                          <>
+                            <div className={styles.fileName}>
+                              {item.originalFileName}
+                            </div>
+                            <div className={styles.fileActions}>
+                              <a
+                                className={styles.actionLink}
+                                href={getFileHref(item.id, "excel", true)}
+                              >
+                                Скачать XLSX
+                              </a>
+                            </div>
+                          </>
+                        ) : (
+                          <span className={styles.missingFile}>-</span>
+                        )}
+                      </td>
+                      <td data-label="PDF-файл">
+                        {item.pdfPath ? (
+                          <>
+                            <div className={styles.fileName}>
+                              {getStoredFileName(item.pdfPath, "price.pdf")}
+                            </div>
+                            <div className={styles.fileActions}>
+                              <a
+                                className={styles.actionLink}
+                                href={getFileHref(item.id, "pdf")}
+                                target="_blank"
+                                rel="noreferrer"
+                              >
+                                Открыть
+                              </a>
+                              <a
+                                className={styles.actionLink}
+                                href={getFileHref(item.id, "pdf", true)}
+                              >
+                                Скачать PDF
+                              </a>
+                            </div>
+                          </>
+                        ) : (
+                          <span className={styles.missingFile}>-</span>
+                        )}
+                      </td>
+                      <td data-label="Статус">
+                        <span className={styles.status}>
+                          {getStatusLabel(item.status)}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </section>
+      </div>
     </main>
   );
 }
