@@ -7,6 +7,7 @@ type ImportPricesParams = {
   rows: ParsedPriceRow[];
   originalFileName: string;
   storedFilePath: string;
+  pdfPath?: string;
 };
 
 export async function importPrices({
@@ -14,6 +15,7 @@ export async function importPrices({
   rows,
   originalFileName,
   storedFilePath,
+  pdfPath,
 }: ImportPricesParams) {
   const result = await prisma.$transaction(async (tx) => {
     const priceImport = await tx.priceImport.create({
@@ -21,6 +23,7 @@ export async function importPrices({
         source,
         originalFileName,
         storedFilePath,
+        pdfPath,
         rowsCount: rows.length,
         status: "success",
       },

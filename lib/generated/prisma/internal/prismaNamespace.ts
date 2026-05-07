@@ -709,6 +709,7 @@ export const PriceImportScalarFieldEnum = {
   originalFileName: 'originalFileName',
   storedFilePath: 'storedFilePath',
   imagePath: 'imagePath',
+  pdfPath: 'pdfPath',
   rowsCount: 'rowsCount',
   status: 'status',
   errorText: 'errorText',

@@ -42,6 +42,7 @@ export type PriceImportMinAggregateOutputType = {
   originalFileName: string | null
   storedFilePath: string | null
   imagePath: string | null
+  pdfPath: string | null
   rowsCount: number | null
   status: string | null
   errorText: string | null
@@ -54,6 +55,7 @@ export type PriceImportMaxAggregateOutputType = {
   originalFileName: string | null
   storedFilePath: string | null
   imagePath: string | null
+  pdfPath: string | null
   rowsCount: number | null
   status: string | null
   errorText: string | null
@@ -66,6 +68,7 @@ export type PriceImportCountAggregateOutputType = {
   originalFileName: number
   storedFilePath: number
   imagePath: number
+  pdfPath: number
   rowsCount: number
   status: number
   errorText: number
@@ -90,6 +93,7 @@ export type PriceImportMinAggregateInputType = {
   originalFileName?: true
   storedFilePath?: true
   imagePath?: true
+  pdfPath?: true
   rowsCount?: true
   status?: true
   errorText?: true
@@ -102,6 +106,7 @@ export type PriceImportMaxAggregateInputType = {
   originalFileName?: true
   storedFilePath?: true
   imagePath?: true
+  pdfPath?: true
   rowsCount?: true
   status?: true
   errorText?: true
@@ -114,6 +119,7 @@ export type PriceImportCountAggregateInputType = {
   originalFileName?: true
   storedFilePath?: true
   imagePath?: true
+  pdfPath?: true
   rowsCount?: true
   status?: true
   errorText?: true
@@ -213,6 +219,7 @@ export type PriceImportGroupByOutputType = {
   originalFileName: string
   storedFilePath: string | null
   imagePath: string | null
+  pdfPath: string | null
   rowsCount: number
   status: string
   errorText: string | null
@@ -248,6 +255,7 @@ export type PriceImportWhereInput = {
   originalFileName?: Prisma.StringFilter<"PriceImport"> | string
   storedFilePath?: Prisma.StringNullableFilter<"PriceImport"> | string | null
   imagePath?: Prisma.StringNullableFilter<"PriceImport"> | string | null
+  pdfPath?: Prisma.StringNullableFilter<"PriceImport"> | string | null
   rowsCount?: Prisma.IntFilter<"PriceImport"> | number
   status?: Prisma.StringFilter<"PriceImport"> | string
   errorText?: Prisma.StringNullableFilter<"PriceImport"> | string | null
@@ -260,6 +268,7 @@ export type PriceImportOrderByWithRelationInput = {
   originalFileName?: Prisma.SortOrder
   storedFilePath?: Prisma.SortOrderInput | Prisma.SortOrder
   imagePath?: Prisma.SortOrderInput | Prisma.SortOrder
+  pdfPath?: Prisma.SortOrderInput | Prisma.SortOrder
   rowsCount?: Prisma.SortOrder
   status?: Prisma.SortOrder
   errorText?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -275,6 +284,7 @@ export type PriceImportWhereUniqueInput = Prisma.AtLeast<{
   originalFileName?: Prisma.StringFilter<"PriceImport"> | string
   storedFilePath?: Prisma.StringNullableFilter<"PriceImport"> | string | null
   imagePath?: Prisma.StringNullableFilter<"PriceImport"> | string | null
+  pdfPath?: Prisma.StringNullableFilter<"PriceImport"> | string | null
   rowsCount?: Prisma.IntFilter<"PriceImport"> | number
   status?: Prisma.StringFilter<"PriceImport"> | string
   errorText?: Prisma.StringNullableFilter<"PriceImport"> | string | null
@@ -287,6 +297,7 @@ export type PriceImportOrderByWithAggregationInput = {
   originalFileName?: Prisma.SortOrder
   storedFilePath?: Prisma.SortOrderInput | Prisma.SortOrder
   imagePath?: Prisma.SortOrderInput | Prisma.SortOrder
+  pdfPath?: Prisma.SortOrderInput | Prisma.SortOrder
   rowsCount?: Prisma.SortOrder
   status?: Prisma.SortOrder
   errorText?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -307,6 +318,7 @@ export type PriceImportScalarWhereWithAggregatesInput = {
   originalFileName?: Prisma.StringWithAggregatesFilter<"PriceImport"> | string
   storedFilePath?: Prisma.StringNullableWithAggregatesFilter<"PriceImport"> | string | null
   imagePath?: Prisma.StringNullableWithAggregatesFilter<"PriceImport"> | string | null
+  pdfPath?: Prisma.StringNullableWithAggregatesFilter<"PriceImport"> | string | null
   rowsCount?: Prisma.IntWithAggregatesFilter<"PriceImport"> | number
   status?: Prisma.StringWithAggregatesFilter<"PriceImport"> | string
   errorText?: Prisma.StringNullableWithAggregatesFilter<"PriceImport"> | string | null
@@ -318,6 +330,7 @@ export type PriceImportCreateInput = {
   originalFileName: string
   storedFilePath?: string | null
   imagePath?: string | null
+  pdfPath?: string | null
   rowsCount: number
   status: string
   errorText?: string | null
@@ -330,6 +343,7 @@ export type PriceImportUncheckedCreateInput = {
   originalFileName: string
   storedFilePath?: string | null
   imagePath?: string | null
+  pdfPath?: string | null
   rowsCount: number
   status: string
   errorText?: string | null
@@ -341,6 +355,7 @@ export type PriceImportUpdateInput = {
   originalFileName?: Prisma.StringFieldUpdateOperationsInput | string
   storedFilePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pdfPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rowsCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
   errorText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -353,6 +368,7 @@ export type PriceImportUncheckedUpdateInput = {
   originalFileName?: Prisma.StringFieldUpdateOperationsInput | string
   storedFilePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pdfPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rowsCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
   errorText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -365,6 +381,7 @@ export type PriceImportCreateManyInput = {
   originalFileName: string
   storedFilePath?: string | null
   imagePath?: string | null
+  pdfPath?: string | null
   rowsCount: number
   status: string
   errorText?: string | null
@@ -376,6 +393,7 @@ export type PriceImportUpdateManyMutationInput = {
   originalFileName?: Prisma.StringFieldUpdateOperationsInput | string
   storedFilePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pdfPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rowsCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
   errorText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -388,6 +406,7 @@ export type PriceImportUncheckedUpdateManyInput = {
   originalFileName?: Prisma.StringFieldUpdateOperationsInput | string
   storedFilePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pdfPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rowsCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
   errorText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -400,6 +419,7 @@ export type PriceImportCountOrderByAggregateInput = {
   originalFileName?: Prisma.SortOrder
   storedFilePath?: Prisma.SortOrder
   imagePath?: Prisma.SortOrder
+  pdfPath?: Prisma.SortOrder
   rowsCount?: Prisma.SortOrder
   status?: Prisma.SortOrder
   errorText?: Prisma.SortOrder
@@ -417,6 +437,7 @@ export type PriceImportMaxOrderByAggregateInput = {
   originalFileName?: Prisma.SortOrder
   storedFilePath?: Prisma.SortOrder
   imagePath?: Prisma.SortOrder
+  pdfPath?: Prisma.SortOrder
   rowsCount?: Prisma.SortOrder
   status?: Prisma.SortOrder
   errorText?: Prisma.SortOrder
@@ -429,6 +450,7 @@ export type PriceImportMinOrderByAggregateInput = {
   originalFileName?: Prisma.SortOrder
   storedFilePath?: Prisma.SortOrder
   imagePath?: Prisma.SortOrder
+  pdfPath?: Prisma.SortOrder
   rowsCount?: Prisma.SortOrder
   status?: Prisma.SortOrder
   errorText?: Prisma.SortOrder
@@ -448,6 +470,7 @@ export type PriceImportSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   originalFileName?: boolean
   storedFilePath?: boolean
   imagePath?: boolean
+  pdfPath?: boolean
   rowsCount?: boolean
   status?: boolean
   errorText?: boolean
@@ -460,6 +483,7 @@ export type PriceImportSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   originalFileName?: boolean
   storedFilePath?: boolean
   imagePath?: boolean
+  pdfPath?: boolean
   rowsCount?: boolean
   status?: boolean
   errorText?: boolean
@@ -472,6 +496,7 @@ export type PriceImportSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   originalFileName?: boolean
   storedFilePath?: boolean
   imagePath?: boolean
+  pdfPath?: boolean
   rowsCount?: boolean
   status?: boolean
   errorText?: boolean
@@ -484,13 +509,14 @@ export type PriceImportSelectScalar = {
   originalFileName?: boolean
   storedFilePath?: boolean
   imagePath?: boolean
+  pdfPath?: boolean
   rowsCount?: boolean
   status?: boolean
   errorText?: boolean
   createdAt?: boolean
 }
 
-export type PriceImportOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "source" | "originalFileName" | "storedFilePath" | "imagePath" | "rowsCount" | "status" | "errorText" | "createdAt", ExtArgs["result"]["priceImport"]>
+export type PriceImportOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "source" | "originalFileName" | "storedFilePath" | "imagePath" | "pdfPath" | "rowsCount" | "status" | "errorText" | "createdAt", ExtArgs["result"]["priceImport"]>
 
 export type $PriceImportPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "PriceImport"
@@ -501,6 +527,7 @@ export type $PriceImportPayload<ExtArgs extends runtime.Types.Extensions.Interna
     originalFileName: string
     storedFilePath: string | null
     imagePath: string | null
+    pdfPath: string | null
     rowsCount: number
     status: string
     errorText: string | null
@@ -933,6 +960,7 @@ export interface PriceImportFieldRefs {
   readonly originalFileName: Prisma.FieldRef<"PriceImport", 'String'>
   readonly storedFilePath: Prisma.FieldRef<"PriceImport", 'String'>
   readonly imagePath: Prisma.FieldRef<"PriceImport", 'String'>
+  readonly pdfPath: Prisma.FieldRef<"PriceImport", 'String'>
   readonly rowsCount: Prisma.FieldRef<"PriceImport", 'Int'>
   readonly status: Prisma.FieldRef<"PriceImport", 'String'>
   readonly errorText: Prisma.FieldRef<"PriceImport", 'String'>

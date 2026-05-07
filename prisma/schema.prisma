@@ -70,15 +70,20 @@ model Price {
 
 model PriceImport {
   id               Int         @id @default(autoincrement())
+
   source           PriceSource
 
   originalFileName String
   storedFilePath   String?
   imagePath        String?
+  pdfPath          String?
 
   rowsCount        Int
   status           String
   errorText        String?
 
   createdAt        DateTime @default(now())
+
+  @@index([source])
+  @@index([createdAt])
 }
