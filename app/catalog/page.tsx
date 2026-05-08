@@ -5,6 +5,13 @@ import {
   getCatalogPriceCards,
   type CatalogPriceCard,
 } from "@/lib/catalog/getCatalogData";
+import {
+  CatalogActiveFilters,
+  CatalogFilteredEmpty,
+  CatalogFilterButton,
+  CatalogFilterProvider,
+  CatalogProductVisibility,
+} from "./CatalogFilterClient";
 import styles from "./page.module.css";
 
 type FilterSection = {
@@ -20,10 +27,6 @@ type FilterGroup = {
 };
 
 type FilterContent = FilterColumn[] | FilterGroup[];
-
-type CatalogSearchParams = {
-  filter?: string | string[] | undefined;
-};
 
 type ActiveFilter = {
   id: string;
@@ -268,8 +271,6 @@ const dropdownCategories = [
   { category: categories[5], filters: plydexFilters, id: "paneli-plydex" },
 ];
 
-const CATALOG_PATH = "/catalog";
-
 function buildFilterId(categoryId: string, label: string, value: string) {
   return `${categoryId}::${label}::${value}`;
 }
@@ -308,50 +309,6 @@ function getKnownFilters() {
   }
 
   return knownFilters;
-}
-
-function getSearchParamValues(value: string | string[] | undefined) {
-  if (!value) {
-    return [];
-  }
-
-  return Array.isArray(value) ? value : [value];
-}
-
-function getActiveFilters(searchParams: CatalogSearchParams) {
-  const knownFilters = getKnownFilters();
-
-  return getSearchParamValues(searchParams.filter)
-    .map((filterId) => knownFilters.get(filterId))
-    .filter((filter): filter is ActiveFilter => Boolean(filter));
-}
-
-function buildCatalogHref(filterIds: string[]) {
-  if (filterIds.length === 0) {
-    return CATALOG_PATH;
-  }
-
-  const params = new URLSearchParams();
-
-  for (const filterId of filterIds) {
-    params.append("filter", filterId);
-  }
-
-  return `${CATALOG_PATH}?${params.toString()}`;
-}
-
-function buildToggleFilterHref(activeFilterIds: string[], filterId: string) {
-  const nextFilterIds = activeFilterIds.includes(filterId)
-    ? activeFilterIds.filter((activeFilterId) => activeFilterId !== filterId)
-    : [...activeFilterIds, filterId];
-
-  return buildCatalogHref(nextFilterIds);
-}
-
-function buildRemoveFilterHref(activeFilterIds: string[], filterId: string) {
-  return buildCatalogHref(
-    activeFilterIds.filter((activeFilterId) => activeFilterId !== filterId)
-  );
 }
 
 function normalizeText(value: string) {
@@ -740,172 +697,155 @@ function productMatchesFilter(product: CatalogPriceCard, filter: ActiveFilter) {
   return productSearchText(product).includes(normalizeSearchValue(filter.value));
 }
 
-function filterProducts(
-  products: CatalogPriceCard[],
-  activeFilters: ActiveFilter[]
-) {
-  if (activeFilters.length === 0) {
-    return products;
-  }
-
-  return products.filter((product) =>
-    activeFilters.some((filter) => productMatchesFilter(product, filter))
-  );
-}
-
 export const metadata: Metadata = {
   title: "Наши цены | Фанерный мир",
   description: "Каталог фанеры и листовых материалов.",
 };
 
-export default async function PricesPage({
-  searchParams,
-}: {
-  searchParams?: Promise<CatalogSearchParams>;
-}) {
+export default async function PricesPage() {
   await connection();
 
-  const resolvedSearchParams = searchParams ? await searchParams : {};
-  const activeFilters = getActiveFilters(resolvedSearchParams);
-  const activeFilterIds = activeFilters.map((filter) => filter.id);
   const products = await getCatalogPriceCards();
-  const filteredProducts = filterProducts(products, activeFilters);
+  const knownFilters = Array.from(getKnownFilters().values());
+  const productFilterIds = products.map((product) =>
+    knownFilters
+      .filter((filter) => productMatchesFilter(product, filter))
+      .map((filter) => filter.id)
+  );
 
   return (
     <section className={styles.catalogPage} aria-label="Каталог товаров">
       <div className={styles.catalogFrame}>
-        <aside className={styles.sidebar} aria-label="Категории каталога">
-          <ul className={styles.categoryList}>
-            {dropdownCategories.map(({ category, filters, id }) => (
-              <li className={styles.categoryItem} id={id} key={category}>
-                <details
-                  className={styles.categoryDropdown}
-                  open={
-                    activeFilters.some((filter) => filter.categoryId === id) ||
-                    undefined
-                  }
-                >
-                  <summary className={styles.categoryButton}>
+        <CatalogFilterProvider
+          filters={knownFilters}
+          productFilterIds={productFilterIds}
+        >
+          <aside className={styles.sidebar} aria-label="Категории каталога">
+            <ul className={styles.categoryList}>
+              {dropdownCategories.map(({ category, filters, id }) => (
+                <li className={styles.categoryItem} id={id} key={category}>
+                  <details className={styles.categoryDropdown}>
+                    <summary className={styles.categoryButton}>
+                      <span>{category}</span>
+                      <span className={styles.categoryArrow} aria-hidden="true" />
+                    </summary>
+
+                    <FilterDropdown categoryId={id} filters={filters} />
+                  </details>
+                </li>
+              ))}
+
+              {categories.slice(dropdownCategories.length).map((category) => (
+                <li className={styles.categoryItem} key={category}>
+                  <button className={styles.categoryButton} type="button">
                     <span>{category}</span>
                     <span className={styles.categoryArrow} aria-hidden="true" />
-                  </summary>
-
-                  <FilterDropdown
-                    activeFilterIds={activeFilterIds}
-                    categoryId={id}
-                    filters={filters}
-                  />
-                </details>
-              </li>
-            ))}
-
-            {categories.slice(dropdownCategories.length).map((category) => (
-              <li className={styles.categoryItem} key={category}>
-                <button className={styles.categoryButton} type="button">
-                  <span>{category}</span>
-                  <span className={styles.categoryArrow} aria-hidden="true" />
-                </button>
-              </li>
-            ))}
-          </ul>
-        </aside>
-
-        <div className={styles.productsGrid}>
-          {activeFilters.length > 0 ? (
-            <div className={styles.activeFilters} aria-label="Выбранные фильтры">
-              {activeFilters.map((filter) => (
-                <a
-                  className={styles.filterChip}
-                  href={buildRemoveFilterHref(activeFilterIds, filter.id)}
-                  key={filter.id}
-                  aria-label={`Снять фильтр ${filter.label}: ${filter.value}`}
-                >
-                  <span>
-                    {filter.label}: {filter.value}
-                  </span>
-                  <span className={styles.filterChipIcon} aria-hidden="true">
-                    ×
-                  </span>
-                </a>
-              ))}
-            </div>
-          ) : null}
-
-          {products.length === 0 ? (
-            <p className={styles.catalogEmpty}>
-              Прайс пока не загружен. Добавьте Excel-файл в админке.
-            </p>
-          ) : filteredProducts.length === 0 ? (
-            <p className={styles.catalogEmpty}>
-              По выбранным фильтрам товары не найдены.
-            </p>
-          ) : (
-            filteredProducts.map((product, index) => (
-              <article className={styles.productCard} key={product.id}>
-              <div className={styles.productImage}>
-                <Image
-                  alt=""
-                  fill
-                  priority={index === 0}
-                  sizes="309px"
-                  src={product.imageUrl}
-                />
-              </div>
-
-              <div className={styles.productBody}>
-                <div className={styles.productDetails}>
-                  <h2 className={styles.productTitle}>
-                    <span>{product.titleLineOne}</span>
-                    <span>{product.titleLineTwo}</span>
-                  </h2>
-
-                  <dl className={styles.productMeta}>
-                    {product.meta.map((metaItem) => (
-                      <div className={styles.metaColumn} key={metaItem.label}>
-                        <dt>{metaItem.label}</dt>
-                        <dd>{metaItem.value}</dd>
-                      </div>
-                    ))}
-                  </dl>
-                </div>
-
-                <div className={styles.productPrice}>
-                  <span>{product.price}</span>
-                  {product.pricePerM2 ? <small>{product.pricePerM2}</small> : null}
-                </div>
-
-                <div className={styles.productActions}>
-                  <div className={styles.quantityControl} aria-label="Количество">
-                    <button aria-label="Уменьшить количество" type="button">
-                      −
-                    </button>
-                    <span>0</span>
-                    <button aria-label="Увеличить количество" type="button">
-                      +
-                    </button>
-                  </div>
-
-                  <button className={styles.cartButton} type="button">
-                    <span>В корзину</span>
-                    <CartIcon />
                   </button>
-                </div>
-              </div>
-            </article>
-            ))
-          )}
-        </div>
+                </li>
+              ))}
+            </ul>
+          </aside>
+
+          <div className={styles.productsGrid}>
+            <CatalogActiveFilters />
+
+            {products.length === 0 ? (
+              <p className={styles.catalogEmpty}>
+                Прайс пока не загружен. Добавьте Excel-файл в админке.
+              </p>
+            ) : (
+              <>
+                <CatalogFilteredEmpty>
+                  <p className={styles.catalogEmpty}>
+                    По выбранным фильтрам товары не найдены.
+                  </p>
+                </CatalogFilteredEmpty>
+
+                {products.map((product, index) => (
+                  <CatalogProductVisibility
+                    filterIds={productFilterIds[index] ?? []}
+                    key={product.id}
+                  >
+                    <article className={styles.productCard}>
+                      <div className={styles.productImage}>
+                        <Image
+                          alt=""
+                          fill
+                          priority={index === 0}
+                          sizes="309px"
+                          src={product.imageUrl}
+                        />
+                      </div>
+
+                      <div className={styles.productBody}>
+                        <div className={styles.productDetails}>
+                          <h2 className={styles.productTitle}>
+                            <span>{product.titleLineOne}</span>
+                            <span>{product.titleLineTwo}</span>
+                          </h2>
+
+                          <dl className={styles.productMeta}>
+                            {product.meta.map((metaItem) => (
+                              <div
+                                className={styles.metaColumn}
+                                key={metaItem.label}
+                              >
+                                <dt>{metaItem.label}</dt>
+                                <dd>{metaItem.value}</dd>
+                              </div>
+                            ))}
+                          </dl>
+                        </div>
+
+                        <div className={styles.productPrice}>
+                          <span>{product.price}</span>
+                          {product.pricePerM2 ? (
+                            <small>{product.pricePerM2}</small>
+                          ) : null}
+                        </div>
+
+                        <div className={styles.productActions}>
+                          <div
+                            className={styles.quantityControl}
+                            aria-label="Количество"
+                          >
+                            <button
+                              aria-label="Уменьшить количество"
+                              type="button"
+                            >
+                              −
+                            </button>
+                            <span>0</span>
+                            <button
+                              aria-label="Увеличить количество"
+                              type="button"
+                            >
+                              +
+                            </button>
+                          </div>
+
+                          <button className={styles.cartButton} type="button">
+                            <span>В корзину</span>
+                            <CartIcon />
+                          </button>
+                        </div>
+                      </div>
+                    </article>
+                  </CatalogProductVisibility>
+                ))}
+              </>
+            )}
+          </div>
+        </CatalogFilterProvider>
       </div>
     </section>
   );
 }
 
 function FilterDropdown({
-  activeFilterIds,
   categoryId,
   filters,
 }: {
-  activeFilterIds: string[];
   categoryId: string;
   filters: FilterContent;
 }) {
@@ -919,7 +859,6 @@ function FilterDropdown({
               <div className={styles.filterGroupColumns}>
                 {group.columns.map((column, columnIndex) => (
                   <FilterColumnContent
-                    activeFilterIds={activeFilterIds}
                     categoryId={categoryId}
                     column={column}
                     key={columnIndex}
@@ -938,7 +877,6 @@ function FilterDropdown({
       <div className={styles.filterColumns}>
         {filters.map((column, columnIndex) => (
           <FilterColumnContent
-            activeFilterIds={activeFilterIds}
             categoryId={categoryId}
             column={column}
             key={columnIndex}
@@ -954,11 +892,9 @@ function isFilterGroups(filters: FilterContent): filters is FilterGroup[] {
 }
 
 function FilterColumnContent({
-  activeFilterIds,
   categoryId,
   column,
 }: {
-  activeFilterIds: string[];
   categoryId: string;
   column: FilterColumn;
 }) {
@@ -967,7 +903,6 @@ function FilterColumnContent({
       {"sections" in column ? (
         column.sections.map((section) => (
           <FilterSectionContent
-            activeFilterIds={activeFilterIds}
             categoryId={categoryId}
             key={section.title}
             section={section}
@@ -975,7 +910,6 @@ function FilterColumnContent({
         ))
       ) : (
         <FilterSectionContent
-          activeFilterIds={activeFilterIds}
           categoryId={categoryId}
           section={column}
         />
@@ -985,11 +919,9 @@ function FilterColumnContent({
 }
 
 function FilterSectionContent({
-  activeFilterIds,
   categoryId,
   section,
 }: {
-  activeFilterIds: string[];
   categoryId: string;
   section: FilterSection;
 }) {
@@ -999,19 +931,12 @@ function FilterSectionContent({
       <ul>
         {section.items.map((item, itemIndex) => {
           const filterId = buildFilterId(categoryId, section.title, item);
-          const isActive = activeFilterIds.includes(filterId);
 
           return (
             <li key={`${section.title}-${item}-${itemIndex}`}>
-              <a
-                aria-current={isActive ? "true" : undefined}
-                className={`${styles.filterOption} ${
-                  isActive ? styles.filterOptionActive : ""
-                }`}
-                href={buildToggleFilterHref(activeFilterIds, filterId)}
-              >
+              <CatalogFilterButton filterId={filterId}>
                 {item}
-              </a>
+              </CatalogFilterButton>
             </li>
           );
         })}

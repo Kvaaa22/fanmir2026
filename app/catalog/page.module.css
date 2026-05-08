@@ -280,6 +280,14 @@
   row-gap: 47px;
 }
 
+.catalogProductVisibility {
+  display: contents;
+}
+
+.catalogProductVisibility[hidden] {
+  display: none;
+}
+
 .catalogEmpty {
   grid-column: 1 / -1;
   margin: 0;
@@ -316,6 +324,7 @@
   font-weight: 500;
   color: #2f2f2f;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .filterChip span:first-child {
@@ -336,6 +345,28 @@
 }
 
 .filterChip:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 2px;
+}
+
+.clearFiltersButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 31px;
+  padding: 6px 10px;
+  border: 0;
+  border-radius: 8px;
+  background: #2f2f2f;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 12px;
+  line-height: 1.25;
+  font-weight: 500;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.clearFiltersButton:focus-visible {
   outline: 1px solid currentColor;
   outline-offset: 2px;
 }
