@@ -6,6 +6,11 @@ import {
   type CatalogPriceCard,
 } from "@/lib/catalog/getCatalogData";
 import {
+  buildCatalogFilterId,
+  CATEGORY_FILTER_LABEL,
+  MATERIAL_FILTER_LABEL,
+} from "@/lib/catalog/filterLinks";
+import {
   CatalogActiveFilters,
   CatalogFilteredEmpty,
   CatalogFilterButton,
@@ -34,6 +39,10 @@ type ActiveFilter = {
   category: string;
   label: string;
   value: string;
+};
+
+type CatalogSearchParams = {
+  filter?: string | string[] | undefined;
 };
 
 const categories = [
@@ -272,7 +281,7 @@ const dropdownCategories = [
 ];
 
 function buildFilterId(categoryId: string, label: string, value: string) {
-  return `${categoryId}::${label}::${value}`;
+  return buildCatalogFilterId(categoryId, label, value);
 }
 
 function getSectionsFromColumn(column: FilterColumn): FilterSection[] {
@@ -293,6 +302,38 @@ function getKnownFilters() {
   const knownFilters = new Map<string, ActiveFilter>();
 
   for (const { category, filters, id: categoryId } of dropdownCategories) {
+    const categoryFilterId = buildFilterId(
+      categoryId,
+      CATEGORY_FILTER_LABEL,
+      category
+    );
+
+    knownFilters.set(categoryFilterId, {
+      id: categoryFilterId,
+      categoryId,
+      category,
+      label: CATEGORY_FILTER_LABEL,
+      value: category,
+    });
+
+    if (categoryId === "dvp-i-dsp") {
+      for (const value of ["ДСП", "ДВП"]) {
+        const materialFilterId = buildFilterId(
+          categoryId,
+          MATERIAL_FILTER_LABEL,
+          value
+        );
+
+        knownFilters.set(materialFilterId, {
+          id: materialFilterId,
+          categoryId,
+          category,
+          label: MATERIAL_FILTER_LABEL,
+          value,
+        });
+      }
+    }
+
     for (const section of getSectionsFromContent(filters)) {
       for (const value of section.items) {
         const filterId = buildFilterId(categoryId, section.title, value);
@@ -309,6 +350,23 @@ function getKnownFilters() {
   }
 
   return knownFilters;
+}
+
+function getSearchParamValues(value: string | string[] | undefined) {
+  if (!value) {
+    return [];
+  }
+
+  return Array.isArray(value) ? value : [value];
+}
+
+function getInitialFilterIds(
+  searchParams: CatalogSearchParams,
+  knownFilters: Map<string, ActiveFilter>
+) {
+  return getSearchParamValues(searchParams.filter).filter((filterId) =>
+    knownFilters.has(filterId)
+  );
 }
 
 function normalizeText(value: string) {
@@ -656,6 +714,25 @@ function productMatchesFilter(product: CatalogPriceCard, filter: ActiveFilter) {
 
   const label = normalizeText(filter.label);
 
+  if (label === normalizeText(CATEGORY_FILTER_LABEL)) {
+    return true;
+  }
+
+  if (
+    filter.categoryId === "dvp-i-dsp" &&
+    label === normalizeText(MATERIAL_FILTER_LABEL)
+  ) {
+    const marker = normalizeMarkerValue(filter.value);
+
+    if (marker === "дсп") {
+      return product.categorySlug === "dsp";
+    }
+
+    if (marker === "двп") {
+      return product.categorySlug === "dvp";
+    }
+  }
+
   if (filter.categoryId === "paneli-plydex") {
     return productMatchesPlydexFilter(product, filter);
   }
@@ -702,11 +779,21 @@ export const metadata: Metadata = {
   description: "Каталог фанеры и листовых материалов.",
 };
 
-export default async function PricesPage() {
+export default async function PricesPage({
+  searchParams,
+}: {
+  searchParams?: Promise<CatalogSearchParams>;
+}) {
   await connection();
 
   const products = await getCatalogPriceCards();
-  const knownFilters = Array.from(getKnownFilters().values());
+  const knownFiltersMap = getKnownFilters();
+  const knownFilters = Array.from(knownFiltersMap.values());
+  const resolvedSearchParams = searchParams ? await searchParams : {};
+  const initialFilterIds = getInitialFilterIds(
+    resolvedSearchParams,
+    knownFiltersMap
+  );
   const productFilterIds = products.map((product) =>
     knownFilters
       .filter((filter) => productMatchesFilter(product, filter))
@@ -718,20 +805,33 @@ export default async function PricesPage() {
       <div className={styles.catalogFrame}>
         <CatalogFilterProvider
           filters={knownFilters}
+          initialFilterIds={initialFilterIds}
+          key={initialFilterIds.join("\u0001")}
           productFilterIds={productFilterIds}
         >
           <aside className={styles.sidebar} aria-label="Категории каталога">
             <ul className={styles.categoryList}>
               {dropdownCategories.map(({ category, filters, id }) => (
                 <li className={styles.categoryItem} id={id} key={category}>
-                  <details className={styles.categoryDropdown}>
-                    <summary className={styles.categoryButton}>
-                      <span>{category}</span>
-                      <span className={styles.categoryArrow} aria-hidden="true" />
-                    </summary>
+                  <div className={styles.categoryHeader}>
+                    <CatalogFilterButton
+                      filterId={buildFilterId(id, CATEGORY_FILTER_LABEL, category)}
+                      variant="category"
+                    >
+                      {category}
+                    </CatalogFilterButton>
 
-                    <FilterDropdown categoryId={id} filters={filters} />
-                  </details>
+                    <details className={styles.categoryDropdown}>
+                      <summary
+                        aria-label={`Открыть фильтры: ${category}`}
+                        className={styles.categoryToggleButton}
+                      >
+                        <span className={styles.categoryArrow} aria-hidden="true" />
+                      </summary>
+
+                      <FilterDropdown categoryId={id} filters={filters} />
+                    </details>
+                  </div>
                 </li>
               ))}
 

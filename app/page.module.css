@@ -679,6 +679,8 @@
   border-radius: 0;
   background: var(--bg);
   box-shadow: var(--offers-card-shadow);
+  color: inherit;
+  text-decoration: none;
   transition: filter 180ms ease;
 }
 

@@ -4,6 +4,7 @@ import {
   createContext,
   type ReactNode,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -84,13 +85,16 @@ function useCatalogFilters() {
 export function CatalogFilterProvider({
   children,
   filters,
+  initialFilterIds,
   productFilterIds,
 }: {
   children: ReactNode;
   filters: CatalogFilterClientItem[];
+  initialFilterIds: string[];
   productFilterIds: string[][];
 }) {
-  const [activeFilterIds, setActiveFilterIds] = useState<string[]>([]);
+  const [activeFilterIds, setActiveFilterIds] =
+    useState<string[]>(initialFilterIds);
 
   const filtersById = useMemo(() => {
     return new Map(filters.map((filter) => [filter.id, filter]));
@@ -109,6 +113,18 @@ export function CatalogFilterProvider({
       productMatchesActiveFilterGroups(productFilters, activeFilterGroups)
     );
   }, [activeFilterGroups, productFilterSets]);
+
+  useEffect(() => {
+    const url = new URL(window.location.href);
+
+    url.searchParams.delete("filter");
+
+    for (const filterId of activeFilterIds) {
+      url.searchParams.append("filter", filterId);
+    }
+
+    window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
+  }, [activeFilterIds]);
 
   const value = useMemo<CatalogFilterContextValue>(() => {
     return {
@@ -140,19 +156,25 @@ export function CatalogFilterProvider({
 export function CatalogFilterButton({
   children,
   filterId,
+  variant = "option",
 }: {
   children: ReactNode;
   filterId: string;
+  variant?: "category" | "option";
 }) {
   const { activeFilterIds, toggleFilter } = useCatalogFilters();
   const isActive = activeFilterIds.includes(filterId);
+  const buttonClassName =
+    variant === "category" ? styles.categoryFilterButton : styles.filterOption;
+  const activeButtonClassName =
+    variant === "category"
+      ? styles.categoryFilterButtonActive
+      : styles.filterOptionActive;
 
   return (
     <button
       aria-pressed={isActive}
-      className={`${styles.filterOption} ${
-        isActive ? styles.filterOptionActive : ""
-      }`}
+      className={`${buttonClassName} ${isActive ? activeButtonClassName : ""}`}
       onClick={() => toggleFilter(filterId)}
       type="button"
     >
@@ -174,22 +196,24 @@ export function CatalogActiveFilters() {
 
   return (
     <div className={styles.activeFilters} aria-label="Выбранные фильтры">
-      {activeFilters.map((filter) => (
-        <button
-          className={styles.filterChip}
-          key={filter.id}
-          onClick={() => removeFilter(filter.id)}
-          type="button"
-          aria-label={`Снять фильтр ${filter.label}: ${filter.value}`}
-        >
-          <span>
-            {filter.label}: {filter.value}
-          </span>
-          <span className={styles.filterChipIcon} aria-hidden="true">
-            ×
-          </span>
-        </button>
-      ))}
+      {activeFilters.map((filter) => {
+        const filterTitle = `${filter.category}: ${filter.value}`;
+
+        return (
+          <button
+            className={styles.filterChip}
+            key={filter.id}
+            onClick={() => removeFilter(filter.id)}
+            type="button"
+            aria-label={`Снять фильтр ${filterTitle}`}
+          >
+            <span>{filterTitle}</span>
+            <span className={styles.filterChipIcon} aria-hidden="true">
+              ×
+            </span>
+          </button>
+        );
+      })}
 
       <button
         className={styles.clearFiltersButton}

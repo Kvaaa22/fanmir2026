@@ -1,5 +1,7 @@
 import Image from "next/image";
+import Link from "next/link";
 import { HeroSlider } from "@/components/HeroSlider/HeroSlider";
+import { catalogOfferHrefs } from "@/lib/catalog/filterLinks";
 import styles from "./page.module.css";
 import YandexMap from '@/components/YandexMap/YandexMap';
 
@@ -11,6 +13,7 @@ type BenefitItem = {
 };
 
 type OfferItem = {
+  href?: string;
   title: string;
   patternClassName: string;
 };
@@ -61,18 +64,20 @@ const benefits: BenefitItem[] = [
 ];
 
 const offers: OfferItem[] = [
-  { title: "OSB-3(ОСП)", patternClassName: "offerPatternOsb" },
-  { title: "Фанера хвойная", patternClassName: "offerPatternPine" },
+  { href: catalogOfferHrefs.osb, title: "OSB-3(ОСП)", patternClassName: "offerPatternOsb" },
+  { href: catalogOfferHrefs.conifer, title: "Фанера хвойная", patternClassName: "offerPatternPine" },
   { title: "Распил", patternClassName: "offerPatternSaw" },
-  { title: "Фанера березовая", patternClassName: "offerPatternBirch" },
+  { href: catalogOfferHrefs.birch, title: "Фанера березовая", patternClassName: "offerPatternBirch" },
   {
+    href: catalogOfferHrefs.laminated,
     title: "Ламинированная фанера",
     patternClassName: "offerPatternLaminated",
   },
-  { title: "ДСП", patternClassName: "offerPatternChipboard" },
-  { title: "ДВП", patternClassName: "offerPatternFiberboard" },
-  { title: "PLYDEX", patternClassName: "offerPatternPlydex" },
+  { href: catalogOfferHrefs.dsp, title: "ДСП", patternClassName: "offerPatternChipboard" },
+  { href: catalogOfferHrefs.dvp, title: "ДВП", patternClassName: "offerPatternFiberboard" },
+  { href: catalogOfferHrefs.plydex, title: "PLYDEX", patternClassName: "offerPatternPlydex" },
   {
+    href: catalogOfferHrefs.construction,
     title: "Строительная фанера",
     patternClassName: "offerPatternConstruction",
   },
@@ -232,19 +237,40 @@ export default function Home() {
           <div className={styles.offersGrid}>
             {offerRows.map((row, rowIndex) => (
               <div className={styles.offersRow} key={`offers-row-${rowIndex}`}>
-                {row.map((offer) => (
-                  <article
-                    className={styles.offerCard}
-                    id={offer.patternClassName === "offerPatternSaw" ? "cutting" : undefined}
-                    key={offer.title}
-                  >
-                    <div
-                      className={`${styles.offerImage} ${styles[offer.patternClassName]
+                {row.map((offer) => {
+                  const offerContent = (
+                    <>
+                      <div
+                        className={`${styles.offerImage} ${
+                          styles[offer.patternClassName]
                         }`}
-                    />
-                    <div className={styles.offerCaption}>{offer.title}</div>
-                  </article>
-                ))}
+                      />
+                      <div className={styles.offerCaption}>{offer.title}</div>
+                    </>
+                  );
+
+                  return offer.href ? (
+                    <Link
+                      className={styles.offerCard}
+                      href={offer.href}
+                      key={offer.title}
+                    >
+                      {offerContent}
+                    </Link>
+                  ) : (
+                    <article
+                      className={styles.offerCard}
+                      id={
+                        offer.patternClassName === "offerPatternSaw"
+                          ? "cutting"
+                          : undefined
+                      }
+                      key={offer.title}
+                    >
+                      {offerContent}
+                    </article>
+                  );
+                })}
               </div>
             ))}
           </div>

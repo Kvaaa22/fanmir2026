@@ -4,6 +4,7 @@ import type { Dispatch, SetStateAction } from "react";
 import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { catalogOfferHrefs } from "@/lib/catalog/filterLinks";
 import styles from "./Header.module.css";
 
 type HeaderProps = {
@@ -19,6 +20,7 @@ type NavigationItem = {
 };
 
 type NavigationChild = {
+  href: string;
   label: string;
 };
 
@@ -30,14 +32,15 @@ const navigation: NavigationItem[] = [
     label: "Каталог",
     withArrow: true,
     children: [
-      { label: "Фанера березовая" },
-      { label: "Фанера хвойная" },
+      { href: catalogOfferHrefs.birch, label: "Фанера березовая" },
+      { href: catalogOfferHrefs.conifer, label: "Фанера хвойная" },
       {
+        href: catalogOfferHrefs.laminated,
         label: "Фанера ламинированная",
       },
-      { label: "Плиты OSB-3 (ОСП)" },
-      { label: "ДВП и ДСП" },
-      { label: "PLYDEX" },
+      { href: catalogOfferHrefs.osb, label: "Плиты OSB-3 (ОСП)" },
+      { href: catalogOfferHrefs.dspDvp, label: "ДВП и ДСП" },
+      { href: catalogOfferHrefs.plydex, label: "PLYDEX" },
     ],
   },
   {
@@ -46,8 +49,8 @@ const navigation: NavigationItem[] = [
     label: "Услуги",
     withArrow: true,
     children: [
-      { label: "Доставка и оплата" },
-      { label: "Распил" },
+      { href: "/#delivery", label: "Доставка и оплата" },
+      { href: "/#cutting", label: "Распил" },
     ],
   },
   { id: "prices", href: "#", label: "Наши цены" },
@@ -262,13 +265,14 @@ function DesktopNavigationLinks({
 
                 <div className={styles.desktopSubmenu}>
                   {item.children.map((child) => (
-                    <button
+                    <Link
                       className={styles.desktopSubmenuButton}
+                      href={child.href}
                       key={child.label}
-                      type="button"
+                      onClick={() => setOpenGroupId(null)}
                     >
                       {child.label}
-                    </button>
+                    </Link>
                   ))}
                 </div>
               </>
@@ -327,12 +331,13 @@ function MobileNavigationLinks({
                     {item.children.map((child) => {
                       return (
                         <div className={styles.mobileSubmenuItem} key={child.label}>
-                          <button
+                          <Link
                             className={styles.mobileSubmenuLink}
-                            type="button"
+                            href={child.href}
+                            onClick={closeMobileMenu}
                           >
                             {child.label}
-                          </button>
+                          </Link>
                         </div>
                       );
                     })}
