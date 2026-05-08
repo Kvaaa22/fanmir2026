@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { connection } from "next/server";
-import { getCatalogPriceCards } from "@/lib/catalog/getCatalogData";
+import {
+  getCatalogPriceCards,
+  type CatalogPriceCard,
+} from "@/lib/catalog/getCatalogData";
 import styles from "./page.module.css";
 
 type FilterSection = {
@@ -17,6 +20,18 @@ type FilterGroup = {
 };
 
 type FilterContent = FilterColumn[] | FilterGroup[];
+
+type CatalogSearchParams = {
+  filter?: string | string[] | undefined;
+};
+
+type ActiveFilter = {
+  id: string;
+  categoryId: string;
+  category: string;
+  label: string;
+  value: string;
+};
 
 const categories = [
   "Фанера березовая",
@@ -52,15 +67,8 @@ const birchFilters: FilterColumn[] = [
         ],
       },
       {
-        title: "Применение",
-        items: [
-          "Строительная",
-          "Опалубочная",
-          "Для пола",
-          "Для мебели",
-          "Для перекрытий",
-          "Для обшивки",
-        ],
+        title: "Размер",
+        items: ["1525*1525 мм", "1220*2440 мм", "1500*3000 мм"],
       },
     ],
   },
@@ -72,26 +80,20 @@ const birchFilters: FilterColumn[] = [
           "Сорт 1/2",
           "Сорт 2/2",
           "Сорт 2/3",
-          "Сорт 1/3",
           "Сорт 3/3",
           "Сорт 3/4",
-          "Сорт 2/4",
-          "Сорт 2/2",
           "Сорт 4/4",
         ],
       },
       {
-        title: "Размер",
-        items: ["1525*1525 мм", "1220*2440 мм", "1500*3000 мм", "1250*2500 мм"],
-      },
-      {
         title: "Вид фанеры",
         items: [
+          "Для внутренних работ",
           "Влагостойкая",
-          "Ламинированная",
-          "ФСФ",
-          "ФК",
-          "Опалубочная",
+          "Нешлифованная",
+          "Шлифованная",
+          "Шлифованная с двух сторон",
+          "Для безопасного применения внутри помещений",
           "Строительная",
           "Мебельная",
         ],
@@ -105,11 +107,11 @@ const coniferFilters: FilterColumn[] = [
     sections: [
       {
         title: "Толщина",
-        items: ["6,5 мм", "9 мм", "12 мм", "15 мм", "18 мм", "21 мм", "24 мм", "27 мм", "30 мм"],
+        items: ["6,5 мм", "9 мм", "12 мм", "15 мм", "18 мм", "21 мм", "24 мм"],
       },
       {
         title: "Сорт",
-        items: ["Сорт 1/3", "Сорт 2/3", "Сорт 3/3", "Сорт 3/4"],
+        items: ["Сорт 1/3", "Сорт 2/3", "Сорт 3/3"],
       },
     ],
   },
@@ -120,12 +122,8 @@ const coniferFilters: FilterColumn[] = [
         items: ["1220*2440 мм"],
       },
       {
-        title: "Применение",
-        items: ["Строительная", "Для пола", "Для перекрытий", "Для обшивки"],
-      },
-      {
         title: "Вид фанеры",
-        items: ["Шлифованная", "Нешлифованная", "ФСФ", "Строительная"],
+        items: ["Нешлифованная", "Влагостойкая", "Строительная"],
       },
     ],
   },
@@ -140,15 +138,11 @@ const laminatedFilters: FilterColumn[] = [
     sections: [
       {
         title: "Вид фанеры",
-        items: ["F/F (гладкая/гладкая)", "F/W (гладкая/сетка)", "ДЭК 350 гладкая/\nгладкая"],
+        items: ["F/F (гладкая/гладкая)", "F/W (гладкая/сетка)"],
       },
       {
         title: "Размер",
         items: ["1220*2440 мм", "1500*3000 мм"],
-      },
-      {
-        title: "Применение",
-        items: ["Для опалубки", "Для пола", "Для перекрытий", "Для обшивки"],
       },
     ],
   },
@@ -157,17 +151,13 @@ const laminatedFilters: FilterColumn[] = [
 const osbFilters: FilterColumn[] = [
   {
     title: "Толщина",
-    items: ["6 мм", "9 мм", "12 мм", "15 мм", "18 мм", "22 мм"],
+    items: ["9 мм", "12 мм", "18 мм", "22 мм"],
   },
   {
     sections: [
       {
         title: "Размер",
         items: ["1250*2500 мм"],
-      },
-      {
-        title: "Применение",
-        items: ["Строительная", "Для пола", "Для мебели", "Для перекрытий", "Для обшивки"],
       },
     ],
   },
@@ -185,17 +175,13 @@ const dspDvpFilters: FilterGroup[] = [
           },
           {
             title: "Размер",
-            items: ["2440*1220 мм", "2500*1830 мм"],
+            items: ["2440*1220 мм"],
           },
           {
             title: "Вид ДСП",
             items: ["Шлифованная"],
           },
         ],
-      },
-      {
-        title: "Применение",
-        items: ["Строительная", "Для пола", "Для перекрытий", "Для обшивки"],
       },
     ],
   },
@@ -205,24 +191,8 @@ const dspDvpFilters: FilterGroup[] = [
       {
         sections: [
           {
-            title: "Толщина",
-            items: ["2,5 мм", "3,2 мм", "5 мм"],
-          },
-          {
             title: "Размер",
             items: ["1220*2440 мм", "1700*2750 мм", "1220*2710 мм"],
-          },
-          {
-            title: "Вид ДВП",
-            items: ["Одностороннее", "Двустороннее"],
-          },
-        ],
-      },
-      {
-        sections: [
-          {
-            title: "Применение",
-            items: ["Для мебели", "Для пола", "Для перекрытий", "Для обшивки"],
           },
         ],
       },
@@ -232,39 +202,58 @@ const dspDvpFilters: FilterGroup[] = [
 
 const plydexFilters: FilterColumn[] = [
   {
-    title: "Профиль",
-    items: [
-      "Г-образный",
-      "Г-образный,\nразмер 100*\n100*2400 мм",
-      "Г-образный,\nразмер 200*\n200*2400 мм",
-      "П-образный",
-      "П-образный,\nразмер 180*\n200*180*2400 мм",
-      "П-образный,\nразмер 90*\n100*90*2400 мм",
-      "О-образный\n(4 стороны)",
-      "О-образный,\nразмер 150*\n150*150*150*\n2400 мм",
-      "О-образный,\nразмер 50*\n50*50*50*\n2400 мм",
-      "С покрытием",
-      "Без покрытия",
-      "Под заказ*",
+    sections: [
+      {
+        title: "Профиль",
+        items: [
+          "Г-образный",
+          "П-образный",
+          "О-образный",
+          "Без покрытия",
+        ],
+      },
+      {
+        title: "Панно",
+        items: [
+          "Mix ширина 32/65/97 длина 600/800/1200",
+          "Mix ширина 75 длина 525/725/1125",
+          "Кубы 275",
+          "Ромбы 195/390",
+          "Треугольники 320/370",
+          "3D 185x450x25",
+          "Классик, масло 1 цвет",
+          "Лофт, масло 1 цвет",
+          "Морилка, эмаль/лак, 1 цвет",
+          "Эмаль/патина, 1 цвет",
+        ],
+      },
+      {
+        title: "Варианты лакокрасочных покрытий",
+        items: ["Классик, масло", "Лофт, масло", "Морилка, эмаль/лак", "Эмаль/патина"],
+      },
+      {
+        title: "Двери",
+        items: ["Без покрытия", "Классик", "Лофт", "Эмаль, морилка/лак", "Эмаль/патина"],
+      },
     ],
   },
   {
     sections: [
       {
-        title: "Панели",
-        items: ["Без покрытия", "С покрытием", "Размер 1220*190 мм", "Размер 1220*145 мм", "Индивидуальный размер"],
+        title: "Панели стандартного размера",
+        items: ["Без покрытия", "Классик", "Лофт", "Эксклюзив"],
       },
       {
-        title: "Панно",
-        items: ["Под заказ в ассортименте*"],
+        title: "Панели по индивидуальным размерам",
+        items: ["Без покрытия", "Классик, масло", "Лофт, масло", "Эмаль, морилка/лак", "Эмаль/патина"],
       },
       {
-        title: "Двери",
-        items: ["С покрытием", "Без покрытия", "Под заказ в ассортименте*"],
+        title: "Профиль по индивидуальным размерам",
+        items: ["Без покрытия", "Классик", "Лофт", "Эмаль, морилка/лак", "Эмаль/патина"],
       },
       {
-        title: "Изделия на заказ",
-        items: ["Столы", "Шкафы", "Стеллажи", "Дверные откосы"],
+        title: "Готовые изделия",
+        items: ["Классик", "Лофт", "Эмаль, морилка/лак", "Эмаль/патина"],
       },
     ],
   },
@@ -279,15 +268,508 @@ const dropdownCategories = [
   { category: categories[5], filters: plydexFilters, id: "paneli-plydex" },
 ];
 
+const CATALOG_PATH = "/catalog";
+
+function buildFilterId(categoryId: string, label: string, value: string) {
+  return `${categoryId}::${label}::${value}`;
+}
+
+function getSectionsFromColumn(column: FilterColumn): FilterSection[] {
+  return "sections" in column ? column.sections : [column];
+}
+
+function getSectionsFromContent(filters: FilterContent): FilterSection[] {
+  if (isFilterGroups(filters)) {
+    return filters.flatMap((group) =>
+      group.columns.flatMap((column) => getSectionsFromColumn(column))
+    );
+  }
+
+  return filters.flatMap((column) => getSectionsFromColumn(column));
+}
+
+function getKnownFilters() {
+  const knownFilters = new Map<string, ActiveFilter>();
+
+  for (const { category, filters, id: categoryId } of dropdownCategories) {
+    for (const section of getSectionsFromContent(filters)) {
+      for (const value of section.items) {
+        const filterId = buildFilterId(categoryId, section.title, value);
+
+        knownFilters.set(filterId, {
+          id: filterId,
+          categoryId,
+          category,
+          label: section.title,
+          value,
+        });
+      }
+    }
+  }
+
+  return knownFilters;
+}
+
+function getSearchParamValues(value: string | string[] | undefined) {
+  if (!value) {
+    return [];
+  }
+
+  return Array.isArray(value) ? value : [value];
+}
+
+function getActiveFilters(searchParams: CatalogSearchParams) {
+  const knownFilters = getKnownFilters();
+
+  return getSearchParamValues(searchParams.filter)
+    .map((filterId) => knownFilters.get(filterId))
+    .filter((filter): filter is ActiveFilter => Boolean(filter));
+}
+
+function buildCatalogHref(filterIds: string[]) {
+  if (filterIds.length === 0) {
+    return CATALOG_PATH;
+  }
+
+  const params = new URLSearchParams();
+
+  for (const filterId of filterIds) {
+    params.append("filter", filterId);
+  }
+
+  return `${CATALOG_PATH}?${params.toString()}`;
+}
+
+function buildToggleFilterHref(activeFilterIds: string[], filterId: string) {
+  const nextFilterIds = activeFilterIds.includes(filterId)
+    ? activeFilterIds.filter((activeFilterId) => activeFilterId !== filterId)
+    : [...activeFilterIds, filterId];
+
+  return buildCatalogHref(nextFilterIds);
+}
+
+function buildRemoveFilterHref(activeFilterIds: string[], filterId: string) {
+  return buildCatalogHref(
+    activeFilterIds.filter((activeFilterId) => activeFilterId !== filterId)
+  );
+}
+
+function normalizeText(value: string) {
+  return value
+    .toLowerCase()
+    .replaceAll("ё", "е")
+    .replace(/[«»]/g, "")
+    .replace(/[х×*]/g, "x")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function normalizeSearchValue(value: string) {
+  return normalizeText(value).replace(/[^0-9a-zа-яе./x]+/gi, " ").trim();
+}
+
+function normalizeMarkerValue(value: string) {
+  return value
+    .toLowerCase()
+    .replaceAll("ё", "е")
+    .replace(/[«»]/g, "")
+    .replace(/[×*]/g, " ")
+    .replace(/[^0-9a-zа-яе]+/gi, " ")
+    .trim();
+}
+
+function getMarkerTokens(value: string) {
+  return normalizeMarkerValue(value).split(/\s+/).filter(Boolean);
+}
+
+function hasMarkerToken(value: string, token: string) {
+  const normalizedToken = normalizeMarkerValue(token);
+
+  return Boolean(normalizedToken) && getMarkerTokens(value).includes(normalizedToken);
+}
+
+function hasAnyMarkerToken(value: string, tokens: string[]) {
+  return tokens.some((token) => hasMarkerToken(value, token));
+}
+
+function getMetaValue(product: CatalogPriceCard, label: string) {
+  const normalizedLabel = normalizeText(label);
+
+  return (
+    product.meta.find((item) => normalizeText(item.label) === normalizedLabel)
+      ?.value ?? ""
+  );
+}
+
+function normalizeThicknessValue(value: string) {
+  const match = value.replace(",", ".").match(/\d+(?:\.\d+)?/);
+
+  return match ? String(Number(match[0])) : "";
+}
+
+function normalizeSizeValue(value: string) {
+  const normalized = normalizeText(value)
+    .replace(/мм/g, "")
+    .replace(/[^0-9x]/g, "");
+  const match = normalized.match(/(\d{3,4})x(\d{3,4})/);
+
+  return match ? `${match[1]}x${match[2]}` : "";
+}
+
+function reverseSizeValue(value: string) {
+  const [width, height] = value.split("x");
+
+  return width && height ? `${height}x${width}` : value;
+}
+
+function getSortNumber(value: string) {
+  const normalizedValue = value.toLowerCase();
+  const romanMap: Record<string, string> = {
+    i: "1",
+    ii: "2",
+    iii: "3",
+    iv: "4",
+  };
+
+  return romanMap[normalizedValue] ?? normalizedValue;
+}
+
+function normalizeSortValue(value: string) {
+  const normalized = normalizeText(value).replace(/сорт/g, " ");
+  const match = normalized.match(/\b(i|ii|iii|iv|\d)\s*\/\s*(i|ii|iii|iv|\d)\b/i);
+
+  return match ? `${getSortNumber(match[1])}/${getSortNumber(match[2])}` : "";
+}
+
+function productMatchesCategory(product: CatalogPriceCard, categoryId: string) {
+  if (categoryId === "fanera-berezovaya") {
+    return product.categorySlug.startsWith("plywood-birch");
+  }
+
+  if (categoryId === "fanera-xvoinaya") {
+    return product.categorySlug === "plywood-softwood";
+  }
+
+  if (categoryId === "fanera-laminirovannaya") {
+    return product.categorySlug === "plywood-laminated";
+  }
+
+  if (categoryId === "plity-osb-3") {
+    return product.categorySlug === "osb";
+  }
+
+  if (categoryId === "dvp-i-dsp") {
+    return ["dsp", "dvp", "mdf"].includes(product.categorySlug);
+  }
+
+  if (categoryId === "paneli-plydex") {
+    return product.categorySlug.startsWith("plydex");
+  }
+
+  return true;
+}
+
+function productSearchText(product: CatalogPriceCard) {
+  return normalizeSearchValue(
+    [
+      product.categoryTitle,
+      product.titleLineOne,
+      product.titleLineTwo,
+      ...product.meta.flatMap((item) => [item.label, item.value]),
+    ].join(" ")
+  );
+}
+
+function productMarkerText(product: CatalogPriceCard) {
+  return [
+    product.categoryTitle,
+    product.titleLineOne,
+    product.titleLineTwo,
+    ...product.meta.flatMap((item) => [item.label, item.value]),
+  ].join(" ");
+}
+
+function variantMarkerText(product: CatalogPriceCard) {
+  return [product.titleLineTwo, getMetaValue(product, "Тип")].join(" ");
+}
+
+function productIsUnsanded(product: CatalogPriceCard) {
+  const variantText = variantMarkerText(product);
+
+  if (
+    hasMarkerToken(variantText, "НШ") ||
+    hasMarkerToken(variantText, "Нешлифованная")
+  ) {
+    return true;
+  }
+
+  const fullText = productMarkerText(product);
+
+  return (
+    hasMarkerToken(fullText, "НШ") &&
+    !hasAnyMarkerToken(fullText, ["Ш", "Ш1", "Ш2", "Шлифованная"])
+  );
+}
+
+function productIsSanded(product: CatalogPriceCard, marker: "Ш" | "Ш1" | "Ш2") {
+  const fullText = productMarkerText(product);
+
+  if (productIsUnsanded(product)) {
+    return false;
+  }
+
+  if (marker === "Ш1") {
+    return hasMarkerToken(fullText, "Ш1");
+  }
+
+  if (marker === "Ш2") {
+    return hasMarkerToken(fullText, "Ш2");
+  }
+
+  return (
+    hasAnyMarkerToken(fullText, ["Ш", "Ш1", "Ш2", "Шлифованная"])
+  );
+}
+
+function productMatchesPlywoodMeaning(
+  product: CatalogPriceCard,
+  value: string
+): boolean | undefined {
+  const marker = normalizeMarkerValue(value);
+  const fullText = productMarkerText(product);
+
+  if (marker === "для внутренних работ") {
+    return hasMarkerToken(fullText, "ФК");
+  }
+
+  if (marker === "влагостойкая" || marker === "строительная") {
+    return hasMarkerToken(fullText, "ФСФ");
+  }
+
+  if (marker === "нешлифованная") {
+    return productIsUnsanded(product);
+  }
+
+  if (marker === "шлифованная") {
+    return productIsSanded(product, "Ш");
+  }
+
+  if (marker === "шлифованная с одной стороны") {
+    return productIsSanded(product, "Ш1");
+  }
+
+  if (marker === "шлифованная с двух сторон" || marker === "мебельная") {
+    return productIsSanded(product, "Ш2");
+  }
+
+  if (marker === "для безопасного применения внутри помещений") {
+    return hasMarkerToken(fullText, "Е1");
+  }
+
+  return undefined;
+}
+
+function productPlydexFinishMatches(product: CatalogPriceCard, value: string) {
+  const marker = normalizeMarkerValue(value);
+  const productType = normalizeMarkerValue(getMetaValue(product, "Тип"));
+
+  if (marker === "без покрытия") {
+    return productType === "без покрытия";
+  }
+
+  if (marker === "классик" || marker === "классик масло") {
+    return productType.includes("классик");
+  }
+
+  if (marker === "лофт" || marker === "лофт масло") {
+    return productType.includes("лофт");
+  }
+
+  if (marker === "эксклюзив") {
+    return productType.includes("эксклюзив");
+  }
+
+  if (marker === "эмаль морилка лак" || marker === "морилка эмаль лак") {
+    return (
+      productType.includes("эмаль морилка лак") ||
+      productType.includes("морилка эмаль лак")
+    );
+  }
+
+  if (marker === "эмаль патина") {
+    return productType.includes("эмаль патина");
+  }
+
+  return productSearchText(product).includes(normalizeSearchValue(value));
+}
+
+function productMatchesPlydexProfileShape(
+  product: CatalogPriceCard,
+  value: string
+) {
+  const marker = normalizeMarkerValue(value);
+  const variant = normalizeMarkerValue(product.titleLineTwo);
+
+  if (marker === "г образный") {
+    return variant.includes("группа 1") || variant.includes("г образный");
+  }
+
+  if (marker === "п образный") {
+    return variant.includes("группа 2") || variant.includes("п образный");
+  }
+
+  if (marker === "о образный") {
+    return (
+      variant.includes("группа 3") ||
+      variant.includes("о образный") ||
+      variant.includes("4 х сторон")
+    );
+  }
+
+  return productPlydexFinishMatches(product, value);
+}
+
+function productMatchesPlydexFilter(product: CatalogPriceCard, filter: ActiveFilter) {
+  const label = normalizeText(filter.label);
+
+  if (label === "профиль") {
+    return (
+      product.categorySlug === "plydex-profile" ||
+      product.categorySlug === "plydex-ready-products"
+    ) && productMatchesPlydexProfileShape(product, filter.value);
+  }
+
+  if (label === "панели стандартного размера") {
+    return (
+      product.productSlug === "plydex-panels-standard" &&
+      productPlydexFinishMatches(product, filter.value)
+    );
+  }
+
+  if (label === "панели по индивидуальным размерам") {
+    return (
+      product.productSlug === "plydex-panels-custom" &&
+      productPlydexFinishMatches(product, filter.value)
+    );
+  }
+
+  if (label === "профиль по индивидуальным размерам") {
+    return (
+      product.productSlug === "plydex-profile-custom" &&
+      productPlydexFinishMatches(product, filter.value)
+    );
+  }
+
+  if (label === "готовые изделия") {
+    return (
+      product.productSlug === "plydex-ready-products" &&
+      productPlydexFinishMatches(product, filter.value)
+    );
+  }
+
+  if (label === "двери") {
+    return (
+      product.productSlug === "plydex-doors" &&
+      productPlydexFinishMatches(product, filter.value)
+    );
+  }
+
+  if (label === "панно") {
+    return (
+      product.productSlug === "plydex-pano" &&
+      (productPlydexFinishMatches(product, filter.value) ||
+        productSearchText(product).includes(normalizeSearchValue(filter.value)))
+    );
+  }
+
+  if (label === "варианты лакокрасочных покрытий") {
+    return (
+      product.productSlug === "plydex-coatings" &&
+      productPlydexFinishMatches(product, filter.value)
+    );
+  }
+
+  return productSearchText(product).includes(normalizeSearchValue(filter.value));
+}
+
+function productMatchesFilter(product: CatalogPriceCard, filter: ActiveFilter) {
+  if (!productMatchesCategory(product, filter.categoryId)) {
+    return false;
+  }
+
+  const label = normalizeText(filter.label);
+
+  if (filter.categoryId === "paneli-plydex") {
+    return productMatchesPlydexFilter(product, filter);
+  }
+
+  if (label.includes("толщина")) {
+    return (
+      normalizeThicknessValue(getMetaValue(product, "Толщина")) ===
+      normalizeThicknessValue(filter.value)
+    );
+  }
+
+  if (label.includes("размер")) {
+    const filterSize = normalizeSizeValue(filter.value);
+    const productSize = normalizeSizeValue(getMetaValue(product, "Размер"));
+
+    return (
+      Boolean(filterSize) &&
+      (productSize === filterSize || productSize === reverseSizeValue(filterSize))
+    );
+  }
+
+  if (label.includes("сорт")) {
+    const filterSort = normalizeSortValue(filter.value);
+    const productSort =
+      normalizeSortValue(getMetaValue(product, "Тип")) ||
+      normalizeSortValue(product.titleLineTwo);
+
+    return Boolean(filterSort) && productSort === filterSort;
+  }
+
+  if (label.includes("вид") && filter.categoryId.startsWith("fanera")) {
+    const markerMatch = productMatchesPlywoodMeaning(product, filter.value);
+
+    if (markerMatch !== undefined) {
+      return markerMatch;
+    }
+  }
+
+  return productSearchText(product).includes(normalizeSearchValue(filter.value));
+}
+
+function filterProducts(
+  products: CatalogPriceCard[],
+  activeFilters: ActiveFilter[]
+) {
+  if (activeFilters.length === 0) {
+    return products;
+  }
+
+  return products.filter((product) =>
+    activeFilters.some((filter) => productMatchesFilter(product, filter))
+  );
+}
+
 export const metadata: Metadata = {
   title: "Наши цены | Фанерный мир",
   description: "Каталог фанеры и листовых материалов.",
 };
 
-export default async function PricesPage() {
+export default async function PricesPage({
+  searchParams,
+}: {
+  searchParams?: Promise<CatalogSearchParams>;
+}) {
   await connection();
 
+  const resolvedSearchParams = searchParams ? await searchParams : {};
+  const activeFilters = getActiveFilters(resolvedSearchParams);
+  const activeFilterIds = activeFilters.map((filter) => filter.id);
   const products = await getCatalogPriceCards();
+  const filteredProducts = filterProducts(products, activeFilters);
 
   return (
     <section className={styles.catalogPage} aria-label="Каталог товаров">
@@ -296,13 +778,23 @@ export default async function PricesPage() {
           <ul className={styles.categoryList}>
             {dropdownCategories.map(({ category, filters, id }) => (
               <li className={styles.categoryItem} id={id} key={category}>
-                <details className={styles.categoryDropdown} name="catalogue-category">
+                <details
+                  className={styles.categoryDropdown}
+                  open={
+                    activeFilters.some((filter) => filter.categoryId === id) ||
+                    undefined
+                  }
+                >
                   <summary className={styles.categoryButton}>
                     <span>{category}</span>
                     <span className={styles.categoryArrow} aria-hidden="true" />
                   </summary>
 
-                  <FilterDropdown filters={filters} />
+                  <FilterDropdown
+                    activeFilterIds={activeFilterIds}
+                    categoryId={id}
+                    filters={filters}
+                  />
                 </details>
               </li>
             ))}
@@ -319,12 +811,36 @@ export default async function PricesPage() {
         </aside>
 
         <div className={styles.productsGrid}>
+          {activeFilters.length > 0 ? (
+            <div className={styles.activeFilters} aria-label="Выбранные фильтры">
+              {activeFilters.map((filter) => (
+                <a
+                  className={styles.filterChip}
+                  href={buildRemoveFilterHref(activeFilterIds, filter.id)}
+                  key={filter.id}
+                  aria-label={`Снять фильтр ${filter.label}: ${filter.value}`}
+                >
+                  <span>
+                    {filter.label}: {filter.value}
+                  </span>
+                  <span className={styles.filterChipIcon} aria-hidden="true">
+                    ×
+                  </span>
+                </a>
+              ))}
+            </div>
+          ) : null}
+
           {products.length === 0 ? (
             <p className={styles.catalogEmpty}>
               Прайс пока не загружен. Добавьте Excel-файл в админке.
             </p>
+          ) : filteredProducts.length === 0 ? (
+            <p className={styles.catalogEmpty}>
+              По выбранным фильтрам товары не найдены.
+            </p>
           ) : (
-            products.map((product, index) => (
+            filteredProducts.map((product, index) => (
               <article className={styles.productCard} key={product.id}>
               <div className={styles.productImage}>
                 <Image
@@ -332,7 +848,7 @@ export default async function PricesPage() {
                   fill
                   priority={index === 0}
                   sizes="309px"
-                  src="/img/catalogue/card.png"
+                  src={product.imageUrl}
                 />
               </div>
 
@@ -384,7 +900,15 @@ export default async function PricesPage() {
   );
 }
 
-function FilterDropdown({ filters }: { filters: FilterContent }) {
+function FilterDropdown({
+  activeFilterIds,
+  categoryId,
+  filters,
+}: {
+  activeFilterIds: string[];
+  categoryId: string;
+  filters: FilterContent;
+}) {
   if (isFilterGroups(filters)) {
     return (
       <div className={styles.filterDropdown}>
@@ -394,7 +918,12 @@ function FilterDropdown({ filters }: { filters: FilterContent }) {
               <h3 className={styles.filterGroupTitle}>{group.groupTitle}</h3>
               <div className={styles.filterGroupColumns}>
                 {group.columns.map((column, columnIndex) => (
-                  <FilterColumnContent column={column} key={columnIndex} />
+                  <FilterColumnContent
+                    activeFilterIds={activeFilterIds}
+                    categoryId={categoryId}
+                    column={column}
+                    key={columnIndex}
+                  />
                 ))}
               </div>
             </div>
@@ -408,7 +937,12 @@ function FilterDropdown({ filters }: { filters: FilterContent }) {
     <div className={styles.filterDropdown}>
       <div className={styles.filterColumns}>
         {filters.map((column, columnIndex) => (
-          <FilterColumnContent column={column} key={columnIndex} />
+          <FilterColumnContent
+            activeFilterIds={activeFilterIds}
+            categoryId={categoryId}
+            column={column}
+            key={columnIndex}
+          />
         ))}
       </div>
     </div>
@@ -419,30 +953,68 @@ function isFilterGroups(filters: FilterContent): filters is FilterGroup[] {
   return filters.length > 0 && "groupTitle" in filters[0];
 }
 
-function FilterColumnContent({ column }: { column: FilterColumn }) {
+function FilterColumnContent({
+  activeFilterIds,
+  categoryId,
+  column,
+}: {
+  activeFilterIds: string[];
+  categoryId: string;
+  column: FilterColumn;
+}) {
   return (
     <div className={styles.filterColumn}>
       {"sections" in column ? (
-        column.sections.map((section) => <FilterSectionContent key={section.title} section={section} />)
+        column.sections.map((section) => (
+          <FilterSectionContent
+            activeFilterIds={activeFilterIds}
+            categoryId={categoryId}
+            key={section.title}
+            section={section}
+          />
+        ))
       ) : (
-        <FilterSectionContent section={column} />
+        <FilterSectionContent
+          activeFilterIds={activeFilterIds}
+          categoryId={categoryId}
+          section={column}
+        />
       )}
     </div>
   );
 }
 
-function FilterSectionContent({ section }: { section: FilterSection }) {
+function FilterSectionContent({
+  activeFilterIds,
+  categoryId,
+  section,
+}: {
+  activeFilterIds: string[];
+  categoryId: string;
+  section: FilterSection;
+}) {
   return (
     <div className={styles.filterSection}>
       <h3>{section.title}</h3>
       <ul>
-        {section.items.map((item, itemIndex) => (
-          <li key={`${section.title}-${item}-${itemIndex}`}>
-            <button className={styles.filterOption} type="button">
-              {item}
-            </button>
-          </li>
-        ))}
+        {section.items.map((item, itemIndex) => {
+          const filterId = buildFilterId(categoryId, section.title, item);
+          const isActive = activeFilterIds.includes(filterId);
+
+          return (
+            <li key={`${section.title}-${item}-${itemIndex}`}>
+              <a
+                aria-current={isActive ? "true" : undefined}
+                className={`${styles.filterOption} ${
+                  isActive ? styles.filterOptionActive : ""
+                }`}
+                href={buildToggleFilterHref(activeFilterIds, filterId)}
+              >
+                {item}
+              </a>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

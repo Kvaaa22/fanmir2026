@@ -84,6 +84,10 @@ export async function getAvailableThicknesses() {
 
 export type CatalogPriceCard = {
   id: string;
+  productSlug: string;
+  categorySlug: string;
+  categoryTitle: string;
+  imageUrl: string;
   titleLineOne: string;
   titleLineTwo: string;
   meta: Array<{
@@ -263,6 +267,40 @@ function buildVariantTitle(params: {
     .join(", ");
 }
 
+function getCatalogCardImage(params: {
+  productSlug: string;
+  categorySlug: string;
+  variantTitle: string;
+  imageUrl: string | null;
+}) {
+  if (params.imageUrl) {
+    return params.imageUrl;
+  }
+
+  if (
+    params.productSlug === "plydex-profile-custom" ||
+    params.productSlug === "plydex-ready-products"
+  ) {
+    if (/группа\s*1|г-образн/i.test(params.variantTitle)) {
+      return "/img/catalogue/plydex-profile-g.svg";
+    }
+
+    if (/группа\s*2|п-образн/i.test(params.variantTitle)) {
+      return "/img/catalogue/plydex-profile-p.svg";
+    }
+
+    if (/группа\s*3|4-х|4\s*сторон|о-образн/i.test(params.variantTitle)) {
+      return "/img/catalogue/plydex-profile-o.svg";
+    }
+  }
+
+  if (params.categorySlug.startsWith("plydex")) {
+    return "/img/prices/plydex.png";
+  }
+
+  return "/img/catalogue/card.png";
+}
+
 export async function getCatalogPriceCards() {
   const prices = await prisma.price.findMany({
     where: {
@@ -275,7 +313,9 @@ export async function getCatalogPriceCards() {
         select: {
           slug: true,
           title: true,
+          categorySlug: true,
           categoryTitle: true,
+          imageUrl: true,
           sortOrder: true,
         },
       },
@@ -320,6 +360,15 @@ export async function getCatalogPriceCards() {
 
       return {
         id: `${item.source}-${item.id}`,
+        productSlug: item.product.slug,
+        categorySlug: item.product.categorySlug,
+        categoryTitle: item.product.categoryTitle,
+        imageUrl: getCatalogCardImage({
+          productSlug: item.product.slug,
+          categorySlug: item.product.categorySlug,
+          variantTitle: item.variantTitle ?? "",
+          imageUrl: item.product.imageUrl,
+        }),
         titleLineOne: productTitle,
         titleLineTwo:
           buildVariantTitle(item, productTitle) || item.product.categoryTitle,

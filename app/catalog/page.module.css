@@ -35,14 +35,16 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  max-width: 100%;
   height: auto;
 }
 
 .filterColumns {
   display: grid;
-  grid-template-columns: repeat(3, max-content);
+  grid-template-columns: repeat(2, minmax(0, 135px));
   column-gap: 35px;
-  width: fit-content;
+  width: 100%;
+  max-width: 305px;
   margin-top: 16px;
 }
 
@@ -50,7 +52,8 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  width: fit-content;
+  width: 100%;
+  max-width: 135px;
   min-width: 0;
 }
 
@@ -61,17 +64,21 @@
 }
 
 .filterGroups {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 135px));
   align-items: flex-start;
   gap: 15px;
-  width: max-content;
+  width: 100%;
+  max-width: 285px;
   margin-top: 16px;
 }
 
 .filterGroup {
   display: flex;
   flex-direction: column;
-  width: fit-content;
+  width: 100%;
+  max-width: 135px;
+  min-width: 0;
 }
 
 .filterGroupTitle {
@@ -93,11 +100,14 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  width: fit-content;
+  width: 100%;
+  max-width: 135px;
+  min-width: 0;
 }
 
 .filterColumn h3,
 .filterSection h3 {
+  max-width: 135px;
   margin: 0;
   font-family: var(--font-heading), serif;
   font-size: 12px;
@@ -107,6 +117,8 @@
   letter-spacing: -0.02em;
   color: #000000;
   text-shadow: 0 4px 16px rgba(255, 255, 255, 0.58);
+  overflow-wrap: anywhere;
+  word-break: break-all;
 }
 
 .filterColumn ul,
@@ -121,13 +133,17 @@
 .filterColumn li,
 .filterSection li {
   margin: 0;
-  white-space: nowrap;
+  max-width: 135px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-all;
 }
 
 .filterOption {
   display: inline-flex;
   align-items: center;
-  width: fit-content;
+  width: 100%;
+  max-width: 135px;
   min-height: 19px;
   padding: 0;
   border: 0;
@@ -142,7 +158,9 @@
   text-align: left;
   text-shadow: 0 4px 16px rgba(255, 255, 255, 0.58);
   text-decoration: none;
-  white-space: pre-line;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-all;
   cursor: pointer;
 }
 
@@ -156,6 +174,16 @@
 .filterOption:focus-visible {
   outline: 1px solid currentColor;
   outline-offset: 2px;
+}
+
+.filterOptionActive,
+.filterOptionActive:hover,
+.filterOptionActive:focus,
+.filterOptionActive:focus-visible,
+.filterOptionActive:active {
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
 }
 
 .filterColumn:nth-child(2) .filterSection:nth-child(2) li:nth-child(2) .filterOption {
@@ -259,6 +287,57 @@
   font-size: 18px;
   line-height: 1.45;
   color: #2f2f2f;
+}
+
+.activeFilters {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+}
+
+.filterChip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 31px;
+  max-width: 100%;
+  padding: 6px 10px;
+  border: 1px solid rgba(47, 47, 47, 0.18);
+  border-radius: 8px;
+  background: #ffffff;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 12px;
+  line-height: 1.25;
+  font-weight: 500;
+  color: #2f2f2f;
+  text-decoration: none;
+}
+
+.filterChip span:first-child {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.filterChipIcon {
+  flex: 0 0 auto;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.filterChip:hover,
+.filterChip:focus,
+.filterChip:active {
+  text-decoration: none;
+}
+
+.filterChip:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 2px;
 }
 
 .productCard {
@@ -618,13 +697,13 @@
   .sidebar {
     grid-column: 1;
     justify-self: start;
-    width: fit-content;
+    width: min(392px, 100%);
     min-width: 0;
     padding: 18px 20px;
   }
 
   .categoryList {
-    width: max-content;
+    width: 100%;
   }
 
   .categoryDropdown,
@@ -637,41 +716,41 @@
   }
 
   .filterDropdown {
-    width: fit-content;
+    width: 100%;
     max-width: 100%;
     min-width: 0;
   }
 
   .filterColumns {
-    grid-template-columns: repeat(2, max-content);
+    grid-template-columns: repeat(2, minmax(0, 135px));
     row-gap: 20px;
     column-gap: 12px;
-    width: fit-content;
-    max-width: 100%;
+    width: 100%;
+    max-width: 282px;
   }
 
   .filterColumn,
   .filterSection,
   .filterColumn ul,
   .filterSection ul {
-    width: fit-content;
+    width: 100%;
     min-width: 0;
-    max-width: 100%;
+    max-width: 135px;
   }
 
   .filterGroups {
     display: grid;
-    grid-template-columns: repeat(2, max-content);
+    grid-template-columns: repeat(2, minmax(0, 135px));
     gap: 20px 12px;
-    width: fit-content;
-    max-width: 100%;
+    width: 100%;
+    max-width: 282px;
   }
 
   .filterGroup,
   .filterGroupColumns {
-    width: fit-content;
+    width: 100%;
     min-width: 0;
-    max-width: 100%;
+    max-width: 135px;
   }
 
   .filterColumn h3,
@@ -679,22 +758,22 @@
   .filterColumn li,
   .filterSection li,
   .filterOption {
-    max-width: 100%;
+    max-width: 135px;
     min-width: 0;
     overflow-wrap: anywhere;
     word-break: break-all;
   }
 
   .filterOption {
-    width: fit-content;
+    width: 100%;
   }
 
   .categoryItem:last-child .filterColumns {
-    grid-template-columns: repeat(2, minmax(0, 100px));
+    grid-template-columns: repeat(2, minmax(0, 135px));
   }
 
   .categoryItem:last-child .filterColumn {
-    max-width: 100px;
+    max-width: 135px;
   }
 
   .filterGroupTitle:empty {
@@ -828,7 +907,7 @@
     top: calc(100% + 8px);
     left: 0;
     z-index: 5;
-    width: max-content;
+    width: min(282px, calc(100vw - 32px));
     max-width: calc(100vw - 32px);
     padding: 12px;
     border: 1px solid #f2f2f2;
