@@ -1,5 +1,6 @@
 ﻿import type { CSSProperties } from "react";
 import type { Metadata } from "next";
+import Image from "next/image";
 import { connection } from "next/server";
 import ExcelJS from "exceljs";
 import prisma from "@/lib/prisma";
@@ -14,10 +15,10 @@ export const metadata: Metadata = {
 type ExcelCell = {
   key: string;
   value: string;
+  imageSrc?: string;
   colSpan: number;
   rowSpan: number;
   isHeader: boolean;
-  isEmphasized: boolean;
   style: CSSProperties;
 };
 
@@ -61,26 +62,6 @@ function isPricePerM2ColumnTitle(value: string) {
       normalizedValue.includes("руб/м2"))
   );
 }
-
-function isSortValue(value: string) {
-  const normalizedValue = value.trim().toLowerCase();
-
-  return (
-    /^[ivx]+(?:\/[ivx]+)+$/i.test(normalizedValue) ||
-    normalizedValue === "plydex"
-  );
-}
-
-function isProductTypeTitle(value: string, colSpan: number) {
-  const normalizedValue = value.trim().toLowerCase();
-
-  if (colSpan <= 1 || !normalizedValue) {
-    return false;
-  }
-
-  return !["сорт", "вид", "размер", "размер, мм"].includes(normalizedValue);
-}
-
 
 function getPdfHref(source: PriceSourceValue) {
   const params = new URLSearchParams({
@@ -203,10 +184,6 @@ function getCellStyle(cell: ExcelJS.Cell): CSSProperties {
   const border = cell.border;
   const style: CSSProperties = {};
 
-  if (font?.bold) {
-    style.fontWeight = 700;
-  }
-
   if (font?.italic) {
     style.fontStyle = "italic";
   }
@@ -246,7 +223,48 @@ function getCellStyle(cell: ExcelJS.Cell): CSSProperties {
   return style;
 }
 
-async function readExcelTable(filePath: string): Promise<ExcelTable | null> {
+function getReplacementImage(
+  source: PriceSourceValue,
+  rowNumber: number,
+  colNumber: number
+) {
+  if (source !== PRICE_SOURCE.PLYDEX || colNumber !== 2) {
+    return undefined;
+  }
+
+  if (rowNumber >= 9 && rowNumber <= 14) {
+    return "/img/prices/paneliPlydexStandard.jpg";
+  }
+
+  if (rowNumber >= 21 && rowNumber <= 23) {
+    return "/img/prices/ProfilIndivid1.png";
+  }
+
+  if (rowNumber >= 24 && rowNumber <= 26) {
+    return "/img/prices/ProfilIndivid2.png";
+  }
+
+  if (rowNumber >= 27 && rowNumber <= 29) {
+    return "/img/prices/ProfilIndivid3.png";
+  }
+
+  return undefined;
+}
+
+function normalizeCellValue(value: string) {
+  const trimmedValue = value.trim();
+
+  if (/^[-–—]+$/.test(trimmedValue)) {
+    return EMPTY_VALUE;
+  }
+
+  return trimmedValue || EMPTY_VALUE;
+}
+
+async function readExcelTable(
+  filePath: string,
+  source: PriceSourceValue
+): Promise<ExcelTable | null> {
   const workbook = new ExcelJS.Workbook();
   await workbook.xlsx.readFile(filePath);
 
@@ -266,9 +284,10 @@ async function readExcelTable(filePath: string): Promise<ExcelTable | null> {
   const hiddenColumns = new Set<number>();
   const rows: ExcelRow[] = [];
   const columnWidths: number[] = [];
+  const shouldTrimMainPriceColumns = source === PRICE_SOURCE.MAIN;
 
   for (let col = bounds.minCol; col <= bounds.maxCol; col += 1) {
-    if (col >= 15) {
+    if (shouldTrimMainPriceColumns && col >= 15) {
       hiddenColumns.add(col);
       continue;
     }
@@ -277,7 +296,7 @@ async function readExcelTable(filePath: string): Promise<ExcelTable | null> {
       const cell = getEffectiveCell(worksheet.getCell(row, col));
       const text = getCellText(cell).trim();
 
-      if (isPricePerM2ColumnTitle(text)) {
+      if (shouldTrimMainPriceColumns && isPricePerM2ColumnTitle(text)) {
         hiddenColumns.add(col);
         break;
       }
@@ -348,16 +367,24 @@ async function readExcelTable(filePath: string): Promise<ExcelTable | null> {
 
       const effectiveCell = getEffectiveCell(cell);
       const text = getCellText(effectiveCell).trim();
+      const imageSrc = getReplacementImage(source, rowNumber, colNumber);
 
       cells.push({
         key,
-        value: text || EMPTY_VALUE,
+        value: normalizeCellValue(text),
+        imageSrc,
         colSpan,
         rowSpan,
         isHeader: rowNumber <= bounds.minRow + 1 || Boolean(effectiveCell.font?.bold),
-        isEmphasized: isSortValue(text) || isProductTypeTitle(text, colSpan),
         style: getCellStyle(effectiveCell),
       });
+    }
+
+    if (
+      source === PRICE_SOURCE.PLYDEX &&
+      cells.some((cell) => cell.value.toLowerCase().includes("прайс лист"))
+    ) {
+      continue;
     }
 
     rows.push({
@@ -414,7 +441,7 @@ async function getPriceSection(
     title,
     source,
     table: latestExcelImport?.storedFilePath
-      ? await readExcelTable(latestExcelImport.storedFilePath)
+      ? await readExcelTable(latestExcelImport.storedFilePath, source)
       : null,
     hasPdf: Boolean(latestPdfImport),
   };
@@ -455,12 +482,21 @@ function PriceTable({ section }: { section: PriceSection }) {
                     return (
                       <CellTag
                         key={cell.key}
-                        className={cell.isEmphasized ? styles.emphasizedCell : undefined}
                         colSpan={cell.colSpan}
                         rowSpan={cell.rowSpan}
                         style={cell.style}
                       >
-                        {cell.value}
+                        {cell.imageSrc ? (
+                          <Image
+                            alt=""
+                            className={styles.excelCellImage}
+                            height={120}
+                            src={cell.imageSrc}
+                            width={160}
+                          />
+                        ) : (
+                          cell.value
+                        )}
                       </CellTag>
                     );
                   })}
