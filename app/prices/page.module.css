@@ -1,0 +1,220 @@
+.pricesPage {
+  display: flow-root;
+  min-height: 100%;
+  background: #ffffff;
+  color: #2f2f2f;
+}
+
+.pricesFrame {
+  width: min(calc(100% - 48px), 1211px);
+  margin: 0 auto;
+  padding: 142px 0 96px;
+}
+
+.hero {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 34px;
+}
+
+.eyebrow {
+  font-family: var(--font-sans), sans-serif;
+  font-size: 14px;
+  line-height: 1.2;
+  font-weight: 500;
+  color: #ba872e;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-heading), serif;
+  font-size: 46px;
+  line-height: 56px;
+  font-weight: 500;
+  color: #2f2f2f;
+}
+
+.sections {
+  display: grid;
+  gap: 48px;
+}
+
+.priceSection {
+  display: grid;
+  gap: 18px;
+}
+
+.sectionHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-family: var(--font-heading), serif;
+  font-size: 32px;
+  line-height: 1.2;
+  font-weight: 500;
+  color: #2f2f2f;
+}
+
+.downloadButton,
+.downloadUnavailable {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 24px;
+  border-radius: 8px;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 14px;
+  line-height: 1;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.downloadButton {
+  background: #563b25;
+  color: #ffffff;
+  box-shadow: 0 14px 28px rgba(86, 59, 37, 0.13);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.downloadButton:hover {
+  background: #2f2f2f;
+  transform: translateY(-1px);
+}
+
+.downloadButton:focus-visible {
+  outline: 2px solid #ba872e;
+  outline-offset: 3px;
+}
+
+.downloadUnavailable {
+  border: 1px solid rgba(86, 59, 37, 0.18);
+  color: rgba(47, 47, 47, 0.62);
+}
+
+.tableWrap {
+  width: 100%;
+  overflow: auto;
+  border: 1px solid #f2f2f2;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 18px 45px rgba(0, 25, 49, 0.06);
+}
+
+.excelTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 12px;
+  line-height: 1.25;
+  table-layout: fixed;
+}
+
+.excelTable th,
+.excelTable td {
+  min-width: 72px;
+  padding: 6px 8px;
+  border: 1px solid #d8d8d8;
+  text-align: center;
+  vertical-align: middle;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+
+.excelTable th {
+  background: #f9f9f9;
+  font-weight: 600;
+  color: #000000;
+}
+
+.excelTable td {
+  color: #2f2f2f;
+}
+
+.emptyText {
+  margin: 0;
+  padding: 28px 35px;
+  border-radius: 8px;
+  background: #fafafa;
+  font-family: var(--font-heading), serif;
+  font-size: 16px;
+  line-height: 20px;
+  color: #2f2f2f;
+}
+
+@media (max-width: 980px) {
+  .pricesFrame {
+    width: min(calc(100% - 40px), 940px);
+    padding-top: 124px;
+  }
+
+  .title {
+    font-size: 42px;
+    line-height: 50px;
+  }
+
+  .sectionTitle {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 700px) {
+  .pricesFrame {
+    width: min(calc(100% - 32px), 668px);
+    padding-top: 112px;
+    padding-bottom: 72px;
+  }
+
+  .hero {
+    margin-bottom: 28px;
+  }
+
+  .sectionHead {
+    display: grid;
+    align-items: start;
+  }
+
+  .downloadButton,
+  .downloadUnavailable {
+    width: fit-content;
+  }
+
+  .excelTable {
+    font-size: 11px;
+  }
+
+  .excelTable th,
+  .excelTable td {
+    min-width: 64px;
+    padding: 5px 6px;
+  }
+}
+
+@media (max-width: 420px) {
+  .pricesFrame {
+    width: calc(100% - 24px);
+  }
+
+  .title {
+    font-size: 36px;
+    line-height: 44px;
+  }
+
+  .sectionTitle {
+    font-size: 24px;
+  }
+
+  .excelTable {
+    font-size: 10px;
+  }
+
+  .excelTable th,
+  .excelTable td {
+    min-width: 58px;
+  }
+}

@@ -55,7 +55,7 @@ const navigation: NavigationItem[] = [
       { href: "/#cutting", label: "Распил" },
     ],
   },
-  { id: "prices", href: "#", label: "Наши цены" },
+  { id: "prices", href: "/prices", label: "Наши цены" },
   { id: "contacts", href: "/#contacts", label: "Контакты" },
 ];
 
