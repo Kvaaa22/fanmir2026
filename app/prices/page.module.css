@@ -110,15 +110,15 @@
   width: 100%;
   border-collapse: collapse;
   font-family: var(--font-sans), sans-serif;
-  font-size: 12px;
-  line-height: 1.25;
+  font-size: 14px;
+  line-height: 1.18;
   table-layout: fixed;
 }
 
 .excelTable th,
 .excelTable td {
-  min-width: 72px;
-  padding: 6px 8px;
+  min-width: 44px;
+  padding: 4px 5px;
   border: 1px solid #d8d8d8;
   text-align: center;
   vertical-align: middle;
@@ -134,6 +134,10 @@
 
 .excelTable td {
   color: #2f2f2f;
+}
+
+.excelTable .emphasizedCell {
+  font-weight: 700;
 }
 
 .emptyText {
@@ -185,13 +189,13 @@
   }
 
   .excelTable {
-    font-size: 11px;
+    font-size: 10px;
   }
 
   .excelTable th,
   .excelTable td {
-    min-width: 64px;
-    padding: 5px 6px;
+    min-width: 40px;
+    padding: 4px;
   }
 }
 
@@ -210,11 +214,11 @@
   }
 
   .excelTable {
-    font-size: 10px;
+    font-size: 9px;
   }
 
   .excelTable th,
   .excelTable td {
-    min-width: 58px;
+    min-width: 36px;
   }
 }

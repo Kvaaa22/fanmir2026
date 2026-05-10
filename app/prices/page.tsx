@@ -7,8 +7,8 @@ import { PRICE_SOURCE, type PriceSourceValue } from "@/lib/prices/priceSource";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
-  title: "РќР°С€Рё С†РµРЅС‹ | Р¤Р°РЅРµСЂРЅС‹Р№ РјРёСЂ",
-  description: "РђРєС‚СѓР°Р»СЊРЅС‹Рµ С†РµРЅС‹ РЅР° С„Р°РЅРµСЂСѓ Рё РїСЂРѕРґСѓРєС†РёСЋ Plydex.",
+  title: "Наши цены | Фанерный мир",
+  description: "Актуальные цены на фанеру и продукцию Plydex.",
 };
 
 type ExcelCell = {
@@ -17,6 +17,7 @@ type ExcelCell = {
   colSpan: number;
   rowSpan: number;
   isHeader: boolean;
+  isEmphasized: boolean;
   style: CSSProperties;
 };
 
@@ -38,27 +39,46 @@ type PriceSection = {
   hasPdf: boolean;
 };
 
-const EMPTY_VALUE = "\u00a0";
-const MIN_COLUMN_WIDTH = 72;
-const MAX_COLUMN_WIDTH = 240;
+const EMPTY_VALUE = "—";
+const MIN_COLUMN_WIDTH = 44;
+const MAX_COLUMN_WIDTH = 120;
 
 function isPricePerM2ColumnTitle(value: string) {
   const normalizedValue = value
     .toLowerCase()
     .replace(/\s+/g, "")
-    .replace(/РјВІ/g, "Рј2")
-    .replace(/Рј\.РєРІ\.?/g, "Рј2")
-    .replace(/РјРєРІ/g, "Рј2")
-    .replace(/РєРІ\.Рј\.?/g, "Рј2");
+    .replace(/м²/g, "м2")
+    .replace(/м\.кв\.?/g, "м2")
+    .replace(/мкв/g, "м2")
+    .replace(/кв\.м\.?/g, "м2");
 
   return (
-    normalizedValue.includes("Рј2") &&
-    (normalizedValue.includes("С†РµРЅР°") ||
-      normalizedValue.includes("СЂСѓР±") ||
-      normalizedValue.includes("1Рј2") ||
-      normalizedValue.includes("СЂСѓР±./Рј2") ||
-      normalizedValue.includes("СЂСѓР±/Рј2"))
+    normalizedValue.includes("м2") &&
+    (normalizedValue.includes("цена") ||
+      normalizedValue.includes("руб") ||
+      normalizedValue.includes("1м2") ||
+      normalizedValue.includes("руб./м2") ||
+      normalizedValue.includes("руб/м2"))
   );
+}
+
+function isSortValue(value: string) {
+  const normalizedValue = value.trim().toLowerCase();
+
+  return (
+    /^[ivx]+(?:\/[ivx]+)+$/i.test(normalizedValue) ||
+    normalizedValue === "plydex"
+  );
+}
+
+function isProductTypeTitle(value: string, colSpan: number) {
+  const normalizedValue = value.trim().toLowerCase();
+
+  if (colSpan <= 1 || !normalizedValue) {
+    return false;
+  }
+
+  return !["сорт", "вид", "размер", "размер, мм"].includes(normalizedValue);
 }
 
 
@@ -230,7 +250,7 @@ async function readExcelTable(filePath: string): Promise<ExcelTable | null> {
   const workbook = new ExcelJS.Workbook();
   await workbook.xlsx.readFile(filePath);
 
-  const worksheet = workbook.getWorksheet("Р›РёСЃС‚1") ?? workbook.worksheets[0];
+  const worksheet = workbook.getWorksheet("Лист1") ?? workbook.worksheets[0];
 
   if (!worksheet) {
     return null;
@@ -273,7 +293,7 @@ async function readExcelTable(filePath: string): Promise<ExcelTable | null> {
     columnWidths.push(
       Math.max(
         MIN_COLUMN_WIDTH,
-        Math.min(MAX_COLUMN_WIDTH, Math.round((width ?? 12) * 8))
+        Math.min(MAX_COLUMN_WIDTH, Math.round((width ?? 12) * 5.2))
       )
     );
   }
@@ -335,6 +355,7 @@ async function readExcelTable(filePath: string): Promise<ExcelTable | null> {
         colSpan,
         rowSpan,
         isHeader: rowNumber <= bounds.minRow + 1 || Boolean(effectiveCell.font?.bold),
+        isEmphasized: isSortValue(text) || isProductTypeTitle(text, colSpan),
         style: getCellStyle(effectiveCell),
       });
     }
@@ -409,10 +430,10 @@ function PriceTable({ section }: { section: PriceSection }) {
 
         {section.hasPdf ? (
           <a className={styles.downloadButton} href={getPdfHref(section.source)}>
-            РЎРєР°С‡Р°С‚СЊ РїСЂР°Р№СЃ РІ PDF
+            Скачать прайс в PDF
           </a>
         ) : (
-          <span className={styles.downloadUnavailable}>PDF РїРѕРєР° РЅРµ Р·Р°РіСЂСѓР¶РµРЅ</span>
+          <span className={styles.downloadUnavailable}>PDF пока не загружен</span>
         )}
       </div>
 
@@ -434,6 +455,7 @@ function PriceTable({ section }: { section: PriceSection }) {
                     return (
                       <CellTag
                         key={cell.key}
+                        className={cell.isEmphasized ? styles.emphasizedCell : undefined}
                         colSpan={cell.colSpan}
                         rowSpan={cell.rowSpan}
                         style={cell.style}
@@ -448,7 +470,7 @@ function PriceTable({ section }: { section: PriceSection }) {
           </table>
         </div>
       ) : (
-        <p className={styles.emptyText}>РџСЂР°Р№СЃ РїРѕРєР° РЅРµ Р·Р°РіСЂСѓР¶РµРЅ.</p>
+        <p className={styles.emptyText}>Прайс пока не загружен.</p>
       )}
     </section>
   );
@@ -458,16 +480,16 @@ export default async function PricesPage() {
   await connection();
 
   const [mainSection, plydexSection] = await Promise.all([
-    getPriceSection("Р¦РµРЅС‹ РЅР° С„Р°РЅРµСЂСѓ", PRICE_SOURCE.MAIN),
-    getPriceSection("Р¦РµРЅС‹ РЅР° plydex", PRICE_SOURCE.PLYDEX),
+    getPriceSection("Цены на фанеру", PRICE_SOURCE.MAIN),
+    getPriceSection("Цены на plydex", PRICE_SOURCE.PLYDEX),
   ]);
 
   return (
-    <section className={styles.pricesPage} aria-label="РќР°С€Рё С†РµРЅС‹">
+    <section className={styles.pricesPage} aria-label="Наши цены">
       <div className={styles.pricesFrame}>
         <header className={styles.hero}>
-          <span className={styles.eyebrow}>РђРєС‚СѓР°Р»СЊРЅС‹Рµ РїСЂР°Р№СЃС‹</span>
-          <h1 className={styles.title}>РќР°С€Рё С†РµРЅС‹</h1>
+          <span className={styles.eyebrow}>Актуальные прайсы</span>
+          <h1 className={styles.title}>Наши цены</h1>
         </header>
 
         <div className={styles.sections}>
