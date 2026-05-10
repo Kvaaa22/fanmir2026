@@ -218,6 +218,49 @@
   display: none;
 }
 
+.mobileCartLink {
+  position: fixed;
+  right: max(20px, calc((100vw - 1280px) / 2 + 20px));
+  bottom: 28px;
+  z-index: 20;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  background: #007E51;
+  box-shadow: 0 12px 24px rgba(var(--brown-rgb), 0.18);
+  color: var(--bg);
+  text-decoration: none;
+}
+
+.mobileCartIcon {
+  display: block;
+  width: 40px;
+  height: 40px;
+}
+
+.mobileCartCount {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border: 2px solid #f5f5f5;
+  border-radius: 999px;
+  background: #ffffff;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 700;
+  color: var(--brown);
+}
+
 .mobileMenuText {
   position: absolute;
   width: 1px;
@@ -319,6 +362,7 @@
   }
 
   .mobileActions {
+    position: relative;
     display: flex;
     align-items: center;
     justify-self: end;

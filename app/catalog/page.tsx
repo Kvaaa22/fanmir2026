@@ -809,7 +809,7 @@ function productMatchesFilter(product: CatalogPriceCard, filter: ActiveFilter) {
 }
 
 export const metadata: Metadata = {
-  title: "Наши цены | Фанерный мир",
+  title: "Каталог | Фанерный мир",
   description: "Каталог фанеры и листовых материалов.",
 };
 
