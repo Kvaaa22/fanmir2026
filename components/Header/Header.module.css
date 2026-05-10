@@ -219,6 +219,12 @@
 }
 
 .mobileCartLink {
+  --cart-button-size: clamp(70px, 6.8vw, 94px);
+  --cart-icon-size: clamp(30px, 3.2vw, 40px);
+  --cart-count-size: clamp(26px, 2.4vw, 32px);
+  --cart-count-font-size: clamp(14px, 1.4vw, 18px);
+  --cart-wiggle-distance-large: clamp(5px, 0.7vw, 8px);
+  --cart-wiggle-distance-small: clamp(3px, 0.45vw, 5px);
   position: fixed;
   right: max(24px, calc((100vw - 1284px) / 2));
   bottom: 28px;
@@ -226,8 +232,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 94px;
-  height: 94px;
+  width: var(--cart-button-size);
+  height: var(--cart-button-size);
   border-radius: 50%;
   background: #007E51;
   box-shadow: 0 12px 24px rgba(var(--brown-rgb), 0.18);
@@ -243,25 +249,25 @@
 
 .mobileCartIcon {
   display: block;
-  width: 40px;
-  height: 40px;
+  width: var(--cart-icon-size);
+  height: var(--cart-icon-size);
 }
 
 .mobileCartCount {
   position: absolute;
-  top: 3px;
-  right: -5px;
+  top: calc(var(--cart-button-size) * 0.04);
+  right: calc(var(--cart-button-size) * -0.06);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 32px;
-  height: 32px;
-  padding: 0 6px;
+  min-width: var(--cart-count-size);
+  height: var(--cart-count-size);
+  padding: 0 clamp(5px, 0.8vw, 6px);
   border: 2px solid #f5f5f5;
   border-radius: 999px;
   background: #ffffff;
   font-family: var(--font-sans), sans-serif;
-  font-size: 18px;
+  font-size: var(--cart-count-font-size);
   line-height: 1;
   font-weight: 700;
   color: var(--brown);
@@ -274,19 +280,19 @@
   }
 
   8% {
-    transform: translateX(-8px);
+    transform: translateX(calc(var(--cart-wiggle-distance-large) * -1));
   }
 
   16% {
-    transform: translateX(8px);
+    transform: translateX(var(--cart-wiggle-distance-large));
   }
 
   24% {
-    transform: translateX(-5px);
+    transform: translateX(calc(var(--cart-wiggle-distance-small) * -1));
   }
 
   32% {
-    transform: translateX(5px);
+    transform: translateX(var(--cart-wiggle-distance-small));
   }
 
   40% {
