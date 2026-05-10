@@ -36,9 +36,15 @@
 
 html,
 body {
+  height: 100%;
   margin: 0;
   min-width: 375px;
   overflow-x: hidden;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
 }
 
 .container {
@@ -84,6 +90,10 @@ body {
 }
 
 .page {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  min-height: 0;
   background: var(--color-page);
 }
 
