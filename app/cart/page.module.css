@@ -25,6 +25,18 @@
   gap: 17px;
 }
 
+.emptyCart {
+  margin: 0;
+  padding: 28px 35px;
+  border-radius: 8px;
+  background: #fafafa;
+  font-family: var(--font-heading), serif;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 400;
+  color: #2f2f2f;
+}
+
 .cartItem {
   display: grid;
   grid-template-columns: 195px 861px;
@@ -115,6 +127,12 @@
 
 .metaColumn dt {
   color: rgba(47, 47, 47, 0.42);
+}
+
+.metaColumn dd {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: normal;
 }
 
 .quantityBlock {

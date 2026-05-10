@@ -81,6 +81,24 @@
   min-width: 0;
 }
 
+.sheetFilterColumns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 135px));
+  column-gap: 15px;
+  width: 100%;
+  max-width: 285px;
+  margin-top: 16px;
+}
+
+.sheetFilterColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 135px;
+  min-width: 0;
+}
+
 .filterGroupTitle {
   margin: 0 0 18px;
   font-family: var(--font-sans), sans-serif;
@@ -303,7 +321,7 @@
   transform: translateY(2px) rotate(225deg);
 }
 
-.categoryDropdown > .filterDropdown {
+.categoryDropdown>.filterDropdown {
   flex: 0 0 100%;
 }
 
@@ -712,14 +730,14 @@
   }
 
   .catalogFrame {
-    grid-template-columns: 392px clamp(16px, 2vw, 24px) minmax(0, 1fr);
+    grid-template-columns: 342px clamp(16px, 2vw, 24px) minmax(0, 1fr);
     justify-content: center;
     width: min(calc(100% - 40px), 1120px);
     padding-top: clamp(112px, 9.5vw, 128px);
   }
 
   .sidebar {
-    width: 392px;
+    width: 342px;
     padding: 18px 20px;
   }
 
@@ -776,7 +794,7 @@
 
 @media (max-width: 996px) {
   .catalogFrame {
-    grid-template-columns: 392px clamp(16px, 2.2vw, 22px) minmax(0, 1fr);
+    grid-template-columns: 283px clamp(16px, 2.2vw, 22px) minmax(0, 1fr);
     width: min(calc(100% - 40px), 940px);
     padding-top: 96px;
   }
@@ -784,8 +802,8 @@
   .sidebar {
     grid-column: 1;
     justify-self: start;
-    width: min(392px, 100%);
-    max-width: 392px;
+    width: min(283px, 100%);
+    max-width: 283px;
     min-width: 0;
     padding: 18px 20px;
   }
@@ -1056,15 +1074,15 @@
 
 }
 
-@media (max-width: 550px) {
+@media (max-width: 615px) {
   .sidebar {
     padding: 10px 25px;
   }
 
   .categoryList {
     grid-template-rows: repeat(3, auto);
-    grid-template-columns: repeat(2, max-content);
-    justify-content: space-between;
+    grid-template-columns: 55% 45%;
+    justify-content: stretch;
   }
 
   .categoryItem::after {
@@ -1113,9 +1131,14 @@
   }
 }
 
+
 @media (max-width: 470px) {
   .sidebar {
     padding: 10px 15px;
+  }
+
+  .categoryList {
+    grid-template-columns: 56% 44%;
   }
 
   .cartButton {

@@ -42,13 +42,18 @@ export const catalogCategoryFilterIds = {
     CATEGORY_FILTER_LABEL,
     "Плиты OSB-3 (ОСП)"
   ),
-  dspDvp: buildCatalogFilterId("dvp-i-dsp", CATEGORY_FILTER_LABEL, "ДВП и ДСП"),
+  dspDvp: buildCatalogFilterId(
+    "dvp-i-dsp",
+    CATEGORY_FILTER_LABEL,
+    "ДВП, ДСП и МДФ"
+  ),
   plydex: buildCatalogFilterId("paneli-plydex", CATEGORY_FILTER_LABEL, "PLYDEX"),
 } as const;
 
 export const catalogMaterialFilterIds = {
   dsp: buildCatalogFilterId("dvp-i-dsp", MATERIAL_FILTER_LABEL, "ДСП"),
   dvp: buildCatalogFilterId("dvp-i-dsp", MATERIAL_FILTER_LABEL, "ДВП"),
+  mdf: buildCatalogFilterId("dvp-i-dsp", MATERIAL_FILTER_LABEL, "МДФ"),
 } as const;
 
 export const catalogOfferHrefs = {
@@ -59,6 +64,7 @@ export const catalogOfferHrefs = {
   dspDvp: buildCatalogFilterHref(catalogCategoryFilterIds.dspDvp),
   dsp: buildCatalogFilterHref(catalogMaterialFilterIds.dsp),
   dvp: buildCatalogFilterHref(catalogMaterialFilterIds.dvp),
+  mdf: buildCatalogFilterHref(catalogMaterialFilterIds.mdf),
   plydex: buildCatalogFilterHref(catalogCategoryFilterIds.plydex),
   construction: buildCatalogFilterHref([
     buildCatalogFilterId("fanera-berezovaya", "Вид фанеры", "Строительная"),

@@ -96,6 +96,7 @@ export type CatalogPriceCard = {
   }>;
   price: string;
   pricePerM2?: string;
+  unitPriceRub: number | null;
 };
 
 const LEGACY_PRODUCT_TITLES: Record<string, string> = {
@@ -127,6 +128,17 @@ const decimalFormatter = new Intl.NumberFormat("ru-RU", {
   maximumFractionDigits: 2,
 });
 
+function normalizeOrderText(value: string) {
+  return value
+    .replace(/при\s*заказе/gi, "при заказе")
+    .replace(/заказе\s*от/gi, "заказе от")
+    .replace(/от\s*(\d)/gi, "от $1")
+    .replace(/(\d)\s*шт/gi, "$1 шт")
+    .replace(/(\d)(при заказе)/gi, "$1 $2")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function formatThickness(thicknessMm: number | null) {
   if (thicknessMm == null) {
     return "-";
@@ -141,8 +153,9 @@ function formatSize(size: string | null) {
   }
 
   const normalizedSize = size.replaceAll("x", "×").replaceAll("*", "×");
+  const displaySize = normalizeOrderText(normalizedSize);
 
-  return /мм/i.test(normalizedSize) ? normalizedSize : `${normalizedSize} мм`;
+  return /мм/i.test(displaySize) ? displaySize : `${displaySize} мм`;
 }
 
 function formatPrice(
@@ -170,7 +183,7 @@ function formatPricePerM2(priceRub: number | null, pricePerM2Rub: number | null)
 }
 
 function normalizeProductTitle(title: string) {
-  return title
+  return normalizeOrderText(title)
     .replace(/\s+/g, " ")
     .replace(/[«»]/g, "")
     .replace(/\s*\([^)]*кв\.?\s*м\.?[^)]*\)/gi, "")
@@ -251,7 +264,9 @@ function buildVariantTitle(params: {
   size: string | null;
 }, productTitle: string) {
   if (params.variantTitle) {
-    return removeDuplicateSizeFromVariantTitle(params.variantTitle, productTitle);
+    return normalizeOrderText(
+      removeDuplicateSizeFromVariantTitle(params.variantTitle, productTitle)
+    );
   }
 
   return [
@@ -388,6 +403,7 @@ export async function getCatalogPriceCards() {
         ],
         price: formatPrice(item.priceRub, item.pricePerM2Rub, item.unit),
         pricePerM2: formatPricePerM2(item.priceRub, item.pricePerM2Rub),
+        unitPriceRub: item.priceRub,
       };
     });
 }

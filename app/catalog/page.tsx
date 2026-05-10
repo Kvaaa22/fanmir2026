@@ -17,6 +17,7 @@ import {
   CatalogFilterProvider,
   CatalogProductVisibility,
 } from "./CatalogFilterClient";
+import { CatalogCartControls } from "./CatalogCartControls";
 import styles from "./page.module.css";
 
 type FilterSection = {
@@ -50,7 +51,7 @@ const categories = [
   "Фанера хвойная",
   "Фанера ламинированная",
   "Плиты OSB-3 (ОСП)",
-  "ДВП и ДСП",
+  "ДВП, ДСП и МДФ",
   "PLYDEX",
 ];
 
@@ -122,16 +123,16 @@ const coniferFilters: FilterColumn[] = [
         items: ["6,5 мм", "9 мм", "12 мм", "15 мм", "18 мм", "21 мм", "24 мм"],
       },
       {
-        title: "Сорт",
-        items: ["Сорт 1/3", "Сорт 2/3", "Сорт 3/3"],
+        title: "Размер",
+        items: ["1220*2440 мм"],
       },
     ],
   },
   {
     sections: [
       {
-        title: "Размер",
-        items: ["1220*2440 мм"],
+        title: "Сорт",
+        items: ["Сорт 1/3", "Сорт 2/3", "Сорт 3/3"],
       },
       {
         title: "Вид фанеры",
@@ -162,16 +163,20 @@ const laminatedFilters: FilterColumn[] = [
 
 const osbFilters: FilterColumn[] = [
   {
-    title: "Толщина",
-    items: ["9 мм", "12 мм", "18 мм", "22 мм"],
-  },
-  {
     sections: [
+      {
+        title: "Толщина",
+        items: ["9 мм", "12 мм", "18 мм", "22 мм"],
+      },
       {
         title: "Размер",
         items: ["1250*2500 мм"],
       },
     ],
+  },
+  {
+    title: "Сорт",
+    items: ["Латат 1 сорт", "Латат 3 сорт", "Ультралам"],
   },
 ];
 
@@ -191,6 +196,27 @@ const dspDvpFilters: FilterGroup[] = [
           },
           {
             title: "Вид ДСП",
+            items: ["Шлифованная"],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    groupTitle: "МДФ",
+    columns: [
+      {
+        sections: [
+          {
+            title: "Толщина",
+            items: ["6 мм", "8 мм", "10 мм", "16 мм", "18 мм", "19 мм", "22 мм"],
+          },
+          {
+            title: "Размер",
+            items: ["2800*2070 мм"],
+          },
+          {
+            title: "Вид МДФ",
             items: ["Шлифованная"],
           },
         ],
@@ -317,7 +343,7 @@ function getKnownFilters() {
     });
 
     if (categoryId === "dvp-i-dsp") {
-      for (const value of ["ДСП", "ДВП"]) {
+      for (const value of ["ДСП", "ДВП", "МДФ"]) {
         const materialFilterId = buildFilterId(
           categoryId,
           MATERIAL_FILTER_LABEL,
@@ -731,6 +757,10 @@ function productMatchesFilter(product: CatalogPriceCard, filter: ActiveFilter) {
     if (marker === "двп") {
       return product.categorySlug === "dvp";
     }
+
+    if (marker === "мдф") {
+      return product.categorySlug === "mdf";
+    }
   }
 
   if (filter.categoryId === "paneli-plydex") {
@@ -760,7 +790,11 @@ function productMatchesFilter(product: CatalogPriceCard, filter: ActiveFilter) {
       normalizeSortValue(getMetaValue(product, "Тип")) ||
       normalizeSortValue(product.titleLineTwo);
 
-    return Boolean(filterSort) && productSort === filterSort;
+    if (filterSort) {
+      return productSort === filterSort;
+    }
+
+    return productSearchText(product).includes(normalizeSearchValue(filter.value));
   }
 
   if (label.includes("вид") && filter.categoryId.startsWith("fanera")) {
@@ -904,31 +938,7 @@ export default async function PricesPage({
                           ) : null}
                         </div>
 
-                        <div className={styles.productActions}>
-                          <div
-                            className={styles.quantityControl}
-                            aria-label="Количество"
-                          >
-                            <button
-                              aria-label="Уменьшить количество"
-                              type="button"
-                            >
-                              −
-                            </button>
-                            <span>0</span>
-                            <button
-                              aria-label="Увеличить количество"
-                              type="button"
-                            >
-                              +
-                            </button>
-                          </div>
-
-                          <button className={styles.cartButton} type="button">
-                            <span>В корзину</span>
-                            <CartIcon />
-                          </button>
-                        </div>
+                        <CatalogCartControls product={product} />
                       </div>
                     </article>
                   </CatalogProductVisibility>
@@ -950,6 +960,40 @@ function FilterDropdown({
   filters: FilterContent;
 }) {
   if (isFilterGroups(filters)) {
+    if (categoryId === "dvp-i-dsp") {
+      const firstColumnGroups = filters.filter((group) =>
+        ["ДСП", "ДВП"].includes(group.groupTitle)
+      );
+      const secondColumnGroups = filters.filter(
+        (group) => group.groupTitle === "МДФ"
+      );
+
+      return (
+        <div className={styles.filterDropdown}>
+          <div className={styles.sheetFilterColumns}>
+            {[firstColumnGroups, secondColumnGroups].map((groups, columnIndex) => (
+              <div className={styles.sheetFilterColumn} key={columnIndex}>
+                {groups.map((group) => (
+                  <div className={styles.filterGroup} key={group.groupTitle}>
+                    <h3 className={styles.filterGroupTitle}>{group.groupTitle}</h3>
+                    <div className={styles.filterGroupColumns}>
+                      {group.columns.map((column, columnIndex) => (
+                        <FilterColumnContent
+                          categoryId={categoryId}
+                          column={column}
+                          key={columnIndex}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className={styles.filterDropdown}>
         <div className={styles.filterGroups}>
@@ -1042,29 +1086,5 @@ function FilterSectionContent({
         })}
       </ul>
     </div>
-  );
-}
-
-function CartIcon() {
-  return (
-    <svg
-      aria-hidden="true"
-      className={styles.cartIcon}
-      fill="none"
-      height="25"
-      viewBox="0 0 25 25"
-      width="25"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M7.2 7.2H22L20.5 15.2H8.7L7.2 7.2ZM7.2 7.2L6.5 4H3.7"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.45"
-      />
-      <circle cx="10.1" cy="19.3" r="1.35" stroke="currentColor" strokeWidth="1.45" />
-      <circle cx="18.2" cy="19.3" r="1.35" stroke="currentColor" strokeWidth="1.45" />
-    </svg>
   );
 }
