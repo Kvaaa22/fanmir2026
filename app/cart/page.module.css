@@ -316,8 +316,8 @@
   }
 
   .cartFrame {
-    width: min(100% - 48px, 1056px);
-    padding-top: 116px;
+    width: min(100% - 68px, 1056px);
+    padding-top: 120px;
     padding-bottom: 56px;
   }
 
@@ -325,6 +325,11 @@
     margin-bottom: 24px;
     font-size: 40px;
     line-height: 48px;
+  }
+
+  .itemsList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 27px;
   }
 
   .cartItem {
@@ -377,6 +382,9 @@
   .checkoutButton {
     grid-column: 1;
     width: 100%;
+    margin-top: 40px;
+    justify-self: center;
+    height: 50px;
   }
 }
 
@@ -394,6 +402,7 @@
   }
 
   .itemsList {
+    grid-template-columns: 1fr;
     gap: 12px;
   }
 
@@ -429,7 +438,7 @@
   }
 
   .quantityLabel {
-    display: block;
+    display: none;
     padding-left: 0;
     border-left: 0;
     text-wrap: wrap;
