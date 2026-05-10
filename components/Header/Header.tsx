@@ -69,7 +69,9 @@ export function Header({ className }: HeaderProps) {
   const [openGroupId, setOpenGroupId] = useState<string | null>(null);
   const pathname = usePathname();
   const cartTypeCount = useCartItems().length;
-  const shouldShowCartLink = cartTypeCount > 0 && !pathname.startsWith("/admin");
+  const shouldShowCartLink =
+    cartTypeCount > 0 && !pathname.startsWith("/admin") && !pathname.startsWith("/cart");
+  const shouldPinCartLinkToTop = !pathname.startsWith("/catalog");
 
   const closeMobileMenu = () => {
     if (menuRef.current) {
@@ -213,7 +215,12 @@ export function Header({ className }: HeaderProps) {
           {shouldShowCartLink ? (
             <Link
               aria-label={`Cart: ${cartTypeCount} item types`}
-              className={styles.mobileCartLink}
+              className={[
+                styles.mobileCartLink,
+                shouldPinCartLinkToTop ? styles.mobileCartLinkTop : null,
+              ]
+                .filter(Boolean)
+                .join(" ")}
               href="/cart"
             >
               <svg

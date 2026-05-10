@@ -220,19 +220,25 @@
 
 .mobileCartLink {
   position: fixed;
-  right: max(20px, calc((100vw - 1280px) / 2 + 20px));
+  right: max(24px, calc((100vw - 1284px) / 2));
   bottom: 28px;
   z-index: 20;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 84px;
-  height: 84px;
+  width: 94px;
+  height: 94px;
   border-radius: 50%;
   background: #007E51;
   box-shadow: 0 12px 24px rgba(var(--brown-rgb), 0.18);
   color: var(--bg);
   text-decoration: none;
+  animation: cartWiggle 2.8s ease-in-out infinite;
+}
+
+.mobileCartLinkTop {
+  top: calc(clamp(8px, 2vh, 20px) + clamp(72px, 9vh, 82px) + 14px);
+  bottom: auto;
 }
 
 .mobileCartIcon {
@@ -259,6 +265,39 @@
   line-height: 1;
   font-weight: 700;
   color: var(--brown);
+}
+
+@keyframes cartWiggle {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  8% {
+    transform: translateX(-8px);
+  }
+
+  16% {
+    transform: translateX(8px);
+  }
+
+  24% {
+    transform: translateX(-5px);
+  }
+
+  32% {
+    transform: translateX(5px);
+  }
+
+  40% {
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobileCartLink {
+    animation: none;
+  }
 }
 
 .mobileMenuText {
@@ -309,6 +348,10 @@
 }
 
 @media (max-width: 1280px) {
+  .mobileCartLink {
+    right: max(20px, calc((100vw - 1120px) / 2));
+  }
+
   .header :global(.container) {
     width: min(calc(100% - 40px), 1120px);
   }
@@ -831,6 +874,10 @@
   .header :global(.container) {
     width: calc(100% - 16px);
     margin: 0 auto;
+  }
+
+  .mobileCartLink {
+    right: 8px;
   }
 
   .headerBar {
