@@ -303,6 +303,10 @@ function getMainPriceTypeImage(value: string) {
     return "/img/prices/dvp.png";
   }
 
+  if (normalizedValue.includes("мдф")) {
+    return "/img/prices/mdf.png";
+  }
+
   return undefined;
 }
 
@@ -340,20 +344,47 @@ function isEmphasisRow(row: ExcelRow) {
   });
 }
 
-function getProductCaption(row: ExcelRow | undefined) {
+function getProductName(row: ExcelRow | undefined) {
   const productName = row?.cells[0]?.value;
 
   if (!productName || productName === EMPTY_VALUE) {
     return "";
   }
 
-  const normalizedProductName = productName.replace(/[.:;,\s]+$/, "");
+  return productName.replace(/[.:;,\s]+$/, "");
+}
+
+function getProductCaption(row: ExcelRow | undefined, source: PriceSourceValue) {
+  const normalizedProductName = getProductName(row);
+
+  if (!normalizedProductName) {
+    return "";
+  }
+
+  if (source === PRICE_SOURCE.PLYDEX) {
+    return normalizedProductName;
+  }
+
   const captionProductName = normalizedProductName.replace(/^Фанера\b/i, "фанеру");
 
   return `Цена за лист на ${captionProductName}`;
 }
 
 function getImageSize(cell: ExcelCell) {
+  if (cell.imageSrc === "/img/prices/mdf.png") {
+    return {
+      height: 15,
+      width: 1300,
+    };
+  }
+
+  if (cell.imageSrc === "/img/prices/plydex.png") {
+    return {
+      height: 22,
+      width: 1101,
+    };
+  }
+
   if (cell.imageVariant === "type") {
     return {
       height: 15,
@@ -367,7 +398,26 @@ function getImageSize(cell: ExcelCell) {
   };
 }
 
-function splitTableByProductTypes(table: ExcelTable): ExcelTableGroup[] {
+function getResponsiveColumnWidth(width: number) {
+  const viewportWidth = Number(((width / 1211) * 100).toFixed(2));
+
+  return `clamp(32px, ${viewportWidth}vw, ${width}px)`;
+}
+
+function getGroupColumnWidth(group: ExcelTableGroup, width: number, index: number) {
+  const productName = getProductName(group.rows[0]).toLowerCase();
+
+  if (productName.includes("хвойн") && index < 5) {
+    return width / 3;
+  }
+
+  return width;
+}
+
+function splitTableByProductTypes(
+  table: ExcelTable,
+  source: PriceSourceValue
+): ExcelTableGroup[] {
   const groups: ExcelTableGroup[] = [];
   let currentRows: ExcelRow[] = [];
 
@@ -375,7 +425,7 @@ function splitTableByProductTypes(table: ExcelTable): ExcelTableGroup[] {
     if (isProductTypeRow(row, table.columnWidths.length) && currentRows.length) {
       groups.push({
         key: groups.length.toString(),
-        caption: getProductCaption(currentRows[0]),
+        caption: getProductCaption(currentRows[0], source),
         rows: currentRows,
       });
 
@@ -388,7 +438,7 @@ function splitTableByProductTypes(table: ExcelTable): ExcelTableGroup[] {
   if (currentRows.length) {
     groups.push({
       key: groups.length.toString(),
-      caption: getProductCaption(currentRows[0]),
+      caption: getProductCaption(currentRows[0], source),
       rows: currentRows,
     });
   }
@@ -522,27 +572,35 @@ async function readExcelTable(
       continue;
     }
 
-    rows.push({
+    const excelRow = {
       key: rowNumber.toString(),
       cells,
       height: row.height,
-    });
+    };
+
+    rows.push(excelRow);
 
     const firstCellValue = cells.find((cell) => cell.value !== EMPTY_VALUE)?.value ?? "";
+    const isFullWidthProductTypeRow = isProductTypeRow(excelRow, columnWidths.length);
     const typeImage =
       source === PRICE_SOURCE.MAIN &&
-      isProductTypeRow({ key: rowNumber.toString(), cells }, columnWidths.length)
+      isFullWidthProductTypeRow
         ? getMainPriceTypeImage(firstCellValue)
         : undefined;
+    const plydexLineImage =
+      source === PRICE_SOURCE.PLYDEX && isFullWidthProductTypeRow
+        ? "/img/prices/plydex.png"
+        : undefined;
+    const lineImage = typeImage ?? plydexLineImage;
 
-    if (typeImage) {
+    if (lineImage) {
       rows.push({
         key: `${rowNumber}:type-image`,
         cells: [
           {
             key: `${rowNumber}:type-image-cell`,
             value: "",
-            imageSrc: typeImage,
+            imageSrc: lineImage,
             imageVariant: "type",
             colSpan: columnWidths.length,
             rowSpan: 1,
@@ -551,6 +609,7 @@ async function readExcelTable(
           },
         ],
       });
+
     }
   }
 
@@ -609,7 +668,13 @@ async function getPriceSection(
 
 function PriceTable({ section }: { section: PriceSection }) {
   const table = section.table;
-  const tableGroups = table ? splitTableByProductTypes(table) : [];
+  const tableGroups = table ? splitTableByProductTypes(table, section.source) : [];
+  const tableClassName = [
+    styles.excelTable,
+    section.source === PRICE_SOURCE.PLYDEX ? styles.plydexTable : null,
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <section className={styles.priceSection} aria-labelledby={`${section.source}-title`}>
@@ -636,10 +701,17 @@ function PriceTable({ section }: { section: PriceSection }) {
               ) : null}
 
               <div className={styles.tableWrap}>
-                <table className={styles.excelTable}>
+                <table className={tableClassName}>
                   <colgroup>
                     {table.columnWidths.map((width, index) => (
-                      <col key={index} style={{ width }} />
+                      <col
+                        key={index}
+                        style={{
+                          width: getResponsiveColumnWidth(
+                            getGroupColumnWidth(group, width, index)
+                          ),
+                        }}
+                      />
                     ))}
                   </colgroup>
 
@@ -681,7 +753,7 @@ function PriceTable({ section }: { section: PriceSection }) {
                                     alt=""
                                     className={[
                                       styles.excelCellImage,
-                                      cell.imageVariant === "type" ? styles.typeImage : null,
+                                      cell.imageVariant === "type" ? styles.typeImage : styles.cellImage,
                                     ]
                                       .filter(Boolean)
                                       .join(" ")}
