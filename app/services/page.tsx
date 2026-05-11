@@ -47,7 +47,7 @@ const services: Record<ServiceTab, ServiceContent> = {
     title: "Доставка и оплата",
     lead:
       "Организуем получение заказа со склада, доставку по Красноярску и отправку через удобную логистику. Подберем вариант под объем, адрес и сроки.",
-    imageSrc: "/img/advantages/icons/Truck5.svg",
+    imageSrc: "/img/services/delivery.jpg",
     imageAlt: "",
     highlights: [
       "Самовывоз со склада на Калинина 169",
@@ -69,7 +69,7 @@ const services: Record<ServiceTab, ServiceContent> = {
     title: "Распил",
     lead:
       "Режем фанеру и листовые материалы под нужные размеры, чтобы заказ было проще перевозить, хранить и сразу использовать в работе.",
-    imageSrc: "/img/raspil2.webp",
+    imageSrc: "/img/services/raspil2.png",
     imageAlt: "Распил листовых материалов",
     highlights: [
       "Распил фанеры, OSB, ДСП, ДВП и других листовых материалов",
@@ -144,17 +144,12 @@ export default async function ServicesPage({ searchParams }: ServicesPageProps) 
           <div className={styles.visualPanel} aria-hidden={service.imageAlt ? undefined : true}>
             <Image
               alt={service.imageAlt}
-              className={[
-                styles.serviceImage,
-                activeTab === "cutting" ? styles.coverImage : null,
-              ]
-                .filter(Boolean)
-                .join(" ")}
-              height={activeTab === "delivery" ? 110 : 720}
+              className={[styles.serviceImage, styles.coverImage].join(" ")}
+              height={activeTab === "delivery" ? 1000 : 1906}
               priority
+              sizes="(max-width: 650px) calc(100vw - 64px), (max-width: 980px) 320px, 420px"
               src={service.imageSrc}
-              unoptimized={activeTab === "cutting"}
-              width={activeTab === "delivery" ? 110 : 1280}
+              width={activeTab === "delivery" ? 1500 : 1734}
             />
           </div>
         </article>

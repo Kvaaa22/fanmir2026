@@ -47,7 +47,7 @@ const navigation: NavigationItem[] = [
   },
   {
     id: "services",
-    href: "#",
+    href: "/services?tab=delivery",
     label: "Услуги",
     withArrow: true,
     children: [

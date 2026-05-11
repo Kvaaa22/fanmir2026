@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 type Coordinates = [number, number];
 
@@ -47,6 +47,7 @@ export default function YandexMap({
   const mapRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<YMapInstance | null>(null);
   const markerTitleRef = useRef(markerTitle);
+  const [hasMapError, setHasMapError] = useState(false);
   const [longitude, latitude] = center;
 
   markerTitleRef.current = markerTitle;
@@ -59,10 +60,13 @@ export default function YandexMap({
     async function initMap() {
       if (!mapRef.current || mapInstanceRef.current) return;
 
+      setHasMapError(false);
+
       const apiKey = process.env.NEXT_PUBLIC_YANDEX_MAPS_API_KEY;
 
       if (!apiKey) {
         console.error('Yandex Maps API key is missing');
+        setHasMapError(true);
         return;
       }
 
@@ -78,15 +82,36 @@ export default function YandexMap({
           document.head.appendChild(script);
         });
 
-        await ymaps3LoadPromise;
+        try {
+          await ymaps3LoadPromise;
+        } catch (error) {
+          ymaps3LoadPromise = null;
+
+          if (!cancelled) {
+            console.error(error);
+            setHasMapError(true);
+          }
+
+          return;
+        }
       }
 
       if (!window.ymaps3) {
         console.error('Yandex Maps SDK is unavailable after script load');
+        setHasMapError(true);
         return;
       }
 
-      await window.ymaps3.ready;
+      try {
+        await window.ymaps3.ready;
+      } catch (error) {
+        if (!cancelled) {
+          console.error(error);
+          setHasMapError(true);
+        }
+
+        return;
+      }
 
       if (cancelled || !mapRef.current) return;
 
@@ -154,5 +179,18 @@ export default function YandexMap({
     };
   }, [latitude, longitude, zoom]);
 
-  return <div ref={mapRef} className="yandex-map" />;
+  return (
+    <div ref={mapRef} className="yandex-map">
+      {hasMapError ? (
+        <a
+          className="yandex-map-fallback"
+          href={`https://yandex.ru/maps/?ll=${longitude}%2C${latitude}&z=${zoom}`}
+          rel="noreferrer"
+          target="_blank"
+        >
+          Открыть адрес на Яндекс Картах
+        </a>
+      ) : null}
+    </div>
+  );
 }
