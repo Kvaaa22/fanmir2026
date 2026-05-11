@@ -16,6 +16,7 @@ type ExcelCell = {
   key: string;
   value: string;
   imageSrc?: string;
+  imageVariant?: "cell" | "type";
   colSpan: number;
   rowSpan: number;
   isHeader: boolean;
@@ -31,6 +32,12 @@ type ExcelRow = {
 type ExcelTable = {
   rows: ExcelRow[];
   columnWidths: number[];
+};
+
+type ExcelTableGroup = {
+  key: string;
+  caption: string;
+  rows: ExcelRow[];
 };
 
 type PriceSection = {
@@ -261,6 +268,134 @@ function normalizeCellValue(value: string) {
   return trimmedValue || EMPTY_VALUE;
 }
 
+function getMainPriceTypeImage(value: string) {
+  const normalizedValue = value.trim().toLowerCase();
+
+  if (!normalizedValue) {
+    return undefined;
+  }
+
+  if (normalizedValue.includes("хвойн")) {
+    return "/img/prices/fanera-xvoinaya.png";
+  }
+
+  if (normalizedValue.includes("ламинирован")) {
+    return "/img/prices/fanera-laminirovannaya.png";
+  }
+
+  if (normalizedValue.includes("берез") || normalizedValue.includes("берёз")) {
+    return "/img/prices/fanera-berezovaya.png";
+  }
+
+  if (normalizedValue.includes("osb") || normalizedValue.includes("ориентирован")) {
+    return "/img/prices/pliti-osb-3.png";
+  }
+
+  if (normalizedValue.includes("древесно-струж") || normalizedValue.includes("дсп")) {
+    return "/img/prices/dsp.png";
+  }
+
+  if (
+    normalizedValue.includes("древесно-волок") ||
+    normalizedValue.includes("двп") ||
+    normalizedValue.includes("хдф")
+  ) {
+    return "/img/prices/dvp.png";
+  }
+
+  return undefined;
+}
+
+function isProductTypeRow(row: ExcelRow, columnCount: number) {
+  const value = row.cells[0]?.value.trim();
+
+  return (
+    row.cells.length === 1 &&
+    row.cells[0]?.colSpan === columnCount &&
+    !row.cells[0]?.imageSrc &&
+    Boolean(value) &&
+    value !== EMPTY_VALUE
+  );
+}
+
+function isEmphasisRow(row: ExcelRow) {
+  const emphasisValues = [
+    "сорт",
+    "листов в м3",
+    "тип поверхности пленки",
+    "формат 2500*1250 мм",
+    "формат 2500* 1250мм",
+    "наименование",
+    "формат мм",
+    "формат, мм",
+    "вид",
+    "название",
+    "размеры",
+  ];
+
+  return row.cells.some((cell) => {
+    const normalizedValue = cell.value.trim().toLowerCase().replace(/\s+/g, " ");
+
+    return emphasisValues.includes(normalizedValue);
+  });
+}
+
+function getProductCaption(row: ExcelRow | undefined) {
+  const productName = row?.cells[0]?.value;
+
+  if (!productName || productName === EMPTY_VALUE) {
+    return "";
+  }
+
+  const normalizedProductName = productName.replace(/[.:;,\s]+$/, "");
+  const captionProductName = normalizedProductName.replace(/^Фанера\b/i, "фанеру");
+
+  return `Цена за лист на ${captionProductName}`;
+}
+
+function getImageSize(cell: ExcelCell) {
+  if (cell.imageVariant === "type") {
+    return {
+      height: 15,
+      width: 1100,
+    };
+  }
+
+  return {
+    height: 120,
+    width: 160,
+  };
+}
+
+function splitTableByProductTypes(table: ExcelTable): ExcelTableGroup[] {
+  const groups: ExcelTableGroup[] = [];
+  let currentRows: ExcelRow[] = [];
+
+  table.rows.forEach((row) => {
+    if (isProductTypeRow(row, table.columnWidths.length) && currentRows.length) {
+      groups.push({
+        key: groups.length.toString(),
+        caption: getProductCaption(currentRows[0]),
+        rows: currentRows,
+      });
+
+      currentRows = [];
+    }
+
+    currentRows.push(row);
+  });
+
+  if (currentRows.length) {
+    groups.push({
+      key: groups.length.toString(),
+      caption: getProductCaption(currentRows[0]),
+      rows: currentRows,
+    });
+  }
+
+  return groups;
+}
+
 async function readExcelTable(
   filePath: string,
   source: PriceSourceValue
@@ -392,6 +527,31 @@ async function readExcelTable(
       cells,
       height: row.height,
     });
+
+    const firstCellValue = cells.find((cell) => cell.value !== EMPTY_VALUE)?.value ?? "";
+    const typeImage =
+      source === PRICE_SOURCE.MAIN &&
+      isProductTypeRow({ key: rowNumber.toString(), cells }, columnWidths.length)
+        ? getMainPriceTypeImage(firstCellValue)
+        : undefined;
+
+    if (typeImage) {
+      rows.push({
+        key: `${rowNumber}:type-image`,
+        cells: [
+          {
+            key: `${rowNumber}:type-image-cell`,
+            value: "",
+            imageSrc: typeImage,
+            imageVariant: "type",
+            colSpan: columnWidths.length,
+            rowSpan: 1,
+            isHeader: false,
+            style: {},
+          },
+        ],
+      });
+    }
   }
 
   return {
@@ -448,6 +608,9 @@ async function getPriceSection(
 }
 
 function PriceTable({ section }: { section: PriceSection }) {
+  const table = section.table;
+  const tableGroups = table ? splitTableByProductTypes(table) : [];
+
   return (
     <section className={styles.priceSection} aria-labelledby={`${section.source}-title`}>
       <div className={styles.sectionHead}>
@@ -464,46 +627,84 @@ function PriceTable({ section }: { section: PriceSection }) {
         )}
       </div>
 
-      {section.table ? (
-        <div className={styles.tableWrap}>
-          <table className={styles.excelTable}>
-            <colgroup>
-              {section.table.columnWidths.map((width, index) => (
-                <col key={index} style={{ width }} />
-              ))}
-            </colgroup>
+      {table ? (
+        <div className={styles.tableGroups}>
+          {tableGroups.map((group) => (
+            <figure className={styles.tableGroup} key={group.key}>
+              {group.caption ? (
+                <figcaption className={styles.tableCaption}>{group.caption}</figcaption>
+              ) : null}
 
-            <tbody>
-              {section.table.rows.map((row) => (
-                <tr key={row.key} style={row.height ? { height: row.height } : undefined}>
-                  {row.cells.map((cell) => {
-                    const CellTag = cell.isHeader ? "th" : "td";
+              <div className={styles.tableWrap}>
+                <table className={styles.excelTable}>
+                  <colgroup>
+                    {table.columnWidths.map((width, index) => (
+                      <col key={index} style={{ width }} />
+                    ))}
+                  </colgroup>
 
-                    return (
-                      <CellTag
-                        key={cell.key}
-                        colSpan={cell.colSpan}
-                        rowSpan={cell.rowSpan}
-                        style={cell.style}
-                      >
-                        {cell.imageSrc ? (
-                          <Image
-                            alt=""
-                            className={styles.excelCellImage}
-                            height={120}
-                            src={cell.imageSrc}
-                            width={160}
-                          />
-                        ) : (
-                          cell.value
-                        )}
-                      </CellTag>
-                    );
-                  })}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                  <tbody>
+                    {group.rows.map((row, rowIndex) => (
+                      <tr key={row.key} style={row.height ? { height: row.height } : undefined}>
+                        {row.cells.map((cell) => {
+                          const CellTag = cell.isHeader ? "th" : "td";
+                          const isTypeCell = isProductTypeRow(row, table.columnWidths.length);
+                          const isEmphasisCell = isEmphasisRow(row);
+                          const isTypeImageCell = cell.imageVariant === "type";
+                          const isAfterImageRow = Boolean(
+                            group.rows[rowIndex - 1]?.cells.some(
+                              (item) => item.imageVariant === "type"
+                            )
+                          );
+
+                          return (
+                            <CellTag
+                            className={[
+                              isTypeImageCell ? styles.imageCell : null,
+                              isTypeCell ? styles.productTypeCell : null,
+                              isEmphasisCell ? styles.emphasisCell : null,
+                              isAfterImageRow ? styles.afterImageCell : null,
+                            ]
+                              .filter(Boolean)
+                              .join(" ")}
+                            key={cell.key}
+                            colSpan={cell.colSpan}
+                            rowSpan={cell.rowSpan}
+                            style={cell.style}
+                          >
+                            {cell.imageSrc ? (
+                              (() => {
+                                const imageSize = getImageSize(cell);
+
+                                return (
+                                  <Image
+                                    alt=""
+                                    className={[
+                                      styles.excelCellImage,
+                                      cell.imageVariant === "type" ? styles.typeImage : null,
+                                    ]
+                                      .filter(Boolean)
+                                      .join(" ")}
+                                    height={imageSize.height}
+                                    sizes="100vw"
+                                    src={cell.imageSrc}
+                                    width={imageSize.width}
+                                  />
+                                );
+                              })()
+                            ) : (
+                              cell.value
+                            )}
+                            </CellTag>
+                          );
+                        })}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </figure>
+          ))}
         </div>
       ) : (
         <p className={styles.emptyText}>Прайс пока не загружен.</p>

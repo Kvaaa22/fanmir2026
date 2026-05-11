@@ -8,7 +8,7 @@
 .pricesFrame {
   width: min(calc(100% - 48px), 1211px);
   margin: 0 auto;
-  padding: 142px 0 96px;
+  padding: 122px 0 96px;
 }
 
 .hero {
@@ -97,6 +97,28 @@
   color: rgba(47, 47, 47, 0.62);
 }
 
+.tableGroups {
+  display: grid;
+  gap: 28px;
+}
+
+.tableGroup {
+  display: grid;
+  gap: 0;
+  margin: 0;
+}
+
+.tableCaption {
+  margin: 0;
+  margin-bottom: 10px;
+  padding: 0;
+  font-family: var(--font-heading), serif;
+  font-size: 22px;
+  line-height: 1.25;
+  font-weight: 500;
+  color: #2f2f2f;
+}
+
 .tableWrap {
   width: 100%;
   overflow: auto;
@@ -136,14 +158,38 @@
   color: #2f2f2f;
 }
 
+.excelTable .imageCell {
+  border-left: 1px solid #b8b8b8 !important;
+  border-right: 1px solid #b8b8b8 !important;
+  border-top: 0 !important;
+  border-bottom: 0 !important;
+  padding: 0;
+}
+
+.excelTable .afterImageCell {
+  border-top: 0 !important;
+}
+
+.excelTable .productTypeCell {
+  border-bottom: 0 !important;
+  font-weight: 600;
+}
+
+.excelTable .emphasisCell {
+  font-weight: 600;
+}
+
 .excelCellImage {
   display: block;
   width: 100%;
-  max-width: 112px;
-  height: auto;
-  max-height: 92px;
+  height: 15px;
   margin: 0 auto;
   object-fit: contain;
+}
+
+.typeImage {
+  max-width: none;
+  max-height: none;
 }
 
 .emptyText {
@@ -171,6 +217,10 @@
   .sectionTitle {
     font-size: 28px;
   }
+
+  .tableCaption {
+    font-size: 20px;
+  }
 }
 
 @media (max-width: 700px) {
@@ -192,6 +242,10 @@
   .downloadButton,
   .downloadUnavailable {
     width: fit-content;
+  }
+
+  .tableCaption {
+    font-size: 18px;
   }
 
   .excelTable {
