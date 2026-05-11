@@ -27,7 +27,7 @@ type NavigationChild = {
 };
 
 const navigation: NavigationItem[] = [
-  { id: "about", href: "#", label: "О нас" },
+  { id: "about", href: "/about", label: "О нас" },
   {
     id: "catalog",
     href: "/catalog",

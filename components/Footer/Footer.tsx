@@ -12,13 +12,13 @@ type ContactItem = {
 
 const categoryColumns = [
   [
-    { href: "#about", label: "О нас" },
+    { href: "/about", label: "О нас" },
     { href: "#offers", label: "Каталог" },
     { href: "#offers", label: "Цены" },
   ],
   [
     { href: "#hero", label: "Услуги" },
-    { href: "#about", label: "Полезные материалы", splitToWords: true },
+    { href: "/about#certificates", label: "Полезные материалы", splitToWords: true },
   ],
 ];
 

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { bitter, montserrat } from "./fonts";
 import { Header } from "@/components/Header/Header";
 import { Footer } from "@/components/Footer/Footer";
+import { CallbackPopup } from "@/components/CallbackPopup/CallbackPopup";
 import "./globals.css";
 import "./general.css";
 
@@ -25,6 +26,7 @@ export default function RootLayout({
         <Header />
         <main className="page">{children}</main>
         <Footer />
+        <CallbackPopup />
       </body>
 
     </html>

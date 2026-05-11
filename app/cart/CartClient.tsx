@@ -1,7 +1,8 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import Image from "next/image";
+import { OrderPopup } from "@/components/OrderPopup/OrderPopup";
 import {
   decrementCartItem,
   incrementCartItem,
@@ -44,6 +45,7 @@ function getCurrentCartItem(
 }
 
 export function CartClient({ products }: { products: CartProduct[] }) {
+  const [isOrderPopupOpen, setIsOrderPopupOpen] = useState(false);
   const storedCartItems = useCartItems();
   const productsById = useMemo(
     () => new Map(products.map((product) => [product.id, product])),
@@ -133,11 +135,19 @@ export function CartClient({ products }: { products: CartProduct[] }) {
         <button
           className={styles.checkoutButton}
           disabled={cartItems.length === 0}
+          onClick={() => setIsOrderPopupOpen(true)}
           type="button"
         >
           Оформить заказ
         </button>
       </div>
+
+      <OrderPopup
+        cartItems={cartItems}
+        isOpen={isOrderPopupOpen}
+        onClose={() => setIsOrderPopupOpen(false)}
+        totalPrice={totalPrice}
+      />
     </>
   );
 }

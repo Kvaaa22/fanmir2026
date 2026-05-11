@@ -1,0 +1,239 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.42);
+  backdrop-filter: blur(10px);
+}
+
+.popup {
+  position: relative;
+  width: min(460px, calc(100vw - 32px));
+  padding: 56px 46px 34px;
+  border: 1px solid #eeeeee;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0px 18px 45px rgba(0, 25, 49, 0.25);
+  color: #2f2f2f;
+}
+
+.closeButton {
+  position: absolute;
+  top: 24px;
+  right: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid #2f2f2f;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+}
+
+.closeButton::before,
+.closeButton::after {
+  content: "";
+  position: absolute;
+  width: 15px;
+  height: 1px;
+  border-radius: 999px;
+  background: #2f2f2f;
+}
+
+.closeButton::before {
+  transform: rotate(45deg);
+}
+
+.closeButton::after {
+  transform: rotate(-45deg);
+}
+
+.form,
+.successState {
+  display: grid;
+  gap: 16px;
+}
+
+.header,
+.successState {
+  text-align: center;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-heading), serif;
+  font-size: 30px;
+  line-height: 1.2;
+  font-weight: 500;
+  color: #2f2f2f;
+}
+
+.copy {
+  max-width: 320px;
+  margin: 8px auto 0;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 15px;
+  line-height: 1.25;
+  color: #5e5e5e;
+}
+
+.errorMessage {
+  margin: 0;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 13px;
+  line-height: 1.35;
+  color: #c23434;
+  text-align: center;
+}
+
+.fields {
+  display: grid;
+  gap: 14px;
+  margin-top: 4px;
+}
+
+.input {
+  width: 100%;
+  height: 54px;
+  padding: 0 20px;
+  border: 1px solid #ededed;
+  border-radius: 6px;
+  background: #ffffff;
+  font-family: var(--font-heading), serif;
+  font-size: 15px;
+  line-height: 1;
+  color: #2f2f2f;
+}
+
+.input::placeholder {
+  color: #737373;
+}
+
+.input:focus-visible,
+.closeButton:focus-visible,
+.acceptance:focus-visible {
+  outline: 2px solid #008f5a;
+  outline-offset: 2px;
+}
+
+.input:focus-visible {
+  border-color: rgba(0, 143, 90, 0.35);
+}
+
+.submitButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 52px;
+  margin-top: 0;
+  padding: 0 20px;
+  border: 0;
+  border-radius: 7px;
+  background: #008f5a;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 15px;
+  line-height: 1;
+  font-weight: 700;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.submitButton:disabled {
+  background: #bdbdbd;
+  cursor: not-allowed;
+}
+
+.requiredNote {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 13px;
+  line-height: 1.25;
+  color: #5e5e5e;
+}
+
+.requiredNote span {
+  font-size: 16px;
+  font-weight: 700;
+  color: #008f5a;
+}
+
+.acceptance {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 13px;
+  line-height: 1.35;
+  font-weight: 600;
+  color: #5e5e5e;
+  text-align: left;
+  cursor: pointer;
+}
+
+.checkbox {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: 2px solid #ff6262;
+  border-radius: 5px;
+  background: #ffffff;
+}
+
+.checkboxChecked {
+  border-color: #008f5a;
+  background: #008f5a;
+}
+
+.checkboxChecked::before {
+  content: "";
+  width: 9px;
+  height: 5px;
+  border-bottom: 2px solid #ffffff;
+  border-left: 2px solid #ffffff;
+  transform: translateY(-1px) rotate(-45deg);
+}
+
+.acceptanceLink {
+  color: #314cff;
+  text-decoration: none;
+}
+
+@media (max-width: 700px) {
+  .overlay {
+    padding: 8px;
+  }
+
+  .popup {
+    width: min(420px, calc(100vw - 16px));
+    padding: 46px 30px 26px;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+
+  .copy,
+  .requiredNote,
+  .acceptance {
+    font-size: 12px;
+  }
+}
