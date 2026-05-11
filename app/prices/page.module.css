@@ -8,7 +8,7 @@
 .pricesFrame {
   width: min(calc(100% - 48px), 1284px);
   margin: 0 auto;
-  padding: 140px 0 96px;
+  padding: 140px 0 96px clamp(14px, 1.4vw, 18px);
 }
 
 .hero {
@@ -215,7 +215,7 @@
 
 @media (max-width: 980px) {
   .pricesFrame {
-    padding-top: 124px;
+    padding: 124px 0 96px;
   }
 
   .title {

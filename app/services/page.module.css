@@ -1,0 +1,378 @@
+.servicesPage {
+  display: flow-root;
+  min-height: 100%;
+  background: #ffffff;
+  color: #2f2f2f;
+}
+
+.servicesFrame {
+  width: min(calc(100% - 48px), 1284px);
+  margin: 0 auto;
+  padding: 122px 0 96px;
+}
+
+.hero {
+  display: grid;
+  gap: 18px;
+  margin-bottom: 34px;
+}
+
+.eyebrow,
+.serviceEyebrow,
+.noteLabel {
+  font-family: var(--font-sans), sans-serif;
+  font-size: 14px;
+  line-height: 1.2;
+  font-weight: 600;
+  color: #ba872e;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-heading), serif;
+  font-size: 46px;
+  line-height: 56px;
+  font-weight: 500;
+  color: #2f2f2f;
+}
+
+.tabs {
+  display: inline-flex;
+  width: fit-content;
+  max-width: 100%;
+  padding: 4px;
+  border: 1px solid rgba(86, 59, 37, 0.16);
+  border-radius: 8px;
+  background: #f9f9f9;
+}
+
+.tabLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 22px;
+  border-radius: 6px;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 14px;
+  line-height: 1;
+  font-weight: 600;
+  color: rgba(47, 47, 47, 0.72);
+  text-align: center;
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tabLink:hover {
+  color: #2f2f2f;
+}
+
+.tabLinkActive {
+  background: #563b25;
+  color: #ffffff;
+  box-shadow: 0 12px 24px rgba(86, 59, 37, 0.14);
+}
+
+.servicePanel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 420px);
+  gap: 34px;
+  align-items: stretch;
+  min-height: 430px;
+  border: 1px solid #f2f2f2;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 18px 45px rgba(0, 25, 49, 0.06);
+  overflow: hidden;
+}
+
+.serviceContent {
+  display: grid;
+  align-content: center;
+  gap: 18px;
+  padding: 48px 56px;
+}
+
+.serviceTitle {
+  margin: 0;
+  font-family: var(--font-heading), serif;
+  font-size: 34px;
+  line-height: 1.2;
+  font-weight: 500;
+  color: #2f2f2f;
+}
+
+.serviceLead {
+  max-width: 720px;
+  margin: 0;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 17px;
+  line-height: 1.58;
+  color: rgba(47, 47, 47, 0.82);
+}
+
+.highlights {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.highlightItem {
+  position: relative;
+  min-height: 52px;
+  padding: 15px 16px 15px 42px;
+  border-radius: 8px;
+  background: #fafafa;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 14px;
+  line-height: 1.35;
+  color: #2f2f2f;
+}
+
+.highlightItem::before {
+  content: "";
+  position: absolute;
+  top: 21px;
+  left: 18px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ba872e;
+}
+
+.visualPanel {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 100%;
+  padding: 36px;
+  background: #f9f9f9;
+  overflow: hidden;
+}
+
+.visualPanel::before {
+  content: "";
+  position: absolute;
+  inset: 36px;
+  border: 1px solid rgba(86, 59, 37, 0.1);
+  border-radius: 8px;
+}
+
+.serviceImage {
+  position: relative;
+  z-index: 1;
+  display: block;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.coverImage {
+  width: calc(100% + 160px);
+  max-width: none;
+  height: 100%;
+  border-radius: 8px;
+  object-fit: cover;
+  object-position: center;
+  transform: translateX(-80px);
+}
+
+.detailsGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.stepsCard,
+.noteCard {
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+.stepsCard {
+  padding: 34px 40px;
+}
+
+.cardTitle {
+  margin: 0 0 18px;
+  font-family: var(--font-heading), serif;
+  font-size: 24px;
+  line-height: 1.25;
+  font-weight: 500;
+  color: #2f2f2f;
+}
+
+.stepsList {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding-left: 22px;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+  color: rgba(47, 47, 47, 0.84);
+}
+
+.stepsList li::marker {
+  color: #ba872e;
+  font-weight: 700;
+}
+
+.noteCard {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  padding: 30px 32px;
+}
+
+.noteCard p {
+  margin: 0;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 15px;
+  line-height: 1.52;
+  color: rgba(47, 47, 47, 0.82);
+}
+
+.catalogLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  min-height: 42px;
+  margin-top: 4px;
+  padding: 0 20px;
+  border-radius: 8px;
+  background: #563b25;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 14px;
+  line-height: 1;
+  font-weight: 600;
+  color: #ffffff;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.catalogLink:hover {
+  background: #2f2f2f;
+  transform: translateY(-1px);
+}
+
+.tabLink:focus-visible,
+.catalogLink:focus-visible {
+  outline: 2px solid #ba872e;
+  outline-offset: 3px;
+}
+
+@media (max-width: 1280px) {
+  .servicesFrame {
+    width: min(calc(100% - 40px), 1120px);
+  }
+}
+
+@media (max-width: 980px) {
+  .servicesFrame {
+    padding-top: 124px;
+  }
+
+  .title {
+    font-size: 42px;
+    line-height: 50px;
+  }
+
+  .servicePanel {
+    grid-template-columns: 1fr;
+  }
+
+  .visualPanel {
+    min-height: 260px;
+  }
+
+  .detailsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .servicesFrame {
+    padding-top: 112px;
+    padding-bottom: 72px;
+  }
+
+  .hero {
+    margin-bottom: 28px;
+  }
+
+  .tabs {
+    width: 100%;
+  }
+
+  .tabLink {
+    flex: 1 1 0;
+    padding: 0 12px;
+  }
+
+  .serviceContent {
+    padding: 32px 24px;
+  }
+
+  .serviceTitle {
+    font-size: 28px;
+  }
+
+  .serviceLead {
+    font-size: 15px;
+  }
+
+  .highlights {
+    grid-template-columns: 1fr;
+  }
+
+  .visualPanel {
+    min-height: 220px;
+    padding: 24px;
+  }
+
+  .visualPanel::before {
+    inset: 24px;
+  }
+
+  .stepsCard,
+  .noteCard {
+    padding: 26px 24px;
+  }
+}
+
+@media (max-width: 529px) {
+  .servicesFrame {
+    width: calc(100% - 16px);
+  }
+}
+
+@media (max-width: 420px) {
+  .title {
+    font-size: 36px;
+    line-height: 44px;
+  }
+
+  .tabLink {
+    min-height: 40px;
+    font-size: 13px;
+  }
+
+  .serviceContent {
+    padding: 28px 18px;
+  }
+
+  .stepsCard,
+  .noteCard {
+    padding: 24px 18px;
+  }
+}
+
+@media (max-width: 374px) {
+  .servicesFrame {
+    width: calc(var(--layout-min-width, 320px) - 16px);
+  }
+}

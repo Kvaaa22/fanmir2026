@@ -51,8 +51,8 @@ const navigation: NavigationItem[] = [
     label: "Услуги",
     withArrow: true,
     children: [
-      { href: "/#delivery", label: "Доставка и оплата" },
-      { href: "/#cutting", label: "Распил" },
+      { href: "/services?tab=delivery", label: "Доставка и оплата" },
+      { href: "/services?tab=cutting", label: "Распил" },
     ],
   },
   { id: "prices", href: "/prices", label: "Наши цены" },
