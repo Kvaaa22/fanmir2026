@@ -11,8 +11,66 @@ type OrderPopupProps = {
   totalPrice: number;
 };
 
+type OrderFormErrors = {
+  acceptance?: string;
+  cart?: string;
+  email?: string;
+  name?: string;
+  phone?: string;
+};
+
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 function getProductTitle(item: CartItem) {
   return [item.product.titleLineOne, item.product.titleLineTwo].filter(Boolean).join(" ");
+}
+
+function getPhoneDigits(value: string) {
+  return value.replace(/\D/g, "");
+}
+
+function validateOrderForm({
+  cartItems,
+  email,
+  isAccepted,
+  name,
+  phone,
+}: {
+  cartItems: CartItem[];
+  email: string;
+  isAccepted: boolean;
+  name: string;
+  phone: string;
+}) {
+  const errors: OrderFormErrors = {};
+
+  if (name.trim().length === 0) {
+    errors.name = "Введите имя.";
+  } else if (name.trim().length < 2) {
+    errors.name = "Имя должно быть не короче 2 символов.";
+  }
+
+  if (phone.trim().length === 0) {
+    errors.phone = "Введите номер телефона.";
+  } else if (getPhoneDigits(phone).length < 10) {
+    errors.phone = "Введите телефон полностью.";
+  }
+
+  if (email.trim().length === 0) {
+    errors.email = "Введите e-mail.";
+  } else if (!emailPattern.test(email.trim())) {
+    errors.email = "Введите корректный e-mail.";
+  }
+
+  if (!isAccepted) {
+    errors.acceptance = "Нужно принять условия перед оформлением заказа.";
+  }
+
+  if (cartItems.length === 0) {
+    errors.cart = "В корзине нет товаров.";
+  }
+
+  return errors;
 }
 
 export function OrderPopup({ cartItems, isOpen, onClose, totalPrice }: OrderPopupProps) {
@@ -23,69 +81,70 @@ export function OrderPopup({ cartItems, isOpen, onClose, totalPrice }: OrderPopu
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
-  const isFormReady =
-    name.trim().length > 0 &&
-    phone.trim().length > 0 &&
-    isEmailValid &&
-    isAccepted &&
-    cartItems.length > 0 &&
-    !isSubmitting;
+  const [formErrors, setFormErrors] = useState<OrderFormErrors>({});
 
   const handleClose = () => {
     setIsSubmitting(false);
     setIsSubmitted(false);
     setErrorMessage("");
+    setFormErrors({});
     onClose();
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!isFormReady) {
+    const nextErrors = validateOrderForm({ cartItems, email, isAccepted, name, phone });
+    setFormErrors(nextErrors);
+
+    if (Object.keys(nextErrors).length > 0) {
       return;
     }
 
     setIsSubmitting(true);
     setErrorMessage("");
 
-    const response = await fetch("/api/order-request", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        customer: {
-          email: email.trim(),
-          name: name.trim(),
-          phone: phone.trim(),
+    try {
+      const response = await fetch("/api/order-request", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-        items: cartItems.map((item) => ({
-          id: item.product.id,
-          meta: item.product.meta,
-          price: item.product.price,
-          pricePerM2: item.product.pricePerM2,
-          quantity: item.quantity,
-          title: getProductTitle(item),
-          unitPriceRub: item.product.unitPriceRub,
-        })),
-        totalPrice,
-      }),
-    });
+        body: JSON.stringify({
+          customer: {
+            email: email.trim(),
+            name: name.trim(),
+            phone: phone.trim(),
+          },
+          items: cartItems.map((item) => ({
+            id: item.product.id,
+            meta: item.product.meta,
+            price: item.product.price,
+            pricePerM2: item.product.pricePerM2,
+            quantity: item.quantity,
+            title: getProductTitle(item),
+            unitPriceRub: item.product.unitPriceRub,
+          })),
+          totalPrice,
+        }),
+      });
 
-    const result = (await response.json().catch(() => null)) as {
-      message?: string;
-      ok?: boolean;
-    } | null;
+      const result = (await response.json().catch(() => null)) as {
+        message?: string;
+        ok?: boolean;
+      } | null;
 
-    setIsSubmitting(false);
+      if (!response.ok || !result?.ok) {
+        setErrorMessage(result?.message ?? "Не удалось отправить заказ. Попробуйте еще раз.");
+        return;
+      }
 
-    if (!response.ok || !result?.ok) {
-      setErrorMessage(result?.message ?? "Не удалось отправить заказ. Попробуйте еще раз.");
-      return;
+      setIsSubmitted(true);
+    } catch {
+      setErrorMessage("Не удалось отправить заказ. Попробуйте еще раз.");
+    } finally {
+      setIsSubmitting(false);
     }
-
-    setIsSubmitted(true);
   };
 
   if (!isOpen) {
@@ -103,7 +162,7 @@ export function OrderPopup({ cartItems, isOpen, onClose, totalPrice }: OrderPopu
             <p className={styles.copy}>Мы получили ваши контакты и состав заказа. Менеджер свяжется с вами для уточнения деталей.</p>
           </div>
         ) : (
-          <form className={styles.form} onSubmit={handleSubmit}>
+          <form className={styles.form} noValidate onSubmit={handleSubmit}>
             <header className={styles.header}>
               <h2 className={styles.title}>Оформление заказа</h2>
               <p className={styles.copy}>
@@ -113,34 +172,78 @@ export function OrderPopup({ cartItems, isOpen, onClose, totalPrice }: OrderPopu
 
             <div className={styles.fields}>
               <input
-                className={styles.input}
+                aria-describedby={formErrors.name ? "order-name-error" : undefined}
+                aria-invalid={formErrors.name ? "true" : "false"}
+                className={[styles.input, formErrors.name ? styles.inputInvalid : null]
+                  .filter(Boolean)
+                  .join(" ")}
                 name="name"
                 placeholder="Имя*"
                 type="text"
                 value={name}
-                onChange={(event) => setName(event.target.value)}
+                onChange={(event) => {
+                  setName(event.target.value);
+                  setFormErrors((currentErrors) => ({ ...currentErrors, name: undefined }));
+                }}
               />
+              {formErrors.name ? (
+                <p className={styles.fieldError} id="order-name-error">
+                  {formErrors.name}
+                </p>
+              ) : null}
 
               <input
-                className={styles.input}
+                aria-describedby={formErrors.phone ? "order-phone-error" : undefined}
+                aria-invalid={formErrors.phone ? "true" : "false"}
+                className={[styles.input, formErrors.phone ? styles.inputInvalid : null]
+                  .filter(Boolean)
+                  .join(" ")}
                 name="phone"
+                inputMode="numeric"
+                pattern="[0-9]*"
                 placeholder="Ваш номер телефона*"
                 type="tel"
                 value={phone}
-                onChange={(event) => setPhone(event.target.value)}
+                onChange={(event) => {
+                  setPhone(getPhoneDigits(event.target.value));
+                  setFormErrors((currentErrors) => ({ ...currentErrors, phone: undefined }));
+                }}
               />
+              {formErrors.phone ? (
+                <p className={styles.fieldError} id="order-phone-error">
+                  {formErrors.phone}
+                </p>
+              ) : null}
 
               <input
-                className={styles.input}
+                aria-describedby={formErrors.email ? "order-email-error" : undefined}
+                aria-invalid={formErrors.email ? "true" : "false"}
+                className={[styles.input, formErrors.email ? styles.inputInvalid : null]
+                  .filter(Boolean)
+                  .join(" ")}
                 name="email"
                 placeholder="e-mail*"
                 type="email"
                 value={email}
-                onChange={(event) => setEmail(event.target.value)}
+                onChange={(event) => {
+                  setEmail(event.target.value);
+                  setFormErrors((currentErrors) => ({ ...currentErrors, email: undefined }));
+                }}
               />
+              {formErrors.email ? (
+                <p className={styles.fieldError} id="order-email-error">
+                  {formErrors.email}
+                </p>
+              ) : null}
             </div>
 
-            <button className={styles.submitButton} disabled={!isFormReady} type="submit">
+            {formErrors.cart ? <p className={styles.errorMessage}>{formErrors.cart}</p> : null}
+
+            <button
+              className={styles.submitButton}
+              disabled={isSubmitting || cartItems.length === 0}
+              type="submit"
+            >
               {isSubmitting ? "Отправляем..." : "Оформить заказ"}
             </button>
 
@@ -151,10 +254,19 @@ export function OrderPopup({ cartItems, isOpen, onClose, totalPrice }: OrderPopu
             </p>
 
             <button
+              aria-describedby={formErrors.acceptance ? "order-acceptance-error" : undefined}
               aria-pressed={isAccepted}
-              className={styles.acceptance}
+              className={[
+                styles.acceptance,
+                formErrors.acceptance ? styles.acceptanceInvalid : null,
+              ]
+                .filter(Boolean)
+                .join(" ")}
               type="button"
-              onClick={() => setIsAccepted((currentValue) => !currentValue)}
+              onClick={() => {
+                setIsAccepted((currentValue) => !currentValue);
+                setFormErrors((currentErrors) => ({ ...currentErrors, acceptance: undefined }));
+              }}
             >
               <span
                 className={[styles.checkbox, isAccepted ? styles.checkboxChecked : null]
@@ -167,6 +279,11 @@ export function OrderPopup({ cartItems, isOpen, onClose, totalPrice }: OrderPopu
                 <span className={styles.acceptanceLink}>Политика конфиденциальности</span>.
               </span>
             </button>
+            {formErrors.acceptance ? (
+              <p className={styles.fieldError} id="order-acceptance-error">
+                {formErrors.acceptance}
+              </p>
+            ) : null}
           </form>
         )}
       </aside>

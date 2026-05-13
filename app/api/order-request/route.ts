@@ -1,9 +1,7 @@
-import nodemailer from "nodemailer";
 import { z } from "zod";
+import { sendFormEmail, SmtpConfigError } from "@/lib/mail/sendFormEmail";
 
 export const runtime = "nodejs";
-
-const recipientEmail = "kvaaaa5a@gmail.com";
 
 const orderItemSchema = z.object({
   id: z.string().min(1),
@@ -45,8 +43,12 @@ function escapeHtml(value: string) {
     .replace(/'/g, "&#039;");
 }
 
-function formatPrice(value: number | null) {
-  return value == null ? "Цена не указана" : `${rubFormatter.format(value)} руб.`;
+function formatRub(value: number) {
+  return `${rubFormatter.format(value)} руб.`;
+}
+
+function formatLineTotal(item: OrderRequest["items"][number]) {
+  return item.unitPriceRub == null ? "Сумма не рассчитана" : formatRub(item.unitPriceRub * item.quantity);
 }
 
 function createTextMessage(order: OrderRequest) {
@@ -61,12 +63,13 @@ function createTextMessage(order: OrderRequest) {
     ...order.items.flatMap((item, index) => [
       `${index + 1}. ${item.title}`,
       `   Количество: ${item.quantity}`,
-      `   Цена: ${formatPrice(item.unitPriceRub)}`,
-      item.pricePerM2 ? `   Цена за м2: ${item.pricePerM2}` : "",
+      `   Цена на сайте: ${item.price}`,
+      item.pricePerM2 ? `   Цена за м²: ${item.pricePerM2}` : "",
+      `   Сумма позиции: ${formatLineTotal(item)}`,
       ...item.meta.map((metaItem) => `   ${metaItem.label}: ${metaItem.value}`),
       "",
     ]),
-    `Итого: ${rubFormatter.format(order.totalPrice)} руб.`,
+    `Итого: ${formatRub(order.totalPrice)}`,
   ];
 
   return lines.filter((line) => line !== "").join("\n");
@@ -88,9 +91,11 @@ function createHtmlMessage(order: OrderRequest) {
           <td style="padding:12px;border-bottom:1px solid #eeeeee;vertical-align:top;">
             <strong>${escapeHtml(item.title)}</strong>
             <ul style="margin:8px 0 0;padding-left:18px;">${metaMarkup}</ul>
+            ${item.pricePerM2 ? `<p style="margin:8px 0 0;"><strong>Цена за м²:</strong> ${escapeHtml(item.pricePerM2)}</p>` : ""}
           </td>
           <td style="padding:12px;border-bottom:1px solid #eeeeee;vertical-align:top;">${item.quantity}</td>
-          <td style="padding:12px;border-bottom:1px solid #eeeeee;vertical-align:top;">${escapeHtml(formatPrice(item.unitPriceRub))}</td>
+          <td style="padding:12px;border-bottom:1px solid #eeeeee;vertical-align:top;">${escapeHtml(item.price)}</td>
+          <td style="padding:12px;border-bottom:1px solid #eeeeee;vertical-align:top;">${escapeHtml(formatLineTotal(item))}</td>
         </tr>
       `;
     })
@@ -109,34 +114,15 @@ function createHtmlMessage(order: OrderRequest) {
             <th style="padding:12px;text-align:left;border-bottom:2px solid #dddddd;">#</th>
             <th style="padding:12px;text-align:left;border-bottom:2px solid #dddddd;">Товар</th>
             <th style="padding:12px;text-align:left;border-bottom:2px solid #dddddd;">Кол-во</th>
-            <th style="padding:12px;text-align:left;border-bottom:2px solid #dddddd;">Цена</th>
+            <th style="padding:12px;text-align:left;border-bottom:2px solid #dddddd;">Цена на сайте</th>
+            <th style="padding:12px;text-align:left;border-bottom:2px solid #dddddd;">Сумма</th>
           </tr>
         </thead>
         <tbody>${itemsMarkup}</tbody>
       </table>
-      <p style="font-size:18px;margin-top:18px;"><strong>Итого:</strong> ${rubFormatter.format(order.totalPrice)} руб.</p>
+      <p style="font-size:18px;margin-top:18px;"><strong>Итого:</strong> ${formatRub(order.totalPrice)}</p>
     </div>
   `;
-}
-
-function getSmtpConfig() {
-  const user = process.env.SMTP_USER;
-  const pass = process.env.SMTP_PASSWORD;
-
-  if (!user || !pass) {
-    return null;
-  }
-
-  const port = Number(process.env.SMTP_PORT ?? 465);
-
-  return {
-    from: process.env.SMTP_FROM ?? user,
-    host: process.env.SMTP_HOST ?? "smtp.gmail.com",
-    pass,
-    port,
-    secure: port === 465,
-    user,
-  };
 }
 
 export async function POST(request: Request) {
@@ -150,39 +136,29 @@ export async function POST(request: Request) {
     );
   }
 
-  const smtpConfig = getSmtpConfig();
-
-  if (!smtpConfig) {
-    return Response.json(
-      {
-        message:
-          "Отправка почты не настроена. Добавьте SMTP_USER и SMTP_PASSWORD в переменные окружения.",
-        ok: false,
-      },
-      { status: 500 },
-    );
-  }
-
-  const transporter = nodemailer.createTransport({
-    auth: {
-      pass: smtpConfig.pass,
-      user: smtpConfig.user,
-    },
-    host: smtpConfig.host,
-    port: smtpConfig.port,
-    secure: smtpConfig.secure,
-  });
-
   try {
-    await transporter.sendMail({
-      from: smtpConfig.from,
+    await sendFormEmail({
       html: createHtmlMessage(parsedPayload.data),
       replyTo: parsedPayload.data.customer.email,
       subject: `Новый заказ с сайта: ${parsedPayload.data.customer.name}`,
       text: createTextMessage(parsedPayload.data),
-      to: recipientEmail,
     });
-  } catch {
+  } catch (error) {
+    if (error instanceof SmtpConfigError) {
+      console.error("[mail] Order request was not sent: SMTP_USER and SMTP_PASSWORD are not configured.");
+
+      return Response.json(
+        {
+          message:
+            "Отправка почты не настроена. Добавьте SMTP_USER и SMTP_PASSWORD в переменные окружения.",
+          ok: false,
+        },
+        { status: 500 },
+      );
+    }
+
+    console.error("[mail] Order request was not sent:", error);
+
     return Response.json(
       {
         message: "Не удалось отправить письмо. Проверьте SMTP-настройки и попробуйте еще раз.",

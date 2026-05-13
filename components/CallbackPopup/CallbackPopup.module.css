@@ -126,6 +126,19 @@
   border-color: rgba(0, 143, 90, 0.35);
 }
 
+.inputInvalid {
+  border-color: rgba(194, 52, 52, 0.72);
+  background: #fffafa;
+}
+
+.fieldError {
+  margin: -6px 0 0;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 12px;
+  line-height: 1.3;
+  color: #c23434;
+}
+
 .submitButton {
   display: inline-flex;
   align-items: center;
@@ -215,6 +228,14 @@
 .acceptanceLink {
   color: #314cff;
   text-decoration: none;
+}
+
+.acceptanceInvalid {
+  color: #c23434;
+}
+
+.acceptanceInvalid .checkbox {
+  border-color: #c23434;
 }
 
 @media (max-width: 700px) {
