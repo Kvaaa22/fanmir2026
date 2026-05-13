@@ -10,35 +10,86 @@ export const metadata: Metadata = {
 };
 
 type Certificate = {
+  imageAlt: string;
+  imageHeight: number;
+  imageSrc: string;
+  imageWidth: number;
   text: string;
   title: string;
-} & (
-  | {
-      imageAlt: string;
-      imageSrc: string;
-    }
-  | {
-      imageAlt?: never;
-      imageSrc?: never;
-    }
-);
+};
 
 const certificates: Certificate[] = [
   {
-    title: "Сертификаты соответствия",
-    text: "Документы на фанеру, OSB, ДСП, ДВП и сопутствующие листовые материалы.",
+    title: "Паспорт качества на фанеру березовую",
+    text: "Паспорт качества на листовой материал 12 мм, сорт 3/4.",
+    imageAlt: "Паспорт качества Сенячиха 2025 на листовой материал 12 мм сорт 3/4",
+    imageSrc: "/img/about/Сенячиха_2025_12ммсорт3_4 паспорт.jpg",
+    imageWidth: 1653,
+    imageHeight: 2338,
   },
   {
-    title: "Сертификат Plydex",
-    text: "Подтверждение характеристик продукции, сортности, формата и условий применения.",
-    imageAlt: "Сертификат Plydex",
+    title: "Сертификат \"OSB\"",
+    text: "Сертификат соответствия на OSB-плиты.",
+    imageAlt: "Сертификат соответствия на OSB-плиты",
+    imageSrc: "/img/about/сертификат OSB.jpg",
+    imageWidth: 1653,
+    imageHeight: 2339,
+  },
+  {
+    title: "Ламинированная фанера",
+    text: "Сертификат соответствия на ламинированную фанеру.",
+    imageAlt: "Сертификат соответствия на ламинированную фанеру",
+    imageSrc: "/img/about/Сертификат ламинированная.jpg",
+    imageWidth: 1653,
+    imageHeight: 2338,
+  },
+  {
+    title: "\"OSB-3\"",
+    text: "Сертификат соответствия на ОСП класса эмиссии E0.5.",
+    imageAlt: "Сертификат соответствия на ОСП класса эмиссии E0.5",
+    imageSrc: "/img/about/Сертификат ОСП E0.5  07.10.2022-06.10.2025.jpg",
+    imageWidth: 1700,
+    imageHeight: 2336,
+  },
+  {
+    title: "Хвойная фанера",
+    text: "Сертификат соответствия на хвойную фанеру производителя Илим Братск.",
+    imageAlt: "Сертификат соответствия на хвойную фанеру Илим Братск",
+    imageSrc: "/img/about/Сертификат соответствия хвойной фанеры Илим Братск.jpg",
+    imageWidth: 1700,
+    imageHeight: 2336,
+  },
+  {
+    title: "Березовая фанера",
+    text: "Сертификат соответствия на березовую фанеру.",
+    imageAlt: "Сертификат соответствия на березовую фанеру",
+    imageSrc: "/img/about/СертификатФанераБерезовая.jpg",
+    imageWidth: 1653,
+    imageHeight: 2338,
+  },
+  {
+    title: 'Свидетельство на товарный знак "Plydex"',
+    text: "",
+    imageAlt: "Документ Plydex 1",
+    imageSrc: "/img/about/plydex1.jpg",
+    imageWidth: 200,
+    imageHeight: 298,
+  },
+  {
+    title: 'Патент "Plydex"',
+    text: "",
+    imageAlt: "Документ Plydex 2",
     imageSrc: "/img/about/plydex2.jpg",
+    imageWidth: 200,
+    imageHeight: 298,
   },
   {
-    title: "Документ Plydex",
-    text: "Сертификаты и декларации от производителей и официальных поставщиков.",
-    imageAlt: "Документ поставщика Plydex",
+    title: 'Сертификат "Plydex"',
+    text: "",
+    imageAlt: "Документ Plydex 3",
     imageSrc: "/img/about/plydex3.jpg",
+    imageWidth: 200,
+    imageHeight: 298,
   },
 ];
 
@@ -127,25 +178,26 @@ export default function AboutPage() {
           <div className={styles.certificatesGrid}>
             {certificates.map((certificate) => (
               <article className={styles.certificateCard} key={certificate.title}>
-                {certificate.imageSrc ? (
-                  <div className={styles.certificateImageWrap}>
-                    <Image
-                      alt={certificate.imageAlt ?? ""}
-                      className={styles.certificateImage}
-                      height={298}
-                      sizes="(max-width: 980px) 160px, 200px"
-                      src={certificate.imageSrc}
-                      width={200}
-                    />
-                  </div>
-                ) : (
-                  <span className={styles.certificateType}>PDF</span>
-                )}
+                <div className={styles.certificateImageWrap}>
+                  <Image
+                    alt={certificate.imageAlt}
+                    className={styles.certificateImage}
+                    height={certificate.imageHeight}
+                    sizes="(max-width: 980px) 160px, 200px"
+                    src={certificate.imageSrc}
+                    width={certificate.imageWidth}
+                  />
+                </div>
                 <h3>{certificate.title}</h3>
                 <p>{certificate.text}</p>
-                {certificate.imageSrc ? null : (
-                  <span className={styles.certificateStatus}>Файлы добавим на сайт</span>
-                )}
+                <a
+                  className={styles.certificateLink}
+                  href={certificate.imageSrc}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Открыть изображение
+                </a>
               </article>
             ))}
           </div>

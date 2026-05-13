@@ -184,8 +184,7 @@
   color: rgba(47, 47, 47, 0.82);
 }
 
-.certificateType,
-.certificateStatus {
+.certificateLink {
   width: fit-content;
   font-family: var(--font-sans), sans-serif;
   font-size: 13px;
@@ -193,17 +192,13 @@
   font-weight: 600;
 }
 
-.certificateType {
-  padding: 8px 10px;
-  border-radius: 6px;
-  background: rgba(186, 135, 46, 0.14);
-  color: #ba872e;
-}
-
-.certificateStatus {
+.certificateLink {
   align-self: end;
   margin-top: auto;
-  color: rgba(47, 47, 47, 0.58);
+  padding: 10px 14px;
+  border: 1px solid rgba(86, 59, 37, 0.18);
+  border-radius: 8px;
+  color: #563b25;
 }
 
 .agreementList {
