@@ -5,6 +5,7 @@ import { connection } from "next/server";
 import ExcelJS from "exceljs";
 import prisma from "@/lib/prisma";
 import { PRICE_SOURCE, type PriceSourceValue } from "@/lib/prices/priceSource";
+import { isInsideStorage, resolveStoragePath } from "@/lib/storage/paths";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -451,7 +452,19 @@ async function readExcelTable(
   source: PriceSourceValue
 ): Promise<ExcelTable | null> {
   const workbook = new ExcelJS.Workbook();
-  await workbook.xlsx.readFile(filePath);
+  const resolvedFilePath = resolveStoragePath(filePath);
+
+  if (!isInsideStorage(resolvedFilePath)) {
+    console.warn("[prices] Price spreadsheet is outside storage.");
+    return null;
+  }
+
+  try {
+    await workbook.xlsx.readFile(resolvedFilePath);
+  } catch (error) {
+    console.warn("[prices] Price spreadsheet is unavailable:", error);
+    return null;
+  }
 
   const worksheet = workbook.getWorksheet("Лист1") ?? workbook.worksheets[0];
 

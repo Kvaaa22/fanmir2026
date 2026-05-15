@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Fanmir
 
-## Getting Started
+Next.js application for the Fanmir site and admin price import workflow.
 
-First, run the development server:
+## Release checklist
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. Install dependencies:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+   ```bash
+   npm ci
+   ```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+2. Create environment variables from `.env.example`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. Apply Prisma migrations on the target database:
 
-## Learn More
+   ```bash
+   npm run prisma:deploy
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+4. Build and start:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   ```bash
+   npm run build
+   npm run start
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Required environment variables
 
-## Deploy on Vercel
+- `DATABASE_URL`
+- `ADMIN_LOGIN`
+- `ADMIN_PASSWORD_HASH`
+- `ADMIN_JWT_SECRET`
+- `SMTP_USER`
+- `SMTP_PASSWORD`
+- `FORM_RECIPIENT_EMAIL` or `MAIL_TO`
+- `NEXT_PUBLIC_YANDEX_MAPS_API_KEY`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Uploaded price files are stored under `storage/`. Keep that directory on
+persistent disk in production if the host filesystem is ephemeral.

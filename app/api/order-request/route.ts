@@ -1,29 +1,52 @@
 import { z } from "zod";
 import { sendFormEmail, SmtpConfigError } from "@/lib/mail/sendFormEmail";
+import { escapeHtml } from "@/lib/mail/escapeHtml";
 import { checkRateLimit } from "@/lib/security/rateLimit";
+import {
+  htmlInputError,
+  isPlainTextInput,
+} from "@/lib/validation/plainText";
 
 export const runtime = "nodejs";
 
 const orderItemSchema = z.object({
-  id: z.string().min(1),
+  id: z.string().min(1).max(120).refine(isPlainTextInput, {
+    message: htmlInputError,
+  }),
   meta: z.array(
     z.object({
-      label: z.string(),
-      value: z.string(),
+      label: z.string().max(120).refine(isPlainTextInput, {
+        message: htmlInputError,
+      }),
+      value: z.string().max(240).refine(isPlainTextInput, {
+        message: htmlInputError,
+      }),
     }),
   ),
-  price: z.string(),
-  pricePerM2: z.string().optional(),
+  price: z.string().max(120).refine(isPlainTextInput, {
+    message: htmlInputError,
+  }),
+  pricePerM2: z.string().max(120).refine(isPlainTextInput, {
+    message: htmlInputError,
+  }).optional(),
   quantity: z.number().int().positive(),
-  title: z.string().min(1),
+  title: z.string().min(1).max(240).refine(isPlainTextInput, {
+    message: htmlInputError,
+  }),
   unitPriceRub: z.number().nullable(),
 });
 
 const orderRequestSchema = z.object({
   customer: z.object({
-    email: z.string().email(),
-    name: z.string().min(1),
-    phone: z.string().min(1),
+    email: z.string().trim().email().max(160).refine(isPlainTextInput, {
+      message: htmlInputError,
+    }),
+    name: z.string().trim().min(1).max(80).refine(isPlainTextInput, {
+      message: htmlInputError,
+    }),
+    phone: z.string().trim().min(1).max(40).refine(isPlainTextInput, {
+      message: htmlInputError,
+    }),
   }),
   items: z.array(orderItemSchema).min(1),
   totalPrice: z.number().nonnegative(),
@@ -34,15 +57,6 @@ type OrderRequest = z.infer<typeof orderRequestSchema>;
 const rubFormatter = new Intl.NumberFormat("ru-RU", {
   maximumFractionDigits: 0,
 });
-
-function escapeHtml(value: string) {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
 
 function formatRub(value: number) {
   return `${rubFormatter.format(value)} руб.`;

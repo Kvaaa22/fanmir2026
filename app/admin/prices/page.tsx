@@ -1,5 +1,10 @@
+import { cookies } from "next/headers";
 import prisma from "@/lib/prisma";
 import { requireAdminSession } from "@/lib/admin/auth";
+import {
+  adminCookieName,
+  createAdminCsrfToken,
+} from "@/lib/admin/session";
 import styles from "./page.module.css";
 
 const PRICE_SOURCE_LABELS: Record<string, string> = {
@@ -50,6 +55,9 @@ function getFileHref(
 
 export default async function AdminPricesPage() {
   await requireAdminSession();
+  const cookieStore = await cookies();
+  const csrfToken =
+    createAdminCsrfToken(cookieStore.get(adminCookieName)?.value) ?? "";
 
   const imports = await prisma.priceImport.findMany({
     orderBy: {
@@ -80,6 +88,8 @@ export default async function AdminPricesPage() {
           encType="multipart/form-data"
           className={styles.form}
         >
+          <input name="csrfToken" type="hidden" value={csrfToken} />
+
           <label className={styles.field}>
             <span className={styles.label}>Тип прайса</span>
             <select className={styles.control} name="source" required defaultValue="MAIN">

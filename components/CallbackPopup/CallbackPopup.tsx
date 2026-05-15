@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import { hasHtmlInput, htmlInputError } from "@/lib/validation/plainText";
 import styles from "./CallbackPopup.module.css";
 
 const POPUP_DELAY_MS = 10000;
@@ -29,6 +30,8 @@ function validateCallbackForm({
 
   if (name.trim().length === 0) {
     errors.name = "Введите имя.";
+  } else if (hasHtmlInput(name)) {
+    errors.name = htmlInputError;
   } else if (name.trim().length < 2) {
     errors.name = "Имя должно быть не короче 2 символов.";
   }
@@ -154,12 +157,17 @@ export function CallbackPopup() {
                 .filter(Boolean)
                 .join(" ")}
               name="name"
+              maxLength={80}
               placeholder="Имя*"
               type="text"
               value={name}
               onChange={(event) => {
-                setName(event.target.value);
-                setFormErrors((currentErrors) => ({ ...currentErrors, name: undefined }));
+                const nextName = event.target.value;
+                setName(nextName);
+                setFormErrors((currentErrors) => ({
+                  ...currentErrors,
+                  name: hasHtmlInput(nextName) ? htmlInputError : undefined,
+                }));
               }}
             />
             {formErrors.name ? (
@@ -176,6 +184,7 @@ export function CallbackPopup() {
                 .join(" ")}
               name="phone"
               inputMode="numeric"
+              maxLength={40}
               pattern="[0-9]*"
               placeholder="Ваш номер телефона*"
               type="tel"

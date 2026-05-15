@@ -1,14 +1,12 @@
 import { readFile, stat } from "fs/promises";
-import path from "path";
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { isAdminRequest } from "@/lib/admin/auth";
+import { isInsideStorage, resolveStoragePath } from "@/lib/storage/paths";
 
 export const runtime = "nodejs";
 
 type FileType = "excel" | "pdf";
-
-const STORAGE_ROOT = path.resolve(process.cwd(), "storage");
 
 const FILE_CONFIG = {
   excel: {
@@ -34,12 +32,6 @@ function parseFileType(value: string | null): FileType | null {
   }
 
   return null;
-}
-
-function isInsideStorage(filePath: string) {
-  const relativePath = path.relative(STORAGE_ROOT, filePath);
-
-  return relativePath && !relativePath.startsWith("..") && !path.isAbsolute(relativePath);
 }
 
 function getStoredFileName(filePath: string, fallbackName: string) {
@@ -102,7 +94,7 @@ export async function GET(request: Request) {
     );
   }
 
-  const resolvedFilePath = path.resolve(filePath);
+  const resolvedFilePath = resolveStoragePath(filePath);
 
   if (!isInsideStorage(resolvedFilePath)) {
     return NextResponse.json(

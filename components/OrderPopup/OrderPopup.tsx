@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import type { CartItem } from "@/lib/cart/cartTypes";
+import { hasHtmlInput, htmlInputError } from "@/lib/validation/plainText";
 import styles from "@/components/CallbackPopup/CallbackPopup.module.css";
 
 type OrderPopupProps = {
@@ -46,6 +47,8 @@ function validateOrderForm({
 
   if (name.trim().length === 0) {
     errors.name = "Введите имя.";
+  } else if (hasHtmlInput(name)) {
+    errors.name = htmlInputError;
   } else if (name.trim().length < 2) {
     errors.name = "Имя должно быть не короче 2 символов.";
   }
@@ -58,6 +61,8 @@ function validateOrderForm({
 
   if (email.trim().length === 0) {
     errors.email = "Введите e-mail.";
+  } else if (hasHtmlInput(email)) {
+    errors.email = htmlInputError;
   } else if (!emailPattern.test(email.trim())) {
     errors.email = "Введите корректный e-mail.";
   }
@@ -178,12 +183,17 @@ export function OrderPopup({ cartItems, isOpen, onClose, totalPrice }: OrderPopu
                   .filter(Boolean)
                   .join(" ")}
                 name="name"
+                maxLength={80}
                 placeholder="Имя*"
                 type="text"
                 value={name}
                 onChange={(event) => {
-                  setName(event.target.value);
-                  setFormErrors((currentErrors) => ({ ...currentErrors, name: undefined }));
+                  const nextName = event.target.value;
+                  setName(nextName);
+                  setFormErrors((currentErrors) => ({
+                    ...currentErrors,
+                    name: hasHtmlInput(nextName) ? htmlInputError : undefined,
+                  }));
                 }}
               />
               {formErrors.name ? (
@@ -200,6 +210,7 @@ export function OrderPopup({ cartItems, isOpen, onClose, totalPrice }: OrderPopu
                   .join(" ")}
                 name="phone"
                 inputMode="numeric"
+                maxLength={40}
                 pattern="[0-9]*"
                 placeholder="Ваш номер телефона*"
                 type="tel"
@@ -222,12 +233,17 @@ export function OrderPopup({ cartItems, isOpen, onClose, totalPrice }: OrderPopu
                   .filter(Boolean)
                   .join(" ")}
                 name="email"
+                maxLength={160}
                 placeholder="e-mail*"
                 type="email"
                 value={email}
                 onChange={(event) => {
-                  setEmail(event.target.value);
-                  setFormErrors((currentErrors) => ({ ...currentErrors, email: undefined }));
+                  const nextEmail = event.target.value;
+                  setEmail(nextEmail);
+                  setFormErrors((currentErrors) => ({
+                    ...currentErrors,
+                    email: hasHtmlInput(nextEmail) ? htmlInputError : undefined,
+                  }));
                 }}
               />
               {formErrors.email ? (

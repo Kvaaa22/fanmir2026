@@ -9,7 +9,12 @@ export async function POST(request: Request) {
     return NextResponse.redirect(new URL("/admin/login?error=rate-limit", request.url), 303);
   }
 
-  const formData = await request.formData();
+  const formData = await request.formData().catch(() => null);
+
+  if (!formData) {
+    return NextResponse.redirect(new URL("/admin/login?error=1", request.url), 303);
+  }
+
   const login = String(formData.get("login") ?? "");
   const password = String(formData.get("password") ?? "");
   const isLoggedIn = await loginAdmin(login, password);

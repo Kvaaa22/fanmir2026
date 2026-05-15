@@ -1,24 +1,24 @@
 import { z } from "zod";
 import { sendFormEmail, SmtpConfigError } from "@/lib/mail/sendFormEmail";
+import { escapeHtml } from "@/lib/mail/escapeHtml";
 import { checkRateLimit } from "@/lib/security/rateLimit";
+import {
+  htmlInputError,
+  isPlainTextInput,
+} from "@/lib/validation/plainText";
 
 export const runtime = "nodejs";
 
 const callbackRequestSchema = z.object({
-  name: z.string().trim().min(1),
-  phone: z.string().trim().min(1),
+  name: z.string().trim().min(1).max(80).refine(isPlainTextInput, {
+    message: htmlInputError,
+  }),
+  phone: z.string().trim().min(1).max(40).refine(isPlainTextInput, {
+    message: htmlInputError,
+  }),
 });
 
 type CallbackRequest = z.infer<typeof callbackRequestSchema>;
-
-function escapeHtml(value: string) {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
 
 function createTextMessage(callbackRequest: CallbackRequest) {
   return [

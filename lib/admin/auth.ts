@@ -1,70 +1,14 @@
 import bcrypt from "bcryptjs";
-import { jwtVerify, SignJWT } from "jose";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-
-const adminCookieName = "fanmir_admin_session";
-const sessionMaxAgeSeconds = 60 * 60 * 8;
-
-type AdminSessionPayload = {
-  login: string;
-};
-
-function getAdminConfig() {
-  const login = process.env.ADMIN_LOGIN;
-  const passwordHash = process.env.ADMIN_PASSWORD_HASH;
-  const jwtSecret = process.env.ADMIN_JWT_SECRET;
-
-  if (!login || !passwordHash || !jwtSecret) {
-    return null;
-  }
-
-  return {
-    jwtSecret,
-    login,
-    passwordHash,
-  };
-}
-
-function getSecretKey(secret: string) {
-  return new TextEncoder().encode(secret);
-}
-
-async function createAdminToken(payload: AdminSessionPayload, secret: string) {
-  return new SignJWT(payload)
-    .setProtectedHeader({ alg: "HS256" })
-    .setIssuedAt()
-    .setExpirationTime(`${sessionMaxAgeSeconds}s`)
-    .sign(getSecretKey(secret));
-}
-
-async function verifyAdminToken(token: string) {
-  const config = getAdminConfig();
-
-  if (!config) {
-    return false;
-  }
-
-  try {
-    const { payload } = await jwtVerify(token, getSecretKey(config.jwtSecret));
-    return payload.login === config.login;
-  } catch {
-    return false;
-  }
-}
-
-function getCookieFromHeader(request: Request, name: string) {
-  const cookieHeader = request.headers.get("cookie");
-
-  if (!cookieHeader) {
-    return null;
-  }
-
-  const cookiesList = cookieHeader.split(";").map((cookie) => cookie.trim());
-  const cookie = cookiesList.find((item) => item.startsWith(`${name}=`));
-
-  return cookie ? decodeURIComponent(cookie.slice(name.length + 1)) : null;
-}
+import {
+  adminCookieName,
+  createAdminToken,
+  getAdminTokenFromRequest,
+  getAdminConfig,
+  sessionMaxAgeSeconds,
+  verifyAdminToken,
+} from "@/lib/admin/session";
 
 export async function loginAdmin(login: string, password: string) {
   const config = getAdminConfig();
@@ -108,7 +52,7 @@ export async function hasAdminSession() {
   const cookieStore = await cookies();
   const token = cookieStore.get(adminCookieName)?.value;
 
-  return token ? verifyAdminToken(token) : false;
+  return verifyAdminToken(token);
 }
 
 export async function requireAdminSession() {
@@ -118,7 +62,5 @@ export async function requireAdminSession() {
 }
 
 export async function isAdminRequest(request: Request) {
-  const token = getCookieFromHeader(request, adminCookieName);
-
-  return token ? verifyAdminToken(token) : false;
+  return verifyAdminToken(getAdminTokenFromRequest(request));
 }

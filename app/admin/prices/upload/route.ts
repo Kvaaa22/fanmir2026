@@ -1,12 +1,19 @@
 import { NextResponse } from "next/server";
 import { mkdir, writeFile } from "fs/promises";
-import path from "path";
 import prisma from "@/lib/prisma";
-import { isAdminRequest } from "@/lib/admin/auth";
+import {
+  getAdminTokenFromRequest,
+  verifyAdminCsrfToken,
+  verifyAdminToken,
+} from "@/lib/admin/session";
 import { parsePriceSource } from "@/lib/prices/priceSource";
 import { parsePriceExcel } from "@/lib/prices/parsePriceExcel";
 import { importPrices } from "@/lib/prices/importPrices";
 import { saveUploadedPdf } from "@/lib/prices/saveUploadedPdf";
+import {
+  createStorageRelativePath,
+  resolveStoragePath,
+} from "@/lib/storage/paths";
 
 export const runtime = "nodejs";
 
@@ -19,11 +26,29 @@ function isUploadedFile(value: FormDataEntryValue | null): value is File {
 
 export async function POST(request: Request) {
   try {
-    if (!(await isAdminRequest(request))) {
+    const adminToken = getAdminTokenFromRequest(request);
+
+    if (!(await verifyAdminToken(adminToken))) {
       return NextResponse.json({ error: "Требуется вход в админку" }, { status: 401 });
     }
 
-    const formData = await request.formData();
+    const formData = await request.formData().catch(() => null);
+
+    if (!formData) {
+      return NextResponse.json(
+        { error: "Некорректные данные формы" },
+        { status: 400 }
+      );
+    }
+
+    const csrfToken = String(formData.get("csrfToken") ?? "");
+
+    if (!verifyAdminCsrfToken(adminToken, csrfToken)) {
+      return NextResponse.json(
+        { error: "Форма устарела. Обновите страницу и попробуйте еще раз." },
+        { status: 403 }
+      );
+    }
 
     const source = parsePriceSource(formData.get("source"));
     const excelFile = formData.get("priceFile");
@@ -109,7 +134,7 @@ export async function POST(request: Request) {
 
     const excelBuffer = Buffer.from(await uploadedExcelFile.arrayBuffer());
 
-    const uploadDir = path.join(process.cwd(), "storage", "uploads");
+    const uploadDir = resolveStoragePath("uploads");
 
     await mkdir(uploadDir, {
       recursive: true,
@@ -117,9 +142,9 @@ export async function POST(request: Request) {
 
     const safeFileName = uploadedExcelFile.name.replace(/[^\wа-яА-ЯёЁ.\- ]/g, "_");
     const storedFileName = `${Date.now()}-${source.toLowerCase()}-${safeFileName}`;
-    const storedFilePath = path.join(uploadDir, storedFileName);
+    const storedFilePath = createStorageRelativePath("uploads", storedFileName);
 
-    await writeFile(storedFilePath, excelBuffer);
+    await writeFile(resolveStoragePath(storedFilePath), excelBuffer);
 
     const rows = await parsePriceExcel(excelBuffer, source);
 

@@ -1,5 +1,8 @@
 import { mkdir, writeFile } from "fs/promises";
-import path from "path";
+import {
+  createStorageRelativePath,
+  resolveStoragePath,
+} from "@/lib/storage/paths";
 
 type SaveUploadedPdfParams = {
   file: File;
@@ -16,7 +19,7 @@ export async function saveUploadedPdf({
 
   const buffer = Buffer.from(await file.arrayBuffer());
 
-  const pdfDir = path.join(process.cwd(), "storage", "pdf");
+  const pdfDir = resolveStoragePath("pdf");
 
   await mkdir(pdfDir, {
     recursive: true,
@@ -24,9 +27,9 @@ export async function saveUploadedPdf({
 
   const safeFileName = file.name.replace(/[^\wа-яА-ЯёЁ.\- ]/g, "_");
   const storedFileName = `${Date.now()}-${source.toLowerCase()}-${safeFileName}`;
-  const storedFilePath = path.join(pdfDir, storedFileName);
+  const storedFilePath = createStorageRelativePath("pdf", storedFileName);
 
-  await writeFile(storedFilePath, buffer);
+  await writeFile(resolveStoragePath(storedFilePath), buffer);
 
   return storedFilePath;
 }
