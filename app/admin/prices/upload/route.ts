@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { mkdir, writeFile } from "fs/promises";
 import path from "path";
 import prisma from "@/lib/prisma";
+import { isAdminRequest } from "@/lib/admin/auth";
 import { parsePriceSource } from "@/lib/prices/priceSource";
 import { parsePriceExcel } from "@/lib/prices/parsePriceExcel";
 import { importPrices } from "@/lib/prices/importPrices";
@@ -9,12 +10,19 @@ import { saveUploadedPdf } from "@/lib/prices/saveUploadedPdf";
 
 export const runtime = "nodejs";
 
+const maxExcelSizeBytes = 10 * 1024 * 1024;
+const maxPdfSizeBytes = 20 * 1024 * 1024;
+
 function isUploadedFile(value: FormDataEntryValue | null): value is File {
   return value instanceof File && value.name.trim() !== "" && value.size > 0;
 }
 
 export async function POST(request: Request) {
   try {
+    if (!(await isAdminRequest(request))) {
+      return NextResponse.json({ error: "Требуется вход в админку" }, { status: 401 });
+    }
+
     const formData = await request.formData();
 
     const source = parsePriceSource(formData.get("source"));
@@ -47,12 +55,26 @@ export async function POST(request: Request) {
       );
     }
 
+    if (uploadedExcelFile && uploadedExcelFile.size > maxExcelSizeBytes) {
+      return NextResponse.json(
+        { error: "Excel-файл не должен быть больше 10 МБ" },
+        { status: 400 }
+      );
+    }
+
     if (
       uploadedPdfFile &&
       !uploadedPdfFile.name.toLowerCase().endsWith(".pdf")
     ) {
       return NextResponse.json(
         { error: "Можно загружать только PDF-файл" },
+        { status: 400 }
+      );
+    }
+
+    if (uploadedPdfFile && uploadedPdfFile.size > maxPdfSizeBytes) {
+      return NextResponse.json(
+        { error: "PDF-файл не должен быть больше 20 МБ" },
         { status: 400 }
       );
     }

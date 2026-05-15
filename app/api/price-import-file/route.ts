@@ -2,6 +2,7 @@ import { readFile, stat } from "fs/promises";
 import path from "path";
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { isAdminRequest } from "@/lib/admin/auth";
 
 export const runtime = "nodejs";
 
@@ -68,6 +69,13 @@ export async function GET(request: Request) {
     return NextResponse.json(
       { error: "Некорректный запрос файла прайса" },
       { status: 400 }
+    );
+  }
+
+  if (type === "excel" && !(await isAdminRequest(request))) {
+    return NextResponse.json(
+      { error: "Требуется вход в админку" },
+      { status: 401 }
     );
   }
 

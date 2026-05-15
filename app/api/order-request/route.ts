@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { sendFormEmail, SmtpConfigError } from "@/lib/mail/sendFormEmail";
+import { checkRateLimit } from "@/lib/security/rateLimit";
 
 export const runtime = "nodejs";
 
@@ -126,6 +127,13 @@ function createHtmlMessage(order: OrderRequest) {
 }
 
 export async function POST(request: Request) {
+  if (!checkRateLimit(request, "order-request", { limit: 5, windowMs: 60_000 })) {
+    return Response.json(
+      { message: "Слишком много заявок. Попробуйте чуть позже.", ok: false },
+      { status: 429 },
+    );
+  }
+
   const payload = await request.json().catch(() => null);
   const parsedPayload = orderRequestSchema.safeParse(payload);
 

@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import { requireAdminSession } from "@/lib/admin/auth";
 import styles from "./page.module.css";
 
 const PRICE_SOURCE_LABELS: Record<string, string> = {
@@ -48,6 +49,8 @@ function getFileHref(
 }
 
 export default async function AdminPricesPage() {
+  await requireAdminSession();
+
   const imports = await prisma.priceImport.findMany({
     orderBy: {
       createdAt: "desc",
