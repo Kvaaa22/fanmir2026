@@ -6,6 +6,7 @@ import { hasHtmlInput, htmlInputError } from "@/lib/validation/plainText";
 import styles from "./CallbackPopup.module.css";
 
 const POPUP_DELAY_MS = 10000;
+const POPUP_SESSION_STORAGE_KEY = "fanmir-callback-popup-shown";
 
 type CallbackFormErrors = {
   acceptance?: string;
@@ -15,6 +16,26 @@ type CallbackFormErrors = {
 
 function getPhoneDigits(value: string) {
   return value.replace(/\D/g, "");
+}
+
+function isPopupDisabledPath(pathname: string) {
+  return pathname.startsWith("/admin") || pathname.startsWith("/cart");
+}
+
+function hasPopupBeenShownThisSession() {
+  try {
+    return window.sessionStorage.getItem(POPUP_SESSION_STORAGE_KEY) === "true";
+  } catch {
+    return false;
+  }
+}
+
+function markPopupAsShownThisSession() {
+  try {
+    window.sessionStorage.setItem(POPUP_SESSION_STORAGE_KEY, "true");
+  } catch {
+    // If sessionStorage is blocked, keep the popup usable without persistence.
+  }
 }
 
 function validateCallbackForm({
@@ -61,11 +82,17 @@ export function CallbackPopup() {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (pathname.startsWith("/cart")) {
+    if (isPopupDisabledPath(pathname)) {
+      setIsVisible(false);
+      return undefined;
+    }
+
+    if (hasPopupBeenShownThisSession()) {
       return undefined;
     }
 
     const timerId = window.setTimeout(() => {
+      markPopupAsShownThisSession();
       setIsVisible(true);
     }, POPUP_DELAY_MS);
 

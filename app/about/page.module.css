@@ -6,6 +6,8 @@
 }
 
 .aboutFrame {
+  --about-small-text-left: 32px;
+
   width: min(calc(100% - 48px), 1284px);
   margin: 0 auto;
   padding: 122px 0 96px clamp(14px, 1.4vw, 18px);
@@ -14,7 +16,7 @@
 .hero {
   display: grid;
   gap: 8px;
-  margin-bottom: 34px;
+  margin: 0 0 34px var(--about-small-text-left);
 }
 
 .eyebrow,
@@ -122,6 +124,10 @@
   display: grid;
   gap: 10px;
   margin-bottom: 20px;
+}
+
+.sectionHead {
+  margin: 0 0 20px var(--about-small-text-left);
 }
 
 .agreementIntro {
@@ -241,12 +247,18 @@
 
 @media (max-width: 980px) {
   .aboutFrame {
+    --about-small-text-left: 20px;
+
     padding: 124px 0 96px;
   }
 
   .title {
     font-size: 42px;
     line-height: 50px;
+  }
+
+  .hero {
+    margin: 0 0 34px var(--about-small-text-left);
   }
 
   .intro {
@@ -257,6 +269,11 @@
     padding: 38px 36px;
   }
 
+  .sectionHead,
+  .agreementIntro {
+    margin: 0 0 20px var(--about-small-text-left);
+  }
+
   .certificatesGrid {
     grid-template-columns: 1fr;
   }
@@ -264,6 +281,8 @@
 
 @media (max-width: 750px) {
   .aboutFrame {
+    --about-small-text-left: 12px;
+
     padding: 112px 0 72px;
   }
 

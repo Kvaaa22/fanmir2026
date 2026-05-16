@@ -12,6 +12,16 @@ Next.js application for the Fanmir site and admin price import workflow.
 
 2. Create environment variables from `.env.example`.
 
+   For the admin password, generate a bcrypt hash:
+
+   ```bash
+   npm run admin:hash -- "your-admin-password"
+   ```
+
+   Use the raw hash in hosting environment variable dashboards. If you put the
+   hash into a `.env` file, use the escaped version printed by the command
+   because Next.js expands `$VARIABLE` references inside `.env*` files.
+
 3. Apply Prisma migrations on the target database:
 
    ```bash
