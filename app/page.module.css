@@ -468,6 +468,8 @@
   align-items: center;
   justify-content: center;
   width: 100%;
+  color: inherit;
+  text-decoration: none;
 }
 
 .partnerLogoWide img,
@@ -476,6 +478,13 @@
   width: 100%;
   max-width: none;
   height: auto;
+}
+
+.partnerLogoWide:focus-visible,
+.partnerLogoMedium:focus-visible,
+.partnerLogoRound:focus-visible {
+  outline: 2px solid var(--color-accent-strong);
+  outline-offset: 8px;
 }
 
 /* #endregion Partners */

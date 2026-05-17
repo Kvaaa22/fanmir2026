@@ -18,6 +18,15 @@ type OfferItem = {
   patternClassName: string;
 };
 
+type PartnerItem = {
+  alt: string;
+  height: number;
+  href: string;
+  logoClassName: string;
+  src: string;
+  width: number;
+};
+
 const benefits: BenefitItem[] = [
   {
     iconSrc: "/img/advantages/icons/Fire1.svg",
@@ -83,6 +92,41 @@ const offers: OfferItem[] = [
   },
 ];
 
+const partners: PartnerItem[] = [
+  {
+    alt: "ILIM Timber",
+    height: 31,
+    href: "https://ilimtimber.eu/en/",
+    logoClassName: styles.partnerLogoWide,
+    src: "/img/hero/ilim.svg",
+    width: 289,
+  },
+  {
+    alt: "Бийская мебельная фабрика",
+    height: 63,
+    href: "http://www.radomebel.ru/",
+    logoClassName: styles.partnerLogoRound,
+    src: "/img/hero/bff.png",
+    width: 65,
+  },
+  {
+    alt: "Бийский фанерный комбинат",
+    height: 39,
+    href: "http://www.fanera-biysk.ru/",
+    logoClassName: styles.partnerLogoMedium,
+    src: "/img/hero/bfk.png",
+    width: 215,
+  },
+  {
+    alt: "Свеза",
+    height: 39,
+    href: "https://www.sveza.com/",
+    logoClassName: styles.partnerLogoWide,
+    src: "/img/hero/sveza.svg",
+    width: 178,
+  },
+];
+
 export default function Home() {
   const offerRows = [offers.slice(0, 5), offers.slice(5)];
 
@@ -98,85 +142,13 @@ export default function Home() {
           <div className={`${styles.partnersBlock} ${styles.partnersBlockDesktop}`}>
             <span className={styles.partnersLabel}>Наши партнеры</span>
 
-            <div className={styles.partnersPanel}>
-              <div className={styles.partnerLogoWide}>
-                <Image
-                  src="/img/hero/ilim.svg"
-                  alt="ILIM Timber"
-                  width={289}
-                  height={31}
-                />
-              </div>
-
-              <div className={styles.partnerLogoRound}>
-                <Image
-                  src="/img/hero/bff.png"
-                  alt="Байкальский фанерный комбинат"
-                  width={65}
-                  height={63}
-                />
-              </div>
-
-              <div className={styles.partnerLogoMedium}>
-                <Image
-                  src="/img/hero/bfk.png"
-                  alt="Бийский фанерный комбинат"
-                  width={215}
-                  height={39}
-                />
-              </div>
-
-              <div className={styles.partnerLogoWide}>
-                <Image
-                  src="/img/hero/sveza.svg"
-                  alt="Свеза"
-                  width={178}
-                  height={39}
-                />
-              </div>
-            </div>
+            <PartnersPanel />
           </div>
           <div className={styles.partnersMobileSection}>
             <div className={styles.partnersBlock}>
               <span className={styles.partnersLabel}>Наши партнеры</span>
 
-              <div className={styles.partnersPanel}>
-                <div className={styles.partnerLogoWide}>
-                  <Image
-                    src="/img/hero/ilim.svg"
-                    alt="ILIM Timber"
-                    width={289}
-                    height={31}
-                  />
-                </div>
-
-                <div className={styles.partnerLogoRound}>
-                  <Image
-                    src="/img/hero/bff.png"
-                    alt="Байкальский фанерный комбинат"
-                    width={65}
-                    height={63}
-                  />
-                </div>
-
-                <div className={styles.partnerLogoMedium}>
-                  <Image
-                    src="/img/hero/bfk.png"
-                    alt="Бийский фанерный комбинат"
-                    width={215}
-                    height={39}
-                  />
-                </div>
-
-                <div className={styles.partnerLogoWide}>
-                  <Image
-                    src="/img/hero/sveza.svg"
-                    alt="Свеза"
-                    width={178}
-                    height={39}
-                  />
-                </div>
-              </div>
+              <PartnersPanel />
             </div>
           </div>
         </div>
@@ -347,43 +319,7 @@ export default function Home() {
           <div className={`${styles.partnersAfterBenefitsMobileInner} ${styles.partnersBlock}`}>
             <span className={styles.partnersLabel}>Наши партнеры</span>
 
-            <div className={styles.partnersPanel}>
-              <div className={styles.partnerLogoWide}>
-                <Image
-                  src="/img/hero/ilim.svg"
-                  alt="ILIM Timber"
-                  width={289}
-                  height={31}
-                />
-              </div>
-
-              <div className={styles.partnerLogoRound}>
-                <Image
-                  src="/img/hero/bff.png"
-                  alt="Байкальский фанерный комбинат"
-                  width={65}
-                  height={63}
-                />
-              </div>
-
-              <div className={styles.partnerLogoMedium}>
-                <Image
-                  src="/img/hero/bfk.png"
-                  alt="Бийский фанерный комбинат"
-                  width={215}
-                  height={39}
-                />
-              </div>
-
-              <div className={styles.partnerLogoWide}>
-                <Image
-                  src="/img/hero/sveza.svg"
-                  alt="Свеза"
-                  width={178}
-                  height={39}
-                />
-              </div>
-            </div>
+            <PartnersPanel />
           </div>
         </div>
       </section>
@@ -482,6 +418,30 @@ export default function Home() {
 
 
     </>
+  );
+}
+
+function PartnersPanel() {
+  return (
+    <div className={styles.partnersPanel}>
+      {partners.map((partner) => (
+        <a
+          aria-label={`Перейти на сайт ${partner.alt}`}
+          className={partner.logoClassName}
+          href={partner.href}
+          key={partner.alt}
+          rel="noreferrer"
+          target="_blank"
+        >
+          <Image
+            src={partner.src}
+            alt={partner.alt}
+            width={partner.width}
+            height={partner.height}
+          />
+        </a>
+      ))}
+    </div>
   );
 }
 

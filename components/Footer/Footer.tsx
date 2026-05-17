@@ -13,12 +13,12 @@ type ContactItem = {
 const categoryColumns = [
   [
     { href: "/about", label: "О нас" },
-    { href: "#offers", label: "Каталог" },
-    { href: "#offers", label: "Цены" },
+    { href: "/catalog", label: "Каталог" },
+    { href: "/prices", label: "Наши цены" },
   ],
   [
-    { href: "#hero", label: "Услуги" },
-    { href: "/about#certificates", label: "Полезные материалы", splitToWords: true },
+    { href: "/services?tab=delivery", label: "Услуги" },
+    { href: "/#contacts", label: "Контакты" },
   ],
 ];
 
@@ -53,7 +53,7 @@ export function Footer() {
       <div className={styles.frame}>
         <div className={styles.footerInner}>
           <div className={styles.brandBlock}>
-            <Link className={styles.logoLink} href="#hero" aria-label="На главную">
+            <Link className={styles.logoLink} href="/" aria-label="На главную">
               <Image
                 src="/img/advantages/aboutLogo.svg"
                 alt="Фанерный мир"
@@ -70,14 +70,7 @@ export function Footer() {
                 <div className={styles.textColumn} key={`category-column-${index}`}>
                   {column.map((item) => (
                     <Link className={styles.textItem} href={item.href} key={item.label}>
-                      {item.splitToWords ? (
-                        <span className={styles.materialsWords}>
-                          <span>Полезные </span>
-                          <span>материалы</span>
-                        </span>
-                      ) : (
-                        item.label
-                      )}
+                      {item.label}
                     </Link>
                   ))}
                 </div>

@@ -93,14 +93,6 @@
   white-space: nowrap;
 }
 
-.materialsWords {
-  display: inline;
-}
-
-.materialsWords > span {
-  display: inline;
-}
-
 .inlineEmailItem {
   display: inline-flex;
 }
@@ -410,17 +402,6 @@
     margin-top: 14px;
   }
 
-  .materialsWords {
-    display: inline-flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 2px;
-  }
-
-  .materialsWords > span {
-    display: block;
-    white-space: nowrap;
-  }
 }
 
 @media (max-width: 760px) and (min-width: 701px) {
@@ -488,10 +469,6 @@
   .mobileEmailItem {
     margin-inline: auto;
     justify-content: center;
-  }
-
-  .materialsWords {
-    align-items: center;
   }
 
   .logoLink img {
