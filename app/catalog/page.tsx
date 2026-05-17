@@ -247,40 +247,16 @@ const plydexFilters: FilterColumn[] = [
           "Г-образный",
           "П-образный",
           "О-образный",
-          "Без покрытия",
         ],
       },
       {
-        title: "Панно",
-        items: [
-          "Mix ширина 32/65/97 длина 600/800/1200",
-          "Mix ширина 75 длина 525/725/1125",
-          "Кубы 275",
-          "Ромбы 195/390",
-          "Треугольники 320/370",
-          "3D 185x450x25",
-          "Классик, масло 1 цвет",
-          "Лофт, масло 1 цвет",
-          "Морилка, эмаль/лак, 1 цвет",
-          "Эмаль/патина, 1 цвет",
-        ],
-      },
-      {
-        title: "Варианты лакокрасочных покрытий",
-        items: ["Классик, масло", "Лофт, масло", "Морилка, эмаль/лак", "Эмаль/патина"],
-      },
-      {
-        title: "Двери",
-        items: ["Без покрытия", "Классик", "Лофт", "Эмаль, морилка/лак", "Эмаль/патина"],
+        title: "Панели стандартного размера",
+        items: ["Без покрытия", "Классик", "Лофт", "Эксклюзив"],
       },
     ],
   },
   {
     sections: [
-      {
-        title: "Панели стандартного размера",
-        items: ["Без покрытия", "Классик", "Лофт", "Эксклюзив"],
-      },
       {
         title: "Панели по индивидуальным размерам",
         items: ["Без покрытия", "Классик, масло", "Лофт, масло", "Эмаль, морилка/лак", "Эмаль/патина"],
@@ -288,10 +264,6 @@ const plydexFilters: FilterColumn[] = [
       {
         title: "Профиль по индивидуальным размерам",
         items: ["Без покрытия", "Классик", "Лофт", "Эмаль, морилка/лак", "Эмаль/патина"],
-      },
-      {
-        title: "Готовые изделия",
-        items: ["Классик", "Лофт", "Эмаль, морилка/лак", "Эмаль/патина"],
       },
     ],
   },
@@ -675,8 +647,7 @@ function productMatchesPlydexFilter(product: CatalogPriceCard, filter: ActiveFil
 
   if (label === "профиль") {
     return (
-      product.categorySlug === "plydex-profile" ||
-      product.categorySlug === "plydex-ready-products"
+      product.categorySlug === "plydex-profile"
     ) && productMatchesPlydexProfileShape(product, filter.value);
   }
 
@@ -697,35 +668,6 @@ function productMatchesPlydexFilter(product: CatalogPriceCard, filter: ActiveFil
   if (label === "профиль по индивидуальным размерам") {
     return (
       product.productSlug === "plydex-profile-custom" &&
-      productPlydexFinishMatches(product, filter.value)
-    );
-  }
-
-  if (label === "готовые изделия") {
-    return (
-      product.productSlug === "plydex-ready-products" &&
-      productPlydexFinishMatches(product, filter.value)
-    );
-  }
-
-  if (label === "двери") {
-    return (
-      product.productSlug === "plydex-doors" &&
-      productPlydexFinishMatches(product, filter.value)
-    );
-  }
-
-  if (label === "панно") {
-    return (
-      product.productSlug === "plydex-pano" &&
-      (productPlydexFinishMatches(product, filter.value) ||
-        productSearchText(product).includes(normalizeSearchValue(filter.value)))
-    );
-  }
-
-  if (label === "варианты лакокрасочных покрытий") {
-    return (
-      product.productSlug === "plydex-coatings" &&
       productPlydexFinishMatches(product, filter.value)
     );
   }

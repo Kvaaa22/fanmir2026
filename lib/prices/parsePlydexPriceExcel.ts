@@ -14,6 +14,11 @@ type FinishColumn = {
   pricePerM2Col?: number;
 };
 
+type SimpleFinishColumn = {
+  finish: string;
+  col: number;
+};
+
 const STANDARD_PANEL_FINISHES: FinishColumn[] = [
   { finish: "без покрытия", priceCol: 4, pricePerM2Col: 5 },
   { finish: "классик", priceCol: 6, pricePerM2Col: 7 },
@@ -21,55 +26,20 @@ const STANDARD_PANEL_FINISHES: FinishColumn[] = [
   { finish: "эксклюзив", priceCol: 10, pricePerM2Col: 11 },
 ];
 
-const SIMPLE_FINISH_COLS = [
+const CUSTOM_PANEL_FINISHES: SimpleFinishColumn[] = [
+  { finish: "без покрытия", col: 3 },
+  { finish: "классик, масло", col: 4 },
+  { finish: "лофт, масло", col: 6 },
+  { finish: "эмаль, морилка/лак", col: 8 },
+  { finish: "эмаль/патина", col: 10 },
+];
+
+const PROFILE_FINISHES: SimpleFinishColumn[] = [
   { finish: "без покрытия", col: 3 },
   { finish: "классик", col: 4 },
   { finish: "лофт", col: 6 },
   { finish: "эмаль, морилка/лак", col: 8 },
   { finish: "эмаль/патина", col: 10 },
-];
-
-const READY_PRODUCT_FINISH_COLS = [
-  { finish: "без покрытия", col: 4 },
-  { finish: "классик", col: 5 },
-  { finish: "лофт", col: 6 },
-  { finish: "эмаль, морилка/лак", col: 8 },
-  { finish: "эмаль/патина", col: 10 },
-];
-
-const DOOR_FINISH_COLS = [
-  { finish: "без покрытия", col: 3 },
-  { finish: "классик", col: 4 },
-  { finish: "лофт", col: 6 },
-  { finish: "эмаль, морилка/лак", col: 8 },
-  { finish: "эмаль/патина", col: 10 },
-];
-
-const PANO_COLUMNS = [
-  {
-    variantTitle: "Mix ширина 32/65/97 длина 600/800/1200",
-    col: 3,
-  },
-  {
-    variantTitle: "Mix ширина 75 длина 525/725/1125",
-    col: 4,
-  },
-  {
-    variantTitle: "Кубы 275",
-    col: 6,
-  },
-  {
-    variantTitle: "Ромбы 195/390",
-    col: 8,
-  },
-  {
-    variantTitle: "Треугольники 320/370",
-    col: 9,
-  },
-  {
-    variantTitle: "3D 185x450x25",
-    col: 11,
-  },
 ];
 
 export async function parsePlydexPriceExcel(
@@ -79,28 +49,91 @@ export async function parsePlydexPriceExcel(
 
   await workbook.xlsx.load(buffer as unknown as Parameters<typeof workbook.xlsx.load>[0]);
 
-  const worksheet = workbook.getWorksheet("Лист1");
+  const worksheet = workbook.getWorksheet("Лист1") ?? workbook.worksheets[0];
 
   if (!worksheet) {
-    throw new Error("В прайсе Plydex не найден лист 'Лист1'");
+    throw new Error("В прайсе Plydex не найден лист с данными");
   }
 
   return [
     ...parseStandardPanels(worksheet),
     ...parseCustomPanels(worksheet),
     ...parseCustomProfile(worksheet),
-    ...parseReadyProducts(worksheet),
-    ...parseDoors(worksheet),
-    ...parsePano(worksheet),
-    ...parseCoatings(worksheet),
   ];
+}
+
+function normalizeLookupText(value: string) {
+  return value
+    .toLowerCase()
+    .replaceAll("ё", "е")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function getCellText(worksheet: ExcelJS.Worksheet, row: number, col: number) {
+  try {
+    return worksheet.getCell(row, col).text.trim();
+  } catch {
+    return "";
+  }
+}
+
+function getRowText(worksheet: ExcelJS.Worksheet, rowNumber: number) {
+  const parts: string[] = [];
+
+  for (let colNumber = 1; colNumber <= worksheet.columnCount; colNumber += 1) {
+    const text = getCellText(worksheet, rowNumber, colNumber);
+
+    if (text) {
+      parts.push(text);
+    }
+  }
+
+  return normalizeLookupText(parts.join(" "));
+}
+
+function findRowByText(
+  worksheet: ExcelJS.Worksheet,
+  pattern: RegExp,
+  startRow = 1
+) {
+  for (let rowNumber = startRow; rowNumber <= worksheet.rowCount; rowNumber += 1) {
+    if (pattern.test(getRowText(worksheet, rowNumber))) {
+      return rowNumber;
+    }
+  }
+
+  return undefined;
+}
+
+function isMergedMasterCell(
+  worksheet: ExcelJS.Worksheet,
+  row: number,
+  col: number
+) {
+  const cell = worksheet.getCell(row, col);
+
+  return !cell.master || cell.master.address === cell.address;
 }
 
 function parseStandardPanels(worksheet: ExcelJS.Worksheet): ParsedPriceRow[] {
   const result: ParsedPriceRow[] = [];
+  const headerRow = findRowByText(worksheet, /панели стандартные размеры/);
 
-  for (const rowNumber of [9, 12]) {
-    const size = worksheet.getCell(rowNumber, 3).text.trim();
+  if (!headerRow) {
+    return result;
+  }
+
+  const nextHeaderRow =
+    findRowByText(worksheet, /панели по .*размерам/, headerRow + 1) ??
+    worksheet.rowCount + 1;
+
+  for (let rowNumber = headerRow + 3; rowNumber < nextHeaderRow; rowNumber += 1) {
+    if (!isMergedMasterCell(worksheet, rowNumber, 3)) {
+      continue;
+    }
+
+    const size = getCellText(worksheet, rowNumber, 3);
 
     if (!size) {
       continue;
@@ -118,7 +151,7 @@ function parseStandardPanels(worksheet: ExcelJS.Worksheet): ParsedPriceRow[] {
         : undefined;
 
       const note = item.pricePerM2Col
-        ? worksheet.getCell(rowNumber, item.pricePerM2Col).text.trim()
+        ? getCellText(worksheet, rowNumber, item.pricePerM2Col)
         : undefined;
 
       result.push({
@@ -154,11 +187,18 @@ function parseStandardPanels(worksheet: ExcelJS.Worksheet): ParsedPriceRow[] {
   return result;
 }
 
+
 function parseCustomPanels(worksheet: ExcelJS.Worksheet): ParsedPriceRow[] {
   const result: ParsedPriceRow[] = [];
-  const rowNumber = 17;
+  const headerRow = findRowByText(worksheet, /панели по .*размерам/);
 
-  for (const item of SIMPLE_FINISH_COLS) {
+  if (!headerRow) {
+    return result;
+  }
+
+  const rowNumber = headerRow + 2;
+
+  for (const item of CUSTOM_PANEL_FINISHES) {
     const priceRub = parsePriceFromCell(worksheet, rowNumber, item.col);
 
     if (!priceRub) {
@@ -196,27 +236,30 @@ function parseCustomPanels(worksheet: ExcelJS.Worksheet): ParsedPriceRow[] {
 
 function parseCustomProfile(worksheet: ExcelJS.Worksheet): ParsedPriceRow[] {
   const result: ParsedPriceRow[] = [];
+  const headerRow = findRowByText(worksheet, /профиль по .*размерам/);
 
-  const profileRows = [
-    {
-      rowNumber: 21,
-      variantTitle: "Профиль по индивидуальным размерам, группа 1",
-    },
-    {
-      rowNumber: 24,
-      variantTitle: "Профиль по индивидуальным размерам, группа 2",
-    },
-    {
-      rowNumber: 27,
-      variantTitle: "Профиль по индивидуальным размерам, группа 3",
-    },
-  ];
+  if (!headerRow) {
+    return result;
+  }
 
-  for (const profileRow of profileRows) {
-    for (const item of SIMPLE_FINISH_COLS) {
+  let groupNumber = 0;
+
+  for (let rowNumber = headerRow + 2; rowNumber <= worksheet.rowCount; rowNumber += 1) {
+    if (!isMergedMasterCell(worksheet, rowNumber, 3)) {
+      continue;
+    }
+
+    if (!parsePriceFromCell(worksheet, rowNumber, 3)) {
+      continue;
+    }
+
+    groupNumber += 1;
+    const variantTitle = `Профиль по индивидуальным размерам, группа ${groupNumber}`;
+
+    for (const item of PROFILE_FINISHES) {
       const priceRub = parsePriceFromCell(
         worksheet,
-        profileRow.rowNumber,
+        rowNumber,
         item.col
       );
 
@@ -235,11 +278,11 @@ function parseCustomProfile(worksheet: ExcelJS.Worksheet): ParsedPriceRow[] {
 
         variantKey: createVariantKey([
           "plydex-profile-custom",
-          profileRow.variantTitle,
+          variantTitle,
           item.finish,
         ]),
 
-        variantTitle: profileRow.variantTitle,
+        variantTitle,
 
         finish: item.finish,
 
@@ -247,201 +290,9 @@ function parseCustomProfile(worksheet: ExcelJS.Worksheet): ParsedPriceRow[] {
         pricePerM2Rub: priceRub,
 
         note: "Цена от",
-        rowNumber: profileRow.rowNumber,
-      });
-    }
-  }
-
-  return result;
-}
-
-function parseReadyProducts(worksheet: ExcelJS.Worksheet): ParsedPriceRow[] {
-  const result: ParsedPriceRow[] = [];
-  let currentName = "";
-
-  for (const rowNumber of [32, 33, 34, 35, 36, 37]) {
-    const name = worksheet.getCell(rowNumber, 2).text.trim();
-
-    if (name) {
-      currentName = name;
-    }
-
-    const size = worksheet.getCell(rowNumber, 3).text.trim();
-
-    if (!currentName || !size) {
-      continue;
-    }
-
-    for (const item of READY_PRODUCT_FINISH_COLS) {
-      const priceRub = parsePriceFromCell(worksheet, rowNumber, item.col);
-
-      if (!priceRub) {
-        continue;
-      }
-
-      result.push({
-        source: PRICE_SOURCE.PLYDEX,
-
-        productSlug: "plydex-ready-products",
-        productTitle: "Plydex готовые изделия",
-
-        categorySlug: "plydex-ready-products",
-        categoryTitle: "Plydex готовые изделия",
-
-        variantKey: createVariantKey([
-          "plydex-ready-products",
-          currentName,
-          size,
-          item.finish,
-        ]),
-
-        variantTitle: [currentName, size].join(", "),
-
-        finish: item.finish,
-        size: normalizeSize(size),
-
-        unit: "шт.",
-        priceRub,
-
         rowNumber,
       });
     }
-  }
-
-  return result;
-}
-
-function parseDoors(worksheet: ExcelJS.Worksheet): ParsedPriceRow[] {
-  const result: ParsedPriceRow[] = [];
-
-  for (const rowNumber of [40, 41]) {
-    const doorName = worksheet.getCell(rowNumber, 2).text.trim();
-
-    if (!doorName) {
-      continue;
-    }
-
-    for (const item of DOOR_FINISH_COLS) {
-      const priceRub = parsePriceFromCell(worksheet, rowNumber, item.col);
-
-      if (!priceRub) {
-        continue;
-      }
-
-      result.push({
-        source: PRICE_SOURCE.PLYDEX,
-
-        productSlug: "plydex-doors",
-        productTitle: "Plydex двери",
-
-        categorySlug: "plydex-doors",
-        categoryTitle: "Plydex двери",
-
-        variantKey: createVariantKey([
-          "plydex-doors",
-          doorName,
-          item.finish,
-        ]),
-
-        variantTitle: doorName,
-
-        finish: item.finish,
-
-        unit: "комплект",
-        priceRub,
-
-        rowNumber,
-      });
-    }
-  }
-
-  return result;
-}
-
-function parsePano(worksheet: ExcelJS.Worksheet): ParsedPriceRow[] {
-  const result: ParsedPriceRow[] = [];
-
-  for (const rowNumber of [45, 46, 47, 48]) {
-    const finish = worksheet.getCell(rowNumber, 2).text.trim();
-
-    if (!finish) {
-      continue;
-    }
-
-    for (const item of PANO_COLUMNS) {
-      const priceRub = parsePriceFromCell(worksheet, rowNumber, item.col);
-
-      if (!priceRub) {
-        continue;
-      }
-
-      result.push({
-        source: PRICE_SOURCE.PLYDEX,
-
-        productSlug: "plydex-pano",
-        productTitle: "Plydex варианты и примеры пано",
-
-        categorySlug: "plydex-pano",
-        categoryTitle: "Plydex пано",
-
-        variantKey: createVariantKey([
-          "plydex-pano",
-          item.variantTitle,
-          finish,
-        ]),
-
-        variantTitle: item.variantTitle,
-
-        finish,
-
-        unit: "м²",
-        pricePerM2Rub: priceRub,
-
-        rowNumber,
-      });
-    }
-  }
-
-  return result;
-}
-
-function parseCoatings(worksheet: ExcelJS.Worksheet): ParsedPriceRow[] {
-  const result: ParsedPriceRow[] = [];
-
-  for (const rowNumber of [51, 52, 53, 54, 55]) {
-    const name = worksheet.getCell(rowNumber, 2).text.trim();
-    const description = worksheet.getCell(rowNumber, 3).text.trim();
-    const priceRub = parsePriceFromCell(worksheet, rowNumber, 10);
-
-    if (!name || !priceRub) {
-      continue;
-    }
-
-    result.push({
-      source: PRICE_SOURCE.PLYDEX,
-
-      productSlug: "plydex-coatings",
-      productTitle: "Plydex варианты лакокрасочных покрытий",
-
-      categorySlug: "plydex-coatings",
-      categoryTitle: "Plydex покрытия",
-
-      variantKey: createVariantKey([
-        "plydex-coatings",
-        name,
-      ]),
-
-      variantTitle: name,
-
-      finish: name,
-
-      unit: rowNumber === 55 ? "услуга" : "м²",
-      pricePerM2Rub: rowNumber === 55 ? undefined : priceRub,
-      priceRub: rowNumber === 55 ? priceRub : undefined,
-
-      note: description || undefined,
-      rowNumber,
-    });
   }
 
   return result;

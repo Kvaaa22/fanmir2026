@@ -128,6 +128,27 @@ const decimalFormatter = new Intl.NumberFormat("ru-RU", {
   maximumFractionDigits: 2,
 });
 
+const catalogOfferImagesByCategorySlug: Record<string, string> = {
+  osb: "/img/offers/osb.webp",
+  "plywood-softwood": "/img/offers/hvoinaya.webp",
+  "plywood-laminated": "/img/offers/laminirovannaya.webp",
+  dsp: "/img/offers/dsp%20(2).webp",
+  dvp: "/img/offers/dvp%20(2).webp",
+  mdf: "/img/offers/dvp%20(2).webp",
+};
+
+function getCatalogOfferImage(categorySlug: string) {
+  if (categorySlug.startsWith("plywood-birch")) {
+    return "/img/offers/berezovaya.webp";
+  }
+
+  if (categorySlug.startsWith("plydex")) {
+    return "/img/offers/plydex%20(2).webp";
+  }
+
+  return catalogOfferImagesByCategorySlug[categorySlug];
+}
+
 function normalizeOrderText(value: string) {
   return value
     .replace(/при\s*заказе/gi, "при заказе")
@@ -283,34 +304,17 @@ function buildVariantTitle(params: {
 }
 
 function getCatalogCardImage(params: {
-  productSlug: string;
   categorySlug: string;
-  variantTitle: string;
   imageUrl: string | null;
 }) {
   if (params.imageUrl) {
     return params.imageUrl;
   }
 
-  if (
-    params.productSlug === "plydex-profile-custom" ||
-    params.productSlug === "plydex-ready-products"
-  ) {
-    if (/группа\s*1|г-образн/i.test(params.variantTitle)) {
-      return "/img/catalogue/plydex-profile-g.svg";
-    }
+  const offerImage = getCatalogOfferImage(params.categorySlug);
 
-    if (/группа\s*2|п-образн/i.test(params.variantTitle)) {
-      return "/img/catalogue/plydex-profile-p.svg";
-    }
-
-    if (/группа\s*3|4-х|4\s*сторон|о-образн/i.test(params.variantTitle)) {
-      return "/img/catalogue/plydex-profile-o.svg";
-    }
-  }
-
-  if (params.categorySlug.startsWith("plydex")) {
-    return "/img/prices/plydex.png";
+  if (offerImage) {
+    return offerImage;
   }
 
   return "/img/catalogue/card.png";
@@ -379,9 +383,7 @@ export async function getCatalogPriceCards() {
         categorySlug: item.product.categorySlug,
         categoryTitle: item.product.categoryTitle,
         imageUrl: getCatalogCardImage({
-          productSlug: item.product.slug,
           categorySlug: item.product.categorySlug,
-          variantTitle: item.variantTitle ?? "",
           imageUrl: item.product.imageUrl,
         }),
         titleLineOne: productTitle,

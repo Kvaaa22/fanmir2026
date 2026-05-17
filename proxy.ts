@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { adminCookieName, verifyAdminToken } from "@/lib/admin/session";
+import { relativeRedirect } from "@/lib/http/relativeRedirect";
 
 const adminLoginPagePath = "/admin/login";
 const adminLoginApiPath = "/api/admin/login";
@@ -34,7 +35,7 @@ export async function proxy(request: NextRequest) {
   }
 
   if (shouldRedirectToLogin(request)) {
-    return NextResponse.redirect(new URL(adminLoginPagePath, request.url));
+    return relativeRedirect(adminLoginPagePath);
   }
 
   return NextResponse.json(

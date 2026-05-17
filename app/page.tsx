@@ -44,7 +44,7 @@ const benefits: BenefitItem[] = [
     iconSrc: "/img/advantages/icons/Star3.svg",
     iconWidth: 24,
     iconHeight: 24,
-    title: "Более 130 видов фанеры",
+    title: "Более 16 видов фанеры",
   },
   {
     iconSrc: "/img/advantages/icons/snip4.svg",
@@ -75,7 +75,7 @@ const benefits: BenefitItem[] = [
 const offers: OfferItem[] = [
   { href: catalogOfferHrefs.osb, title: "OSB-3(ОСП)", patternClassName: "offerPatternOsb" },
   { href: catalogOfferHrefs.conifer, title: "Фанера хвойная", patternClassName: "offerPatternPine" },
-  { title: "Распил", patternClassName: "offerPatternSaw" },
+  { href: "/services?tab=cutting", title: "Распил", patternClassName: "offerPatternSaw" },
   { href: catalogOfferHrefs.birch, title: "Фанера березовая", patternClassName: "offerPatternBirch" },
   {
     href: catalogOfferHrefs.laminated,
@@ -347,7 +347,7 @@ export default function Home() {
                   </div>
                 </li>
 
-                <li className={styles.contactsItem}>
+                <li className={`${styles.contactsItem} ${styles.contactsPhoneItem}`}>
                   <span className={styles.contactsIcon}>
                     <Image
                       src="/img/contact/phone-contact.svg"
@@ -360,6 +360,8 @@ export default function Home() {
                   <div className={styles.contactsPhones}>
                     <a href="tel:+73912683233">+7 (391) 268-32-33</a>
                     <a href="tel:+73912683223">+7 (391) 268-32-23</a>
+                    <a href="tel:+79138325555">+7 (913) 832-55-55</a>
+                    <a href="tel:+79631915653">+7 (963) 191-56-53</a>
                   </div>
                 </li>
 

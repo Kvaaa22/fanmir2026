@@ -6,6 +6,7 @@ import {
   verifyAdminCsrfToken,
   verifyAdminToken,
 } from "@/lib/admin/session";
+import { relativeRedirect } from "@/lib/http/relativeRedirect";
 import { parsePriceSource } from "@/lib/prices/priceSource";
 import { parsePriceExcel } from "@/lib/prices/parsePriceExcel";
 import { importPrices } from "@/lib/prices/importPrices";
@@ -129,7 +130,7 @@ export async function POST(request: Request) {
         },
       });
 
-      return NextResponse.redirect(new URL("/admin/prices", request.url), 303);
+      return relativeRedirect("/admin/prices", 303);
     }
 
     const excelBuffer = Buffer.from(await uploadedExcelFile.arrayBuffer());
@@ -164,7 +165,7 @@ export async function POST(request: Request) {
     });
 
     // After a successful POST, use 303 so the browser follows with GET.
-    return NextResponse.redirect(new URL("/admin/prices", request.url), 303);
+    return relativeRedirect("/admin/prices", 303);
   } catch (error) {
     console.error(error);
 
