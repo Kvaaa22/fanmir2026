@@ -96,7 +96,7 @@ const partners: PartnerItem[] = [
   {
     alt: "ILIM Timber",
     height: 31,
-    href: "https://ilimtimber.eu/en/",
+    href: "https://ilimtimber.ru",
     logoClassName: styles.partnerLogoWide,
     src: "/img/hero/ilim.svg",
     width: 289,
