@@ -42,7 +42,7 @@ const contactsColumns: ContactItem[][] = [
     { href: "mailto:fanmir24@yandex.ru", kind: "email", label: "fanmir24@yandex.ru" },
   ],
   [
-    { href: "tel:+79138325555", kind: "phone", label: "+7 (913) 832-55-55" },
+    { href: "tel:+73912220796", kind: "phone", label: "+7 (391) 222-07-96" },
     { href: "tel:+79631915653", kind: "phone", label: "+7 (963) 191-56-53" },
   ],
 ];

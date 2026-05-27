@@ -360,7 +360,7 @@ export default function Home() {
                   <div className={styles.contactsPhones}>
                     <a href="tel:+73912683233">+7 (391) 268-32-33</a>
                     <a href="tel:+73912683223">+7 (391) 268-32-23</a>
-                    <a href="tel:+79138325555">+7 (913) 832-55-55</a>
+                    <a href="tel:+73912220796">+7 (391) 222-07-96</a>
                     <a href="tel:+79631915653">+7 (963) 191-56-53</a>
                   </div>
                 </li>
