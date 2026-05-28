@@ -35,7 +35,7 @@ export async function proxy(request: NextRequest) {
   }
 
   if (shouldRedirectToLogin(request)) {
-    return relativeRedirect(adminLoginPagePath);
+    return relativeRedirect(request, adminLoginPagePath);
   }
 
   return NextResponse.json(

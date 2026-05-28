@@ -42,5 +42,8 @@ export async function GET(request: Request) {
     fileParams.set("download", "1");
   }
 
-  return relativeRedirect(`/api/price-import-file?${fileParams.toString()}`);
+  return relativeRedirect(
+    request,
+    `/api/price-import-file?${fileParams.toString()}`,
+  );
 }
