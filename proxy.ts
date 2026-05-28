@@ -23,6 +23,10 @@ function shouldRedirectToLogin(request: NextRequest) {
 export async function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
+  if (request.headers.has("next-action")) {
+    return NextResponse.json({ error: "Server Actions are not used" }, { status: 400 });
+  }
+
   if (isPublicAdminPath(pathname)) {
     return NextResponse.next();
   }
@@ -45,5 +49,9 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/api/admin/:path*"],
+  matcher: [
+    "/admin/:path*",
+    "/api/admin/:path*",
+    "/((?!_next/static|_next/image|favicon.ico).*)",
+  ],
 };

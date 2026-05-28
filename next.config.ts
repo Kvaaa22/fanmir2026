@@ -1,6 +1,33 @@
 import type { NextConfig } from "next";
+import { execSync } from "node:child_process";
+import { readFileSync } from "node:fs";
+import { createHash } from "node:crypto";
 
 const isDev = process.env.NODE_ENV === "development";
+
+function getDeploymentId() {
+  const explicitId =
+    process.env.NEXT_DEPLOYMENT_ID ??
+    process.env.DEPLOYMENT_VERSION ??
+    process.env.GIT_SHA;
+
+  if (explicitId) {
+    return explicitId;
+  }
+
+  try {
+    return execSync("git rev-parse --short=12 HEAD", {
+      stdio: ["ignore", "pipe", "ignore"],
+    })
+      .toString()
+      .trim();
+  } catch {
+    const packageLock = readFileSync("package-lock.json");
+    return createHash("sha256").update(packageLock).digest("hex").slice(0, 12);
+  }
+}
+
+const deploymentId = getDeploymentId();
 
 const contentSecurityPolicy = `
   default-src 'self';
@@ -18,6 +45,8 @@ const contentSecurityPolicy = `
 `;
 
 const nextConfig: NextConfig = {
+  deploymentId,
+  generateBuildId: async () => deploymentId,
   async headers() {
     return [
       {
