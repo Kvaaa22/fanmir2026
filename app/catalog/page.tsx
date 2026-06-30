@@ -10,6 +10,7 @@ import {
   CATEGORY_FILTER_LABEL,
   MATERIAL_FILTER_LABEL,
 } from "@/lib/catalog/filterLinks";
+import { createPageMetadata } from "@/lib/seo/site";
 import {
   CatalogActiveFilters,
   CatalogFilteredEmpty,
@@ -750,10 +751,12 @@ function productMatchesFilter(product: CatalogPriceCard, filter: ActiveFilter) {
   return productSearchText(product).includes(normalizeSearchValue(filter.value));
 }
 
-export const metadata: Metadata = {
-  title: "Каталог | Фанерный мир",
-  description: "Каталог фанеры и листовых материалов.",
-};
+export const metadata: Metadata = createPageMetadata({
+  title: "Каталог",
+  description:
+    "Каталог фанеры, OSB, ДСП, ДВП, МДФ и листовых материалов в Красноярске.",
+  path: "/catalog",
+});
 
 export default async function PricesPage({
   searchParams,
@@ -779,6 +782,10 @@ export default async function PricesPage({
   return (
     <section className={styles.catalogPage} aria-label="Каталог товаров">
       <div className={styles.catalogFrame}>
+        <h1 className={styles.catalogTitle}>
+          Каталог фанеры и листовых материалов
+        </h1>
+
         <CatalogFilterProvider
           filters={knownFilters}
           initialFilterIds={initialFilterIds}

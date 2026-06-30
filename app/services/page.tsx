@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { createPageMetadata } from "@/lib/seo/site";
 import styles from "./page.module.css";
 
 type ServiceTab = "delivery" | "cutting";
@@ -23,10 +24,12 @@ type ServiceContent = {
   note: string;
 };
 
-export const metadata: Metadata = {
-  title: "Доставка и распил | Фанерный мир",
-  description: "Условия доставки, оплаты и распила фанеры и листовых материалов.",
-};
+export const metadata: Metadata = createPageMetadata({
+  title: "Доставка и распил",
+  description:
+    "Условия доставки, оплаты и распила фанеры и листовых материалов в Красноярске.",
+  path: "/services",
+});
 
 const tabs: { id: ServiceTab; label: string; href: string }[] = [
   {

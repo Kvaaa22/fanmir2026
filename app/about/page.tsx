@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { createPageMetadata } from "@/lib/seo/site";
 import styles from "./page.module.css";
 
-export const metadata: Metadata = {
-  title: "О нас | Фанерный мир",
+export const metadata: Metadata = createPageMetadata({
+  title: "О нас",
   description:
     "Информация о компании Фанерный мир, сертификатах качества и пользовательском соглашении.",
-};
+  path: "/about",
+});
 
 type Certificate = {
   imageAlt: string;

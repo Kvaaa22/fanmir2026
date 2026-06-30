@@ -5,13 +5,16 @@ import { connection } from "next/server";
 import ExcelJS from "exceljs";
 import prisma from "@/lib/prisma";
 import { PRICE_SOURCE, type PriceSourceValue } from "@/lib/prices/priceSource";
+import { createPageMetadata } from "@/lib/seo/site";
 import { isInsideStorage, resolveStoragePath } from "@/lib/storage/paths";
 import styles from "./page.module.css";
 
-export const metadata: Metadata = {
-  title: "Наши цены | Фанерный мир",
-  description: "Актуальные цены на фанеру и продукцию Plydex.",
-};
+export const metadata: Metadata = createPageMetadata({
+  title: "Наши цены",
+  description:
+    "Актуальные цены на фанеру, OSB, листовые материалы и продукцию Plydex.",
+  path: "/prices",
+});
 
 type ExcelCell = {
   key: string;

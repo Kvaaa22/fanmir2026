@@ -1,7 +1,13 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { HeroSlider } from "@/components/HeroSlider/HeroSlider";
 import { catalogOfferHrefs } from "@/lib/catalog/filterLinks";
+import {
+  createPageMetadata,
+  siteDescription,
+  siteName,
+} from "@/lib/seo/site";
 import styles from "./page.module.css";
 import YandexMap from '@/components/YandexMap/YandexMap';
 
@@ -126,6 +132,12 @@ const partners: PartnerItem[] = [
     width: 178,
   },
 ];
+
+export const metadata: Metadata = createPageMetadata({
+  title: siteName,
+  description: siteDescription,
+  path: "/",
+});
 
 export default function Home() {
   const offerRows = [offers.slice(0, 5), offers.slice(5)];

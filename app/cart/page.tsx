@@ -5,13 +5,16 @@ import {
   type CatalogPriceCard,
 } from "@/lib/catalog/getCatalogData";
 import type { CartProduct } from "@/lib/cart/cartTypes";
+import { createPageMetadata } from "@/lib/seo/site";
 import { CartClient } from "./CartClient";
 import styles from "./page.module.css";
 
-export const metadata: Metadata = {
-  title: "Корзина | Фанерный мир",
+export const metadata: Metadata = createPageMetadata({
+  title: "Корзина",
   description: "Корзина пользователя.",
-};
+  path: "/cart",
+  noIndex: true,
+});
 
 function toCartProduct(product: CatalogPriceCard): CartProduct {
   return {

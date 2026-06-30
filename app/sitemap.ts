@@ -1,36 +1,37 @@
 import type { MetadataRoute } from "next";
+import { siteUrl } from "@/lib/seo/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://фанмир.рф";
+  const lastModified = new Date("2026-06-30T00:00:00.000Z");
 
   return [
     {
-      url: `${baseUrl}/`,
-      lastModified: new Date(),
+      url: `${siteUrl}/`,
+      lastModified,
       changeFrequency: "weekly",
       priority: 1,
     },
     {
-      url: `${baseUrl}/catalog`,
-      lastModified: new Date(),
+      url: `${siteUrl}/catalog`,
+      lastModified,
       changeFrequency: "weekly",
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/prices`,
-      lastModified: new Date(),
+      url: `${siteUrl}/prices`,
+      lastModified,
       changeFrequency: "weekly",
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/services`,
-      lastModified: new Date(),
+      url: `${siteUrl}/services`,
+      lastModified,
       changeFrequency: "monthly",
       priority: 0.7,
     },
     {
-      url: `${baseUrl}/about`,
-      lastModified: new Date(),
+      url: `${siteUrl}/about`,
+      lastModified,
       changeFrequency: "monthly",
       priority: 0.6,
     },
