@@ -3,6 +3,10 @@ import { sendFormEmail, SmtpConfigError } from "@/lib/mail/sendFormEmail";
 import { escapeHtml } from "@/lib/mail/escapeHtml";
 import { checkRateLimit } from "@/lib/security/rateLimit";
 import {
+  getCatalogPriceCards,
+  type CatalogPriceCard,
+} from "@/lib/catalog/getCatalogData";
+import {
   htmlInputError,
   isPlainTextInput,
 } from "@/lib/validation/plainText";
@@ -13,27 +17,7 @@ const orderItemSchema = z.object({
   id: z.string().min(1).max(120).refine(isPlainTextInput, {
     message: htmlInputError,
   }),
-  meta: z.array(
-    z.object({
-      label: z.string().max(120).refine(isPlainTextInput, {
-        message: htmlInputError,
-      }),
-      value: z.string().max(240).refine(isPlainTextInput, {
-        message: htmlInputError,
-      }),
-    }),
-  ),
-  price: z.string().max(120).refine(isPlainTextInput, {
-    message: htmlInputError,
-  }),
-  pricePerM2: z.string().max(120).refine(isPlainTextInput, {
-    message: htmlInputError,
-  }).optional(),
-  quantity: z.number().int().positive(),
-  title: z.string().min(1).max(240).refine(isPlainTextInput, {
-    message: htmlInputError,
-  }),
-  unitPriceRub: z.number().nullable(),
+  quantity: z.number().int().positive().max(999),
 });
 
 const orderRequestSchema = z.object({
@@ -48,11 +32,24 @@ const orderRequestSchema = z.object({
       message: htmlInputError,
     }),
   }),
-  items: z.array(orderItemSchema).min(1),
-  totalPrice: z.number().nonnegative(),
+  items: z.array(orderItemSchema).min(1).max(50),
 });
 
-type OrderRequest = z.infer<typeof orderRequestSchema>;
+type OrderPayload = z.infer<typeof orderRequestSchema>;
+
+type VerifiedOrderItem = Pick<
+  CatalogPriceCard,
+  "id" | "meta" | "price" | "pricePerM2" | "unitPriceRub"
+> & {
+  quantity: number;
+  title: string;
+};
+
+type VerifiedOrder = {
+  customer: OrderPayload["customer"];
+  items: VerifiedOrderItem[];
+  totalPrice: number;
+};
 
 const rubFormatter = new Intl.NumberFormat("ru-RU", {
   maximumFractionDigits: 0,
@@ -62,11 +59,11 @@ function formatRub(value: number) {
   return `${rubFormatter.format(value)} руб.`;
 }
 
-function formatLineTotal(item: OrderRequest["items"][number]) {
+function formatLineTotal(item: VerifiedOrderItem) {
   return item.unitPriceRub == null ? "Сумма не рассчитана" : formatRub(item.unitPriceRub * item.quantity);
 }
 
-function createTextMessage(order: OrderRequest) {
+function createTextMessage(order: VerifiedOrder) {
   const lines = [
     "Новый заказ с сайта Фанерный мир",
     "",
@@ -90,7 +87,7 @@ function createTextMessage(order: OrderRequest) {
   return lines.filter((line) => line !== "").join("\n");
 }
 
-function createHtmlMessage(order: OrderRequest) {
+function createHtmlMessage(order: VerifiedOrder) {
   const itemsMarkup = order.items
     .map((item, index) => {
       const metaMarkup = item.meta
@@ -140,6 +137,48 @@ function createHtmlMessage(order: OrderRequest) {
   `;
 }
 
+async function verifyOrder(payload: OrderPayload): Promise<VerifiedOrder | null> {
+  const catalogItems = await getCatalogPriceCards();
+  const catalogItemsById = new Map(catalogItems.map((item) => [item.id, item]));
+  const uniqueIds = new Set<string>();
+  const items: VerifiedOrderItem[] = [];
+
+  for (const requestedItem of payload.items) {
+    if (uniqueIds.has(requestedItem.id)) {
+      return null;
+    }
+
+    const catalogItem = catalogItemsById.get(requestedItem.id);
+
+    if (!catalogItem) {
+      return null;
+    }
+
+    uniqueIds.add(requestedItem.id);
+    items.push({
+      id: catalogItem.id,
+      meta: catalogItem.meta,
+      price: catalogItem.price,
+      pricePerM2: catalogItem.pricePerM2,
+      quantity: requestedItem.quantity,
+      title: [catalogItem.titleLineOne, catalogItem.titleLineTwo]
+        .filter(Boolean)
+        .join(" "),
+      unitPriceRub: catalogItem.unitPriceRub,
+    });
+  }
+
+  return {
+    customer: payload.customer,
+    items,
+    totalPrice: items.reduce(
+      (total, item) =>
+        total + (item.unitPriceRub == null ? 0 : item.unitPriceRub * item.quantity),
+      0,
+    ),
+  };
+}
+
 export async function POST(request: Request) {
   if (!checkRateLimit(request, "order-request", { limit: 5, windowMs: 60_000 })) {
     return Response.json(
@@ -159,11 +198,24 @@ export async function POST(request: Request) {
   }
 
   try {
+    const order = await verifyOrder(parsedPayload.data);
+
+    if (!order) {
+      return Response.json(
+        {
+          message:
+            "Состав корзины или цены изменились. Обновите страницу и попробуйте еще раз.",
+          ok: false,
+        },
+        { status: 400 },
+      );
+    }
+
     await sendFormEmail({
-      html: createHtmlMessage(parsedPayload.data),
-      replyTo: parsedPayload.data.customer.email,
-      subject: `Новый заказ с сайта: ${parsedPayload.data.customer.name}`,
-      text: createTextMessage(parsedPayload.data),
+      html: createHtmlMessage(order),
+      replyTo: order.customer.email,
+      subject: `Новый заказ с сайта: ${order.customer.name}`,
+      text: createTextMessage(order),
     });
   } catch (error) {
     if (error instanceof SmtpConfigError) {
@@ -183,7 +235,7 @@ export async function POST(request: Request) {
 
     return Response.json(
       {
-        message: "Не удалось отправить письмо. Проверьте SMTP-настройки и попробуйте еще раз.",
+        message: "Не удалось обработать заказ. Попробуйте еще раз.",
         ok: false,
       },
       { status: 500 },

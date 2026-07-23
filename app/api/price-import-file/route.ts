@@ -26,6 +26,13 @@ const FILE_CONFIG = {
   }
 >;
 
+const uploadDateFormatter = new Intl.DateTimeFormat("en-CA", {
+  day: "2-digit",
+  month: "2-digit",
+  timeZone: "Asia/Krasnoyarsk",
+  year: "numeric",
+});
+
 function parseFileType(value: string | null): FileType | null {
   if (value === "excel" || value === "pdf") {
     return value;
@@ -39,6 +46,12 @@ function getStoredFileName(filePath: string, fallbackName: string) {
   const cleanName = baseName.replace(/^\d+-(main|plydex)-/i, "");
 
   return cleanName || fallbackName;
+}
+
+function addUploadDateToFileName(fileName: string, uploadedAt: Date) {
+  const uploadDate = uploadDateFormatter.format(uploadedAt);
+
+  return `${uploadDate}-${fileName}`;
 }
 
 function encodeDispositionFileName(fileName: string) {
@@ -107,7 +120,10 @@ export async function GET(request: Request) {
   const fileName =
     type === "excel"
       ? priceImport.originalFileName
-      : getStoredFileName(filePath, config.fallbackName);
+      : addUploadDateToFileName(
+          getStoredFileName(filePath, config.fallbackName),
+          priceImport.createdAt,
+        );
 
   try {
     const fileStat = await stat(resolvedFilePath);

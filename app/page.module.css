@@ -598,7 +598,7 @@
   position: absolute;
   top: 108px;
   left: 100px;
-  width: 400.13px;
+  width: 401px;
   height: 315px;
   object-fit: contain;
   mix-blend-mode: normal;
@@ -2869,10 +2869,12 @@
 }
 
 @media (max-width: 530px) {
-  :global(:root) {
+  .benefitsSection,
+  .offersSection,
+  .aboutSection,
+  .contactsSection {
     --section-title-size: clamp(35px, calc(35px + 4 * ((100vw - 465px) / 64)), 39px);
   }
-
 
   /* #region Hero */
   .hero {
@@ -3261,7 +3263,10 @@
     }
 }
 @media (max-width: 462px) {
-  :global(:root) {
+  .benefitsSection,
+  .offersSection,
+  .aboutSection,
+  .contactsSection {
     --section-title-size: clamp(30px, calc(30px + 3 * ((100vw - 400px) / 65)), 33px);
   }
 
@@ -3798,4 +3803,3 @@
     max-width: 281.25px;
   }
 }
-

@@ -1,9 +1,9 @@
 # dependencies
-node_modules
+node_modules/
 
 # next
-.next
-out
+.next/
+out/
 
 # build/type caches
 *.tsbuildinfo
@@ -18,19 +18,26 @@ dev.db
 dev.db-journal
 dev.db-wal
 dev.db-shm
+
 prisma/dev.db
 prisma/dev.db-journal
 prisma/dev.db-wal
 prisma/dev.db-shm
 
+# production sqlite database
+shared/*.db
+shared/*.db-journal
+shared/*.db-wal
+shared/*.db-shm
+
 # generated prisma client
-app/generated/prisma
-lib/generated/prisma
+app/generated/prisma/
+lib/generated/prisma/
 
 # uploaded/generated files
-storage/uploads
-storage/pdf
-storage/generated
+storage/uploads/
+storage/pdf/
+storage/generated/
 
 # logs
 npm-debug.log*

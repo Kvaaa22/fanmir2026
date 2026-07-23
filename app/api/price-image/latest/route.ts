@@ -19,7 +19,6 @@ export function GET(request: Request) {
   const query = pdfParams.toString();
 
   return relativeRedirect(
-    request,
     `/api/price-pdf/latest${query ? `?${query}` : ""}`,
   );
 }

@@ -1,6 +1,11 @@
 import path from "path";
+import { stat } from "fs/promises";
 
-export const storageRoot = path.resolve(process.cwd(), "storage");
+const configuredStorageRoot = process.env.STORAGE_ROOT?.trim();
+
+export const storageRoot = configuredStorageRoot
+  ? path.resolve(/* turbopackIgnore: true */ configuredStorageRoot)
+  : path.join(process.cwd(), "storage");
 
 function getStorageSegments(storedPath: string) {
   const segments = path.normalize(storedPath).split(/[\\/]+/).filter(Boolean);
@@ -33,4 +38,23 @@ export function isInsideStorage(filePath: string) {
     !relativePath.startsWith("..") &&
     !path.isAbsolute(relativePath)
   );
+}
+
+export async function isStoredFileAvailable(storedPath: string | null | undefined) {
+  if (!storedPath) {
+    return false;
+  }
+
+  const resolvedFilePath = resolveStoragePath(storedPath);
+
+  if (!isInsideStorage(resolvedFilePath)) {
+    return false;
+  }
+
+  try {
+    const fileStat = await stat(resolvedFilePath);
+    return fileStat.isFile();
+  } catch {
+    return false;
+  }
 }

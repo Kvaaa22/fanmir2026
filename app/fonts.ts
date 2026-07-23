@@ -20,6 +20,7 @@ export const bitter = localFont({
   ],
   variable: '--font-heading',
   display: 'swap',
+  preload: false,
 })
 
 export const montserrat = localFont({
@@ -47,4 +48,5 @@ export const montserrat = localFont({
   ],
   variable: '--font-sans',
   display: 'swap',
+  preload: false,
 })

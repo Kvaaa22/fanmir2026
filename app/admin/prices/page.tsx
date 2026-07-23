@@ -5,6 +5,7 @@ import {
   adminCookieName,
   createAdminCsrfToken,
 } from "@/lib/admin/session";
+import { isStoredFileAvailable } from "@/lib/storage/paths";
 import styles from "./page.module.css";
 
 const PRICE_SOURCE_LABELS: Record<string, string> = {
@@ -74,6 +75,13 @@ export default async function AdminPricesPage() {
       createdAt: true,
     },
   });
+  const importsWithAvailability = await Promise.all(
+    imports.map(async (item) => ({
+      ...item,
+      hasExcelFile: await isStoredFileAvailable(item.storedFilePath),
+      hasPdfFile: await isStoredFileAvailable(item.pdfPath),
+    })),
+  );
 
   return (
     <main className={styles.page}>
@@ -142,7 +150,7 @@ export default async function AdminPricesPage() {
                 </thead>
 
                 <tbody>
-                  {imports.map((item) => (
+                  {importsWithAvailability.map((item) => (
                     <tr key={item.id}>
                       <td data-label="Дата">
                         {item.createdAt.toLocaleString("ru-RU")}
@@ -151,7 +159,7 @@ export default async function AdminPricesPage() {
                         {getSourceLabel(item.source)}
                       </td>
                       <td data-label="Excel-файл">
-                        {item.storedFilePath ? (
+                        {item.storedFilePath && item.hasExcelFile ? (
                           <>
                             <div className={styles.fileName}>
                               {item.originalFileName}
@@ -166,11 +174,13 @@ export default async function AdminPricesPage() {
                             </div>
                           </>
                         ) : (
-                          <span className={styles.missingFile}>-</span>
+                          <span className={styles.missingFile}>
+                            {item.storedFilePath ? "Файл отсутствует" : "-"}
+                          </span>
                         )}
                       </td>
                       <td data-label="PDF-файл">
-                        {item.pdfPath ? (
+                        {item.pdfPath && item.hasPdfFile ? (
                           <>
                             <div className={styles.fileName}>
                               {getStoredFileName(item.pdfPath, "price.pdf")}
@@ -193,7 +203,9 @@ export default async function AdminPricesPage() {
                             </div>
                           </>
                         ) : (
-                          <span className={styles.missingFile}>-</span>
+                          <span className={styles.missingFile}>
+                            {item.pdfPath ? "Файл отсутствует" : "-"}
+                          </span>
                         )}
                       </td>
                       <td data-label="Статус">

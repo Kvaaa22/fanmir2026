@@ -5,10 +5,11 @@ const isDev = process.env.NODE_ENV === "development";
 const contentSecurityPolicy = `
   default-src 'self';
   script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://api-maps.yandex.ru https://yastatic.net https://*.yandex.ru https://*.yandex.net;
-  style-src 'self' 'unsafe-inline';
+  style-src 'self' 'unsafe-inline' https://yastatic.net https://*.yandex.ru https://*.yandex.net;
   img-src 'self' data: blob: https://*.yandex.ru https://*.yandex.net https://*.maps.yandex.net;
-  font-src 'self' data:;
+  font-src 'self' data: https://yastatic.net https://*.yandex.ru https://*.yandex.net;
   connect-src 'self' https://api-maps.yandex.ru https://*.yandex.ru https://*.yandex.net https://*.maps.yandex.net;
+  worker-src 'self' blob: data:;
   object-src 'none';
   base-uri 'self';
   form-action 'self';
@@ -18,6 +19,9 @@ const contentSecurityPolicy = `
 `;
 
 const nextConfig: NextConfig = {
+  images: {
+    qualities: [75, 95],
+  },
   async headers() {
     return [
       {

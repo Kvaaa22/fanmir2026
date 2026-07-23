@@ -146,7 +146,6 @@ export function CartClient({ products }: { products: CartProduct[] }) {
         cartItems={cartItems}
         isOpen={isOrderPopupOpen}
         onClose={() => setIsOrderPopupOpen(false)}
-        totalPrice={totalPrice}
       />
     </>
   );

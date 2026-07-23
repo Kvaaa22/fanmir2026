@@ -6,7 +6,11 @@ import ExcelJS from "exceljs";
 import prisma from "@/lib/prisma";
 import { PRICE_SOURCE, type PriceSourceValue } from "@/lib/prices/priceSource";
 import { createPageMetadata } from "@/lib/seo/site";
-import { isInsideStorage, resolveStoragePath } from "@/lib/storage/paths";
+import {
+  isInsideStorage,
+  isStoredFileAvailable,
+  resolveStoragePath,
+} from "@/lib/storage/paths";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = createPageMetadata({
@@ -49,6 +53,21 @@ type PriceSection = {
   source: PriceSourceValue;
   table: ExcelTable | null;
   hasPdf: boolean;
+};
+
+const PRICE_IMAGE_SIZES: Record<string, { height: number; width: number }> = {
+  "/img/prices/ProfilIndivid1.png": { height: 49, width: 88 },
+  "/img/prices/ProfilIndivid2.png": { height: 43, width: 85 },
+  "/img/prices/ProfilIndivid3.png": { height: 45, width: 80 },
+  "/img/prices/dsp.png": { height: 15, width: 1300 },
+  "/img/prices/dvp.png": { height: 15, width: 1300 },
+  "/img/prices/fanera-berezovaya.png": { height: 15, width: 1300 },
+  "/img/prices/fanera-laminirovannaya.png": { height: 15, width: 1300 },
+  "/img/prices/fanera-xvoinaya.png": { height: 15, width: 1300 },
+  "/img/prices/mdf.png": { height: 15, width: 1300 },
+  "/img/prices/paneliPlydexStandard.jpg": { height: 43, width: 160 },
+  "/img/prices/pliti-osb-3.png": { height: 15, width: 1300 },
+  "/img/prices/plydex.png": { height: 23, width: 1301 },
 };
 
 const EMPTY_VALUE = "—";
@@ -375,25 +394,8 @@ function getProductCaption(row: ExcelRow | undefined, source: PriceSourceValue) 
 }
 
 function getImageSize(cell: ExcelCell) {
-  if (cell.imageSrc === "/img/prices/mdf.png") {
-    return {
-      height: 15,
-      width: 1300,
-    };
-  }
-
-  if (cell.imageSrc === "/img/prices/plydex.png") {
-    return {
-      height: 22,
-      width: 1101,
-    };
-  }
-
-  if (cell.imageVariant === "type") {
-    return {
-      height: 15,
-      width: 1100,
-    };
+  if (cell.imageSrc && PRICE_IMAGE_SIZES[cell.imageSrc]) {
+    return PRICE_IMAGE_SIZES[cell.imageSrc];
   }
 
   return {
@@ -639,8 +641,8 @@ async function getPriceSection(
   title: string,
   source: PriceSourceValue
 ): Promise<PriceSection> {
-  const [latestExcelImport, latestPdfImport] = await Promise.all([
-    prisma.priceImport.findFirst({
+  const [excelImports, pdfImports] = await Promise.all([
+    prisma.priceImport.findMany({
       where: {
         source,
         status: "success",
@@ -654,8 +656,9 @@ async function getPriceSection(
       orderBy: {
         createdAt: "desc",
       },
+      take: 20,
     }),
-    prisma.priceImport.findFirst({
+    prisma.priceImport.findMany({
       where: {
         source,
         status: "success",
@@ -664,21 +667,40 @@ async function getPriceSection(
         },
       },
       select: {
-        id: true,
+        pdfPath: true,
       },
       orderBy: {
         createdAt: "desc",
       },
+      take: 20,
     }),
   ]);
+
+  let latestExcelPath: string | null = null;
+
+  for (const priceImport of excelImports) {
+    if (await isStoredFileAvailable(priceImport.storedFilePath)) {
+      latestExcelPath = priceImport.storedFilePath;
+      break;
+    }
+  }
+
+  let latestPdfPath: string | null = null;
+
+  for (const priceImport of pdfImports) {
+    if (await isStoredFileAvailable(priceImport.pdfPath)) {
+      latestPdfPath = priceImport.pdfPath;
+      break;
+    }
+  }
 
   return {
     title,
     source,
-    table: latestExcelImport?.storedFilePath
-      ? await readExcelTable(latestExcelImport.storedFilePath, source)
+    table: latestExcelPath
+      ? await readExcelTable(latestExcelPath, source)
       : null,
-    hasPdf: Boolean(latestPdfImport),
+    hasPdf: Boolean(latestPdfPath),
   };
 }
 
@@ -774,8 +796,13 @@ function PriceTable({ section }: { section: PriceSection }) {
                                       .filter(Boolean)
                                       .join(" ")}
                                     height={imageSize.height}
-                                    sizes="100vw"
+                                    sizes={
+                                      cell.imageVariant === "type"
+                                        ? "100vw"
+                                        : "160px"
+                                    }
                                     src={cell.imageSrc}
+                                    style={{ height: "auto" }}
                                     width={imageSize.width}
                                   />
                                 );

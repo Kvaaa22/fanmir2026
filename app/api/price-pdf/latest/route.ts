@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { relativeRedirect } from "@/lib/http/relativeRedirect";
 import { parsePriceSource, PRICE_SOURCE } from "@/lib/prices/priceSource";
+import { isStoredFileAvailable } from "@/lib/storage/paths";
 
 export const runtime = "nodejs";
 
@@ -10,7 +11,7 @@ export async function GET(request: Request) {
   const source =
     parsePriceSource(url.searchParams.get("source")) ?? PRICE_SOURCE.MAIN;
 
-  const latestImport = await prisma.priceImport.findFirst({
+  const imports = await prisma.priceImport.findMany({
     where: {
       source,
       status: "success",
@@ -23,8 +24,19 @@ export async function GET(request: Request) {
     },
     select: {
       id: true,
+      pdfPath: true,
     },
+    take: 20,
   });
+
+  let latestImport: (typeof imports)[number] | null = null;
+
+  for (const priceImport of imports) {
+    if (await isStoredFileAvailable(priceImport.pdfPath)) {
+      latestImport = priceImport;
+      break;
+    }
+  }
 
   if (!latestImport) {
     return NextResponse.json(
@@ -43,7 +55,6 @@ export async function GET(request: Request) {
   }
 
   return relativeRedirect(
-    request,
     `/api/price-import-file?${fileParams.toString()}`,
   );
 }

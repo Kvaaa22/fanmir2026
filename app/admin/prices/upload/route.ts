@@ -130,7 +130,7 @@ export async function POST(request: Request) {
         },
       });
 
-      return relativeRedirect(request, "/admin/prices", 303);
+      return relativeRedirect("/admin/prices", 303);
     }
 
     const excelBuffer = Buffer.from(await uploadedExcelFile.arrayBuffer());
@@ -165,7 +165,7 @@ export async function POST(request: Request) {
     });
 
     // After a successful POST, use 303 so the browser follows with GET.
-    return relativeRedirect(request, "/admin/prices", 303);
+    return relativeRedirect("/admin/prices", 303);
   } catch (error) {
     console.error(error);
 

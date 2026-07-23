@@ -9,7 +9,6 @@ type OrderPopupProps = {
   cartItems: CartItem[];
   isOpen: boolean;
   onClose: () => void;
-  totalPrice: number;
 };
 
 type OrderFormErrors = {
@@ -21,10 +20,6 @@ type OrderFormErrors = {
 };
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-function getProductTitle(item: CartItem) {
-  return [item.product.titleLineOne, item.product.titleLineTwo].filter(Boolean).join(" ");
-}
 
 function getPhoneDigits(value: string) {
   return value.replace(/\D/g, "");
@@ -78,7 +73,7 @@ function validateOrderForm({
   return errors;
 }
 
-export function OrderPopup({ cartItems, isOpen, onClose, totalPrice }: OrderPopupProps) {
+export function OrderPopup({ cartItems, isOpen, onClose }: OrderPopupProps) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -123,14 +118,8 @@ export function OrderPopup({ cartItems, isOpen, onClose, totalPrice }: OrderPopu
           },
           items: cartItems.map((item) => ({
             id: item.product.id,
-            meta: item.product.meta,
-            price: item.product.price,
-            pricePerM2: item.product.pricePerM2,
             quantity: item.quantity,
-            title: getProductTitle(item),
-            unitPriceRub: item.product.unitPriceRub,
           })),
-          totalPrice,
         }),
       });
 
